@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-const token = 'NjM5OTU2MzAyNzg4ODIwOTkz.XbzChg.z2Dmnik0lYPhuqKsE9qShj6Rv2E';
+const token = process.env.token;
 var $ = require('jquery');
 
 client.login(token);

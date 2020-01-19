@@ -1,0 +1,21 @@
+{
+  "name": "bot-in-a-crow-s-nest",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zinnig",
+  "license": "ISC",
+  "dependencies": {
+    "bufferutil": "^4.0.1",
+    "canvas": "^2.6.0",
+    "discord.js": "^11.5.1",
+    "jQuery": "^1.7.4",
+    "jquery": "^3.4.1",
+    "jquery-migrate": "^3.1.0",
+    "jsdom": "^15.2.1"
+  },
+  "devDependencies": {},
+  "description": ""
+}

@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
-	"test:elint":"npx eslint main.js"
+	"test:elint": "npx eslint main.js"
   },
   "author": "Zinnig",
   "license": "ISC",

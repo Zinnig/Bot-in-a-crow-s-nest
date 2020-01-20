@@ -49,8 +49,8 @@ client.on("voiceStateUpdate", () =>{
     const guild = client.guilds.get('463736564837777428')
     const channels = guild.channels.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');
 
-    for (const channel of channels) {
-    for (const member of channel.members) {
+    for (const [channel] of channels) {
+    for (const [member] of channel.members) {
         if(channel.id === '666379507522863104'){
         member.setVoiceChannel('666381898343514133')
         .then(() => console.log(`Moved ${member.user.tag}.`))

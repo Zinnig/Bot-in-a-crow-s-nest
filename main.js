@@ -2,7 +2,6 @@ import { Client } from 'discord.js';
 const client = new Client();
 
 const token = process.env.token;
-import $ from 'jquery';
 
 client.login(token);
 

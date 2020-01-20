@@ -11,4 +11,7 @@ install:
 script:
  - npm run test:elint
  - npm run test:coveralls
+
+ after_failure:
+  - cat MSBuild_*.failure.txt
  

@@ -44,6 +44,13 @@ client.on("message", async message => {
         
         msg.edit(`Latency is ${Math.floor(msg.createdAt - message.createdAt)}ms \nAPI Latency is ${Math.round(client.ping)}ms`)
     }
+    if(cmd == "help"){
+        let commandlist = "``` guildtrack add \n - guildtrack remove```";
+        message.channel.send("Sent you a message containing a list of the commands");
+        message.author.send(```css
+        [RED Colored Text in CSS Highlighting]
+        ``` + commandlist);
+        }
 });
 client.on("voiceStateUpdate", () =>{
     const guild = client.guilds.get('463736564837777428')
@@ -52,7 +59,7 @@ client.on("voiceStateUpdate", () =>{
     for (const [channelID, channel] of channels) {
     for (const [memberID, member] of channel.members) {
         if(channel.id === '666379507522863104'){
-        console.log(channelID, memberID);
+        console.log("ChannelID: " + channelID + "MemberID: " +  memberID);
         member.setVoiceChannel('666381898343514133')
         .then(() => console.log(`Moved ${member.user.tag}.`))
         .catch(console.error);
@@ -64,11 +71,7 @@ client.on("voiceStateUpdate", () =>{
 //     if(cmd == "guildtrack" && args[0] == "add"){
 //         await message.channel.send(getGuild(args.slice(3)));
 //     }
-//     if(cmd == "help"){
-//         let commandlist = "``` guildtrack add \n - guildtrack remove```";
-//         message.channel.send("Sent you a message containing a list of the commands");
-//         message.author.send(commandlist);
-//     }
+//    
 // })
 // function getGuild(name){
 //    guild = name;

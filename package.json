@@ -12,7 +12,10 @@
   "dependencies": {
     "bufferutil": "^4.0.1",
     "canvas": "^2.6.0",
+    "custom-env": "^1.0.2",
     "discord.js": "^11.5.1",
+    "dotenv": "^8.2.0",
+    "highlight.js": "^9.18.0",
     "jquery": "^3.4.1",
     "jsdom": "^15.2.1"
   },

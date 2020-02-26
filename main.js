@@ -5,8 +5,7 @@ require('custom-env').env()
 
 const token = process.env.token;
 
-
-const xpReqs = [110,
+    const xpReqs = [110,
     190,
     275,
     385,
@@ -153,15 +152,27 @@ client.on("message", async message => {
         msg.edit(`Latency is ${Math.floor(msg.createdAt - message.createdAt)}ms \nAPI Latency is ${Math.round(client.ping)}ms`)
     }
     if(cmd == "help"){
-        let commandlist = "``` guildtrack add \n - guildtrack remove```";
-        message.channel.send("Sent you a message containing a list of the commands");
-        message.author.send("a")
-        message.author.send(```yaml [RED Colored Text in CSS Highlighting]```);
+        const commandEmbed = new Discord.RichEmbed()
+            .setColor('#ffa20d')
+            .setTitle('The pirated command list')
+            .setDescription('This list has been discovered using the telescope!')
+            .addField('Text Commands', '- %ping \n - %xpreq')  
+            message.author.send(commandEmbed)  
         }
+        
     if(cmd === "xpreq"){
         message.channel.send("```yaml \n" + xpReqs + "```")
     }
+    if(cmd === "movechannel"){
+        let channel = message.guild.channels.find(args[0], "channel")
+        message.channel.send("Channel " + channel + " found.")
+    }
+    /* if(cmd == "guildtrack" && args[0] == "add"){
+        await message.channel.send(getGuild(args.slice(3)));
+    }
+  */ 
 });
+
 client.on("voiceStateUpdate", () =>{
     const guild = client.guilds.get('463736564837777428')
     const channels = guild.channels.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');
@@ -178,85 +189,81 @@ client.on("voiceStateUpdate", () =>{
 }
 });
 
-//     if(cmd == "guildtrack" && args[0] == "add"){
-//         await message.channel.send(getGuild(args.slice(3)));
-//     }
-//    
-// })
-// function getGuild(name){
-//    guild = name;
-//    $.getJSON('https://api.wynncraft.com/public_api.php?action=onlinePlayers', onlinePlayers()).done(function() {
-// 		console.log('online players request succeeded!');
-//     });
+   
+/* function getGuild(name){
+   guild = name;
+   $.getJSON('https://api.wynncraft.com/public_api.php?action=onlinePlayers', onlinePlayers()).done(function() {
+		console.log('online players request succeeded!');
+    });
 
-// }
-// playerList = [];
-// function onlinePlayers(data){
-//     console.log("Start collection");
-// 	if (!data.message) {
-// 		$.each(data, function(wc, list){
-// 			$.each(list, function(num, player){
-// 				playerList[player] = wc;
-// 			});
-// 		});
-// 	} else {
-// 		console.log("Error loading online players!");
-// 		console.log("API message: "+data.message);
-// 	}
-// 	playerListComplete = true;
-//     console.log("Collection complete");
-//     $.getJSON('https://api.wynncraft.com/public_api.php?action=guildStats&command=' + guild, loadStats()).done(function() {
-// 		console.log('guild stats request succeeded!');
+}
+playerList = [];
+function onlinePlayers(data){
+    console.log("Start collection");
+	if (!data.message) {
+		$.each(data, function(wc, list){
+			$.each(list, function(num, player){
+				playerList[player] = wc;
+			});
+		});
+	} else {
+		console.log("Error loading online players!");
+		console.log("API message: "+data.message);
+	}
+	playerListComplete = true;
+    console.log("Collection complete");
+    $.getJSON('https://api.wynncraft.com/public_api.php?action=guildStats&command=' + guild, loadStats()).done(function() {
+		console.log('guild stats request succeeded!');
     
-// })};
-// function loadStats(guild){
-//     var onlinePlayersCount = 0;
-//     ranks = {
-//         OWNER : [],
-//         CHIEF: [],
-//         CAPTAIN: [],
-//         RECRUITER: [],
-//         RECRUIT: []
-//     };
-//     onlineranks = {
-//         OWNER : [],
-//         CHIEF: [],
-//         CAPTAIN: [],
-//         RECRUITER: [],
-//         RECRUIT: []
-//     };
-//     $.each(guild.members, function(num, member){
-//         console.log(onlinePlayersCount)
-//         rank = member.rank;
-//         join_ts = new Date(member.joined).getTime();
-// 		join_ts--;
-// 		do {
-// 			join_ts++;
-// 		}while(rank in ranks[rank]);
-//         ranks[rank][join_ts] = member;
-//     });
-//     var onlinePlayersString = [];
-//     $.each(guild.members, function(rank, member){
-//         if (member.name in playerList){
-//             rank = member.rank;
-//             wc = playerList[member.name];
-//             onlinePlayersCount++;
-//             join_ts = new Date(member.joined).getTime();
-// 		    join_ts--;
-// 		    do {
-// 			join_ts++;
-// 		}while(rank in onlineranks[rank]);
-//             onlineranks[rank][join_ts] = member;
-//             if(onlinePlayersCount > 0){
-//                 onlinePlayersString.push(
-//                     "*",
-//                     member.name,
-//                     "[" + member.rank + "]",
-//                     "is on" + " " + wc,
-//                     "\n"
-//                     )
-//             }
-//         }
-// });
-//         return onlinePlayersString;
-// };
+})};
+function loadStats(guild){
+    var onlinePlayersCount = 0;
+    ranks = {
+        OWNER : [],
+        CHIEF: [],
+        CAPTAIN: [],
+        RECRUITER: [],
+        RECRUIT: []
+    };
+    onlineranks = {
+        OWNER : [],
+        CHIEF: [],
+        CAPTAIN: [],
+        RECRUITER: [],
+        RECRUIT: []
+    };
+    $.each(guild.members, function(num, member){
+        console.log(onlinePlayersCount)
+        rank = member.rank;
+        join_ts = new Date(member.joined).getTime();
+		join_ts--;
+		do {
+			join_ts++;
+		}while(rank in ranks[rank]);
+        ranks[rank][join_ts] = member;
+    });
+    var onlinePlayersString = [];
+    $.each(guild.members, function(rank, member){
+        if (member.name in playerList){
+            rank = member.rank;
+            wc = playerList[member.name];
+            onlinePlayersCount++;
+            join_ts = new Date(member.joined).getTime();
+		    join_ts--;
+		    do {
+			join_ts++;
+		}while(rank in onlineranks[rank]);
+            onlineranks[rank][join_ts] = member;
+            if(onlinePlayersCount > 0){
+                onlinePlayersString.push(
+                    "*",
+                    member.name,
+                    "[" + member.rank + "]",
+                    "is on" + " " + wc,
+                    "\n"
+                    )
+            }
+        }
+});
+        return onlinePlayersString;
+}; */

@@ -157,14 +157,23 @@ client.on("message", async message => {
             .setTitle('The pirated command list')
             .setDescription('This list has been discovered using the telescope!')
             .addField('Text Commands', '- %ping \n - %xpreq')  
-            message.author.send(commandEmbed)  
+            message.author.send(commandEmbed)
         }
         
     if(cmd === "xpreq"){
-        message.channel.send("```yaml \n" + xpReqs + "```")
+        let msg = " "
+        for(i = 0; i>= 105; i++){
+            msg += " - Lvl. " + i + ": " + xpReqs[i] + "\n"
+        }
+        const xpReqEmbed = new Discord.RichEmbed()
+            .setColor('#ffa20d')
+            .setTitle('List of XP-Requirements for each level')
+            .addField('List:', xpReqs)
+        message.channel.send(xpReqEmbed)
     }
     if(cmd === "movechannel"){
         let channel = message.guild.channels.find(args[0], "channel")
+        console.log(args[0])
         message.channel.send("Channel " + channel + " found.")
     }
     /* if(cmd == "guildtrack" && args[0] == "add"){

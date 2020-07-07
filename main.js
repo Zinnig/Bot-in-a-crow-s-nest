@@ -1,115 +1,10 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 //for local testing
 require('custom-env').env()
-
 const token = process.env.token;
 
-    const xpReqs = [110,
-    190,
-    275,
-    385,
-    505,
-    645,
-    790,
-    940,
-    1100,
-    1370,
-    1570,
-    1800,
-    2090,
-    2400,
-    2720,
-    3100,
-    3600,
-    4150,
-    4800,
-    5300,
-    5900,
-    6750,
-    7750,
-    8900,
-    10200,
-    11650,
-    13300,
-    15200,
-    17150,
-    19600,
-    22100,
-    24900,
-    28000,
-    31500,
-    35500,
-    39900,
-    44700,
-    50000,
-    55800,
-    62000,
-    68800,
-    76400,
-    84700,
-    93800,
-    103800,
-    114800,
-    126800,
-    140000,
-    154500,
-    170300,
-    187600,
-    206500,
-    227000,
-    249500,
-    274000,
-    300500,
-    329500,
-    361000,
-    395000,
-    432200,
-    472300,
-    515800,
-    562800,
-    613700,
-    668600,
-    728000,
-    792000,
-    860000,
-    935000,
-    1040400,
-    1154400,
-    1282600,
-    1414800,
-    1567500,
-    1730400,
-    1837000,
-    1954800,
-    2077600,
-    2194400,
-    2325600,
-    2455000,
-    2645000,
-    2845000,
-    3141100,
-    3404710,
-    3782160,
-    4151400,
-    4604100,
-    5057300,
-    5533840,
-    6087120,
-    6685120,
-    7352800,
-    8080800,
-    8725600,
-    9578400,
-    10545600,
-    11585600,
-    12740000,
-    14418250,
-    16280000,
-    21196500,
-    23315500,
-    25649000,
-    249232940]
 client.login(token);
 
 let statuses = ["online", "idle", "dnd"];
@@ -160,22 +55,139 @@ client.on("message", async message => {
             message.author.send(commandEmbed)
         }
         
-    if(cmd === "xpreq"){
-        let msg = " "
-        for(i = 0; i>= 105; i++){
-            msg += " - Lvl. " + i + ": " + xpReqs[i] + "\n"
+    if(cmd === "gxpleaderboard"){
+        if(args.length == 0){
+            let msg = " "
+            
+            $.getJSON('https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe={}',putInList).done(function(){
+            console.log("got the guild list (top 100)!")
+            })
+            var mostGxpList = [];
+        function getGxp(guild){
+            $.each(guild.members, function(num, member){
+                contributedMember = parseInt(member.contributed);
+                mostGxpList.push(contributedMember);
+            }); 
         }
-        const xpReqEmbed = new Discord.RichEmbed()
-            .setColor('#ffa20d')
-            .setTitle('List of XP-Requirements for each level')
-            .addField('List:', xpReqs)
-        message.channel.send(xpReqEmbed)
+
+
+        function putInList(data){
+            for(i = 0; i< 100; i++){
+                $.getJSON('https://api.wynncraft.com/public_api.php?action=guildStats&command=' + data["data"][i]["name"], getGxp()).done(function() {
+                    console.log('guild stats request succeeded!');
+                    mostGxpList.sort(function(a, b){
+
+                        return b - a;
+                    
+                    });
+                gxp10 = ""
+                for (i = 0; i < 10; i++){
+                gxp10 += (i+1) + ". "+ $.number(mostGxpList[i]) + "<br>" 
+            }
+                $("div.xptop10 span").html(gxp10)
+            })};
+            
+            }
+
+        }
     }
-    if(cmd === "movechannel"){
-        let channel = message.guild.channels.find(args[0], "channel")
-        console.log(args[0])
-        message.channel.send("Channel " + channel + " found.")
+    let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
+"Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 
+"Corkus Forest South", "Corkus Mountain", "Corkus Outskirts", "Corkus Sea Cove", "Corkus Sea Port", 
+"Durum Isles Center", "Fallen Factory", "Fallen Factory Entrance", "Legendary Island", "Southern Outpost", 
+"Statue", "Corkus Abandoned Tower", "Road To Mine", "Ruined Houses", "Phineas Farm", "Lighthouse Plateau"]
+let resText = "";
+let missingTerrs = "";
+let sent = false;
+let notOwned = 0;
+let i = 0;
+    if(cmd === "war"){
+        notOwned = 0;
+        sent = false;
+        /**
+ * ReadyState:
+ * 0 	UNSENT 	Client has been created. open() not called yet.
+ * 1 	OPENED 	open() has been called.
+ * 2 	HEADERS_RECEIVED 	send() has been called, and headers and status are available.
+ * 3 	LOADING 	Downloading; responseText holds partial data.
+ * 4 	DONE 	The operation is complete.
+ * Status:
+ *
+ * UNSENT: 0
+ * OPENED: 0
+ * LOADING: 200
+ * DONE: 200
+ */
+
+
+let xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", "https://api.wynncraft.com/public_api.php?action=territoryList");
+    xmlhttp.send(); 
+    xmlhttp.onreadystatechange = function(){
+        if(this.status == 200){
+            try{
+                resText = JSON.parse(this.responseText);
+            }catch(e){
+                
+            }
+
+            for(property in resText.territories){
+                if(list.indexOf(property) != -1){
+                    i+=1;
+                   if(resText.territories[property].guild != "Paladins United"){
+                       regex = new RegExp(property, "g")
+                       if(missingTerrs.search(regex) == -1){
+                        missingTerrs += `- ${property} (${resText.territories[property].guild}) \n`
+                        notOwned += 1;
+                    }
+                   }
+                }
+            }
+            
     }
+    try{
+        if(sent == false && i >= list.length){
+            if (notOwned == 0){
+                terrEmbed = new Discord.RichEmbed()
+                .setColor('#582370')
+                .setTitle("War")
+                .addField("We're not missing any territories." ,"Have a box of cookies.");
+                message.channel.send(terrEmbed)
+                sent = true
+            }else if(notOwned > 0 && notOwned <= 5){
+                terrEmbed = new Discord.RichEmbed()
+                    .setColor('#ffcc00')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs );
+                    message.channel.send(terrEmbed)
+                    sent = true
+            }else if(notOwned > 5 && notOwned <= 10){
+                terrEmbed = new Discord.RichEmbed()
+                .setColor('#ff9d00')
+                .setTitle("Get the man-o'-war ready!")
+                .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs);
+                message.channel.send(terrEmbed)
+                sent = true
+            }else if(notOwned > 10 && notOwned <= 15){
+                terrEmbed = new Discord.RichEmbed()
+                    .setColor('#ff6f00')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs);
+                    message.channel.send(terrEmbed)
+                    sent = true
+            }else if(notOwned > 15){
+                terrEmbed = new Discord.RichEmbed()
+                    .setColor('#ff000d')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs );
+                    message.channel.send(terrEmbed)
+                    sent = true
+        }
+    }
+        }catch(e){}
+        }
+        };
+
     /* if(cmd == "guildtrack" && args[0] == "add"){
         await message.channel.send(getGuild(args.slice(3)));
     }

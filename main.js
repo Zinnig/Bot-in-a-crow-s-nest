@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 //for local testing
 require('custom-env').env()
 const token = process.env.token;

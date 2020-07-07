@@ -50,31 +50,56 @@ client.on("message", async message => {
         const commandEmbed = new Discord.RichEmbed()
             .setColor('#ffa20d')
             .setTitle('The pirated command list')
-            .setDescription('This list has been discovered using the telescope!')
-            .addField('Text Commands', '- %ping \n - %xpreq')  
+            .setDescription('This list has been discovered using a telescope!')
+            .addField('Text Commands', '- %help \n - %ping \n - %war')  
             message.author.send(commandEmbed)
         }
         
-    if(cmd === "gxpleaderboard"){
-        if(args.length == 0){
-            let msg = " "
-            
-            $.getJSON('https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe={}',putInList).done(function(){
-            console.log("got the guild list (top 100)!")
-            })
+    /* if(cmd === "gxpleaderboard"){
+            let xml = new XMLHttpRequest();
             var mostGxpList = [];
+            var mostGxpListMult = [[]];
+            let resText1 = "";
+            let resText2 = "";
+            xml.open("GET", "https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe={}");
+            xml.send();
+            xml.onreadystatechange = function(){
+                if(this.status == 200){
+                    try{
+                        resText1 = JSON.parse(responseText);
+                    }catch(e){}
+                    putInList(resText1)
+                    
+                }
+                
+            }
+            
         function getGxp(guild){
-            $.each(guild.members, function(num, member){
+            console.log("getGXP")
+            for(member in guild.members){
                 contributedMember = parseInt(member.contributed);
+                member = member.name
+                tag = guild.prefix
                 mostGxpList.push(contributedMember);
-            }); 
+                mostGxpListMult.push([member, tag, contributedMember])
+            }
         }
 
-
         function putInList(data){
-            for(i = 0; i< 100; i++){
-                $.getJSON('https://api.wynncraft.com/public_api.php?action=guildStats&command=' + data["data"][i]["name"], getGxp()).done(function() {
-                    console.log('guild stats request succeeded!');
+            let xml1
+            for(i in data.data){
+                console.log("owo")
+                xml1 = new XMLHttpRequest();
+                xml1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + data["data"][i]["name"])
+                xml1.send();
+                xml1.onreadystatechange = function(){
+                    if(this.status == 200){
+                        try{
+                            resText2 = JSON.parse(responseText);
+                        }catch(e){}
+                        getGxp(resText2);
+                    }
+                }
                     mostGxpList.sort(function(a, b){
 
                         return b - a;
@@ -82,15 +107,11 @@ client.on("message", async message => {
                     });
                 gxp10 = ""
                 for (i = 0; i < 10; i++){
-                gxp10 += (i+1) + ". "+ $.number(mostGxpList[i]) + "<br>" 
-            }
-                $("div.xptop10 span").html(gxp10)
-            })};
-            
-            }
-
-        }
-    }
+                gxp10 += (i+1) + ". "+ mostGxpList[i] + "\n" 
+                }
+                message.channel.send(gxp10);
+            }};
+    } */
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
 "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 
 "Corkus Forest South", "Corkus Mountain", "Corkus Outskirts", "Corkus Sea Cove", "Corkus Sea Port", 
@@ -150,7 +171,7 @@ let xmlhttp = new XMLHttpRequest();
             if (notOwned == 0){
                 terrEmbed = new Discord.RichEmbed()
                 .setColor('#582370')
-                .setTitle("War")
+                .setTitle("Peace...")
                 .addField("We're not missing any territories." ,"Have a box of cookies.");
                 message.channel.send(terrEmbed)
                 sent = true

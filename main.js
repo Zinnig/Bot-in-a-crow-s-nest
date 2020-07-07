@@ -117,10 +117,100 @@ client.on("message", async message => {
 "Corkus Forest South", "Corkus Mountain", "Corkus Outskirts", "Corkus Sea Cove", "Corkus Sea Port", 
 "Durum Isles Center", "Fallen Factory", "Fallen Factory Entrance", "Legendary Island", "Southern Outpost", 
 "Statue", "Corkus Abandoned Tower", "Road To Mine", "Ruined Houses", "Phineas Farm", "Lighthouse Plateau"]
+let allyList = [
+    /**ARTEMIS */
+    //Kingdom Foxes
+    "Kingdom Foxes" ,
+    "Ombra" , 
+    "I Corps" ,
+    "Panic" ,
+    "Fluffy Unicorns" ,
+    "Project Ultimatum" ,
+    "Lunatic" ,
+    "Ex Nihilo" ,
+    "Odysseia" ,
+    "HaHaUnited" ,
+    "Ram Ranch" ,
+   //Imperial
+    "Imperial" ,
+    "Metric" ,
+    "Minerva" ,
+    "Terra Steel" ,
+    "Kolibri" ,
+    "House of Sentinels" ,
+    "EPIcFORTNITEgAY" ,
+    "Germany FTW" ,
+    "Squad Zero" ,
+    "jerf" ,
+   //Phantom Hearts
+    "Phantom Hearts" ,
+    "Surprise" ,
+    "Phantom Menace" ,
+    "Fraternal Fire" ,
+    "Grand Explorers" ,
+   //Avicia
+    "Avicia" ,
+    "Invicta" ,
+    "Time for Pizza" ,
+    "Stud Squad" ,
+    "Avocados" ,
+   //HackForums
+    "HackForums" ,
+    "vape god" ,
+    "Kingdom Furries" ,
+    "HeckForums" ,
+   //Paladins United
+    "Paladins United" ,
+    "Pirates United" ,
+    "Meow" ,
+    "Pirates Divided" ,
+   //Titans Valor
+    "Titans Valor" ,
+    "Illustratus" ,
+    "Seekers of Arx" ,
+    "dinkle winks" ,
+    "The Tempest" ,
+    "Ice Babies" ,
+    "Exorcism" ,
+   //Emorians
+    "Emorians" ,
+    "Audux" ,
+    "Mute Gang" ,
+   //Lux Nova
+    "Lux Nova" ,
+    "Scat Club" ,
+   //Eden
+    "Eden" ,
+    "Heresy" ,
+   //Blue Nations United
+    "Blue Nations United" ,
+    "Hyacinthum" ,
+    "FortniteKSI" ,
+    "BlueStoneGroup" ,
+    "Byzantium" ,
+    "IceBlue Fantasy",
+    //Empire of Sindria
+    "Empire of Sindria",
+    //Caeruleum Order
+    "Caeruleum Order",
+    //Ice Blue Team
+    "IceBlue Team",
+    //**Cooperating */
+    "House of Sentinels",
+    "Seekers of Arx",
+    "The Simple Ones",
+    "The Turtle Society",
+    //**NEUTRAL */
+    "Vindicator"
+
+]
 let resText = "";
 let missingTerrs = "";
+let missingTerrsAlly = "";
 let sent = false;
+let sent2 = false;
 let notOwned = 0;
+let notOwnedAlly = 0;
 let i = 0;
     if(cmd === "war"){
         notOwned = 0;
@@ -160,9 +250,18 @@ let xmlhttp = new XMLHttpRequest();
                        if(missingTerrs.search(regex) == -1){
                         missingTerrs += `- ${property} (${resText.territories[property].guild}) \n`
                         notOwned += 1;
+                       }
                     }
-                   }
+
+                }else if(allyList.indexOf(resText.territories[property].guild) == -1){
+                        regex1 = new RegExp(property, "g")
+                        if(missingTerrsAlly.search(regex1) == -1){
+                         missingTerrsAlly += `- ${property} (${resText.territories[property].guild}) \n`
+                         notOwnedAlly += 1; 
                 }
+                    
+
+                   }
             }
             
     }
@@ -203,6 +302,44 @@ let xmlhttp = new XMLHttpRequest();
                     .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs );
                     message.channel.send(terrEmbed)
                     sent = true
+        }
+        } 
+        if(sent2 == false && i>= list.length){
+            if (notOwnedAlly == 0){
+                terrAllyEmbed = new Discord.RichEmbed()
+                .setColor('#582370')
+                .setTitle("Peace for the whole alliance")
+                .addField("Our Allies are not missing any territories." ,"Have a box of cookies.");
+                message.channel.send(terrAllyEmbed)
+                sent2 = true
+            }else if(notOwnedAlly > 0 && notOwnedAlly <= 5){
+                terrAllyEmbed = new Discord.RichEmbed()
+                    .setColor('#ffcc00')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`Our Allies currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly );
+                    message.channel.send(terrAllyEmbed)
+                    sent2 = true
+            }else if(notOwnedAlly > 5 && notOwnedAlly <= 10){
+                terrAllyEmbed = new Discord.RichEmbed()
+                .setColor('#ff9d00')
+                .setTitle("Get the man-o'-war ready!")
+                .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly);
+                message.channel.send(terrAllyEmbed)
+                sent2 = true
+            }else if(notOwnedAlly > 10 && notOwnedAlly <= 15){
+                terrAllyEmbed = new Discord.RichEmbed()
+                    .setColor('#ff6f00')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly);
+                    message.channel.send(terrAllyEmbed)
+                    sent2 = true
+            }else if(notOwnedAlly > 15){
+                terrAllyEmbed = new Discord.RichEmbed()
+                    .setColor('#ff000d')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly );
+                    message.channel.send(terrAllyEmbed)
+                    sent2 = true
         }
     }
         }catch(e){}

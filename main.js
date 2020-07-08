@@ -154,11 +154,13 @@ let allyList = [
     "Time for Pizza" ,
     "Stud Squad" ,
     "Avocados" ,
+    "Ivory Tusk",
    //HackForums
     "HackForums" ,
     "vape god" ,
     "Kingdom Furries" ,
     "HeckForums" ,
+    "Bruh Moment",
    //Paladins United
     "Paladins United" ,
     "Pirates United" ,
@@ -748,7 +750,7 @@ let xmlhttp = new XMLHttpRequest();
                 terrAllyEmbed = new Discord.RichEmbed()
                     .setColor('#ffcc00')
                     .setTitle("Get the man-o'-war ready!")
-                    .addField(`We're currently missing the following FFAs (${notOwnedAlly}):` , missingTerrsAlly );
+                    .addField(`Our Allies are currently missing the following territories shou1 (${notOwnedAlly}):` , missingTerrsAlly );
                     message.channel.send(terrAllyEmbed)
                     sent2 = true
             }else if(notOwnedAlly > 5 && notOwnedAlly <= 10){

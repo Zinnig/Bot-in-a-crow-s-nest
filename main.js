@@ -750,7 +750,7 @@ let xmlhttp = new XMLHttpRequest();
                 terrAllyEmbed = new Discord.RichEmbed()
                     .setColor('#ffcc00')
                     .setTitle("Get the man-o'-war ready!")
-                    .addField(`Our Allies are currently missing the following territories shou1 (${notOwnedAlly}):` , missingTerrsAlly );
+                    .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly );
                     message.channel.send(terrAllyEmbed)
                     sent2 = true
             }else if(notOwnedAlly > 5 && notOwnedAlly <= 10){

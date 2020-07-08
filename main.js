@@ -815,6 +815,33 @@ let xmlhttp = new XMLHttpRequest();
         }catch(e){}
         }
         };
+        if(cmd == "subs"){
+            if(args[0].match(/(Fox)/gi)){
+                message.channel.send("Fox has the following subguilds: \n- [Omb] Ombra \n- [FNE] Fluorine \n- [LFX] I Corps \n- [PaN] Panic \n- [FuI] Fluffy Unicorns \n- [PxU] Project Ultimatum \n- [Mox] Lunatic \n- [Nih] Ex Nihilo \n- [Oys] Odysseia \n- [HHU] HaHaUnited \n- [RMR] Ram Ranch")
+            }else if(args[0].match(/(Imp)/gi)){
+                message.channel.send("Imp has the following subguilds: \n- [Met] Metric \n- [Min] Minerva \n- [KLA] Terra Steel \n- [KLI] Kolibri \n- [Snt] House of Sentinels \n- [lMP] EPIcFORTNITEgAY \n- [BKP] Germany FTW \n- [SdZ] Squad Zero \n- [jrf] jerf")
+            }else if(args[0].match(/(AVO)/gi)){
+                message.channel.send("AVO has the following subguilds: \n- [IVA] Invicta \n- [VFN] Time for Pizza \n- [STQ] Stud Squad \n- [JML] Avocados")
+            }else if(args[0].match(/(BNU)/gi)){
+                message.channel.send("BNU has the following subguilds: \n- [HCM] Hyacinthum \n- [XDF] FortniteKSI \n- [GSB] BlueStoneGroup \n- [TBE] Byzantium \n- [IBF] IceBlue Fantasy")
+            }else if(args[0].match(/(EDN)/gi)){
+                message.channel.send("EDN has the following subguilds: \n- [Rsy] Heresy")
+            }else if(args[0].match(/(ESI)/gi)){
+                message.channel.send("ESI has no subguilds.")
+            }else if(args[0].match(/(Hax)/gi)){
+                message.channel.send("Hax has the following subguilds: \n- [vpe] vape god \n- [KFF] Kingdom Furries \n- [Hux] HeckForums")
+            }else if(args[0].match(/(LXA)/gi)){
+                message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club")
+            }else if(args[0].match(/(PUN)/gi)){
+                message.channel.send("PUN has the following subguilds: \n- [pun] Pirates United \n- [Prr] Meow \n- [PiD] Pirates Divided")
+            }else if(args[0].match(/(Phi)/gi)){
+                message.channel.send("Phi has the following subguilds: \n- [FUU] Surprise \n- [UUF] Phantom Menace \n- [FFi] Fraternal Fire \n- [GrE] Grand Explorers")
+            }else if(args[0].match(/(ANO)/gi)){
+                message.channel.send("ANO has the following subguilds: \n- [Ius] Illustratus \n- [ARX] Seekers of Arx \n- [zeb] dinkle winks \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism")
+            }else{
+                message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
+            }
+        }
 
     /* if(cmd == "guildtrack" && args[0] == "add"){
         await message.channel.send(getGuild(args.slice(3)));

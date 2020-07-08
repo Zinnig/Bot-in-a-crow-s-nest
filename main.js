@@ -823,7 +823,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(Imp)/gi)){
                 message.channel.send("Imp has the following subguilds: \n- [Met] Metric \n- [Min] Minerva \n- [KLA] Terra Steel \n- [KLI] Kolibri \n- [Snt] House of Sentinels \n- [lMP] EPIcFORTNITEgAY \n- [BKP] Germany FTW \n- [SdZ] Squad Zero \n- [jrf] jerf")
             }else if(args[0].match(/(AVO)/gi)){
-                message.channel.send("AVO has the following subguilds: \n- [IVA] Invicta \n- [VFN] Time for Pizza \n- [STQ] Stud Squad \n- [JML] Avocados")
+                message.channel.send("AVO has the following subguilds: \n- [IVA] Invicta \n- [VFN] Time for Pizza \n- [STQ] Stud Squad \n- [JML] Avocados \n- [IVT] Ivory Tusk")
             }else if(args[0].match(/(BNU)/gi)){
                 message.channel.send("BNU has the following subguilds: \n- [HCM] Hyacinthum \n- [XDF] FortniteKSI \n- [GSB] BlueStoneGroup \n- [TBE] Byzantium \n- [IBF] IceBlue Fantasy")
             }else if(args[0].match(/(EDN)/gi)){
@@ -831,7 +831,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(ESI)/gi)){
                 message.channel.send("ESI has no subguilds.")
             }else if(args[0].match(/(Hax)/gi)){
-                message.channel.send("Hax has the following subguilds: \n- [vpe] vape god \n- [KFF] Kingdom Furries \n- [Hux] HeckForums")
+                message.channel.send("Hax has the following subguilds: \n- [vpe] vape god \n- [KFF] Kingdom Furries \n- [Hux] HeckForums \n- [GJJ] Bruh Moment")
             }else if(args[0].match(/(LXA)/gi)){
                 message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club")
             }else if(args[0].match(/(PUN)/gi)){

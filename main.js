@@ -155,6 +155,7 @@ let allyList = [
     "Stud Squad" ,
     "Avocados" ,
     "Ivory Tusk",
+    "Afishia",
    //HackForums
     "HackForums" ,
     "vape god" ,
@@ -823,7 +824,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(Imp)/gi)){
                 message.channel.send("Imp has the following subguilds: \n- [Met] Metric \n- [Min] Minerva \n- [KLA] Terra Steel \n- [KLI] Kolibri \n- [Snt] House of Sentinels \n- [lMP] EPIcFORTNITEgAY \n- [BKP] Germany FTW \n- [SdZ] Squad Zero \n- [jrf] jerf")
             }else if(args[0].match(/(AVO)/gi)){
-                message.channel.send("AVO has the following subguilds: \n- [IVA] Invicta \n- [VFN] Time for Pizza \n- [STQ] Stud Squad \n- [JML] Avocados \n- [IVT] Ivory Tusk")
+                message.channel.send("AVO has the following subguilds: \n- [IVA] Invicta \n- [VFN] Time for Pizza \n- [STQ] Stud Squad \n- [JML] Avocados \n- [IVT] Ivory Tusk \n- [AVF] Afishia")
             }else if(args[0].match(/(BNU)/gi)){
                 message.channel.send("BNU has the following subguilds: \n- [HCM] Hyacinthum \n- [XDF] FortniteKSI \n- [GSB] BlueStoneGroup \n- [TBE] Byzantium \n- [IBF] IceBlue Fantasy")
             }else if(args[0].match(/(EDN)/gi)){

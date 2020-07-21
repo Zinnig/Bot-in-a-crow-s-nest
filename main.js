@@ -54,64 +54,112 @@ client.on("message", async message => {
             .addField('Text Commands', '- %help \n - %ping \n - %war \n - %subs GuildTagHere')  
             message.author.send(commandEmbed)
         }
-        
-    /* if(cmd === "gxpleaderboard"){
+   /*      var mostGxpList = [];
+        var mostGxpListMult = [];
+        let resText1 = "";
+        let resText2 = "";
+        let gxp10 = ""
+        let sent4 = false;
+    if(cmd == "gxpleaderboard"){/* 
+        console.log("A")
             let xml = new XMLHttpRequest();
-            var mostGxpList = [];
-            var mostGxpListMult = [[]];
-            let resText1 = "";
-            let resText2 = "";
             xml.open("GET", "https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe={}");
-            xml.send();
             xml.onreadystatechange = function(){
-                if(this.status == 200){
-                    try{
-                        resText1 = JSON.parse(responseText);
-                    }catch(e){}
-                    putInList(resText1)
+            if(this.status == 200){
+                try{
+                resText1 = JSON.parse(this.responseText);
+                let xml1;
+                console.log("putINList")
+                for(i=0;i<100;i++){
+                    xml1 = new XMLHttpRequest();
+                    xml1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + resText1["data"][i]["name"]);
+                    xml1.onreadystatechange = function(){
+                            if(this.status == 200){
+                                try{
+                                        resText2 = JSON.parse(this.responseText);
+                                        alreadyrequested.push(i)
+                                        console.log("getGxp")
+                                        try{
+                                        for(i=0;i<resText2["members"].length;i++){
+                                            contributedMember = parseInt(resText2.members[i].contributed)
+                                            member = resText2.members[i].name;
+                                            tag = resText2.prefix
+                                            if(mostGxpList.indexOf(contributedMember) == -1){
+                                                mostGxpList.push(contributedMember);
+                                            }
+                                            if(index(contributedMember, mostGxpListMult) == -1){ 
+                                                mostGxpListMult.push([member, tag, contributedMember]);
+                                            }
+                                        }
+                                        }catch(e){}
+                                        mostGxpList.sort(function(a, b){
+                                    
+                                            return b - a;
+                                        
+                                        });
+                                        mostGxpListMult.sort(function(a, b){
+                                            return b[2] - a[2];
+                                        });
+                                    if(i == 99){
+                                        console.log("after for")
+                                        completed = [...new Set(alreadyrequested)];
+                                    
+                                        if(sent4 == false){
+                                            for (x = 0; x < 100; x++){
+                                                console.log("a")
+                                                gxp10 += (x+1) + ". " +  mostGxpListMult[x][0]+ "[" + mostGxpListMult[x][1] + "]" +": "+ formatNumber(mostGxpList[x]) + "\n";
+                                                }
+                                                gxpLeaderboardEmbed = new Discord.RichEmbed()
+                                                    .setColor('#2aeb5e')
+                                                    .setTitle("Guild Experience - Leaderboard")
+                                                    .addField("(not 100% accurate.)", gxp10)
+                                                    message.channel.send(gxpLeaderboardEmbed)
+                                                    message.channel.send("owo")
+                                                    sent4 = true;
+                                        }
+                                    }
+                                }catch(e){}
+                                    
+                            
+                          
                     
-                }
+            }
+            xml1.send();   
                 
             }
-            
-        function getGxp(guild){
-            console.log("getGXP")
-            for(member in guild.members){
-                contributedMember = parseInt(member.contributed);
-                member = member.name
-                tag = guild.prefix
-                mostGxpList.push(contributedMember);
-                mostGxpListMult.push([member, tag, contributedMember])
-            }
+                }
+                
+            }catch(e){}
         }
-
+        }
+        xml.send();
+        
+        function index(contributed, arr) {
+            for (var i=0; i<arr.length; i++) {
+            for (var j=0; j<arr[i].length; j++) {
+            if (arr[i][j] == contributed) { return i; }
+            }
+            }
+            return -1;
+        }
+        function formatNumber(num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+          }
+        
+        function getGxp(guild){
+           
+            
+        }
+        let alreadyrequested = []
         function putInList(data){
-            let xml1
-            for(i in data.data){
-                console.log("owo")
-                xml1 = new XMLHttpRequest();
-                xml1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + data["data"][i]["name"])
-                xml1.send();
-                xml1.onreadystatechange = function(){
-                    if(this.status == 200){
-                        try{
-                            resText2 = JSON.parse(responseText);
-                        }catch(e){}
-                        getGxp(resText2);
-                    }
-                }
-                    mostGxpList.sort(function(a, b){
-
-                        return b - a;
-                    
-                    });
-                gxp10 = ""
-                for (i = 0; i < 10; i++){
-                gxp10 += (i+1) + ". "+ mostGxpList[i] + "\n" 
-                }
-                message.channel.send(gxp10);
-            }};
-    } */
+            
+            
+            
+        };
+             
+            
+    }; 
+    */
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
 "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 
 "Corkus Forest South", "Corkus Mountain", "Corkus Outskirts", "Corkus Sea Cove", "Corkus Sea Port", 
@@ -120,77 +168,77 @@ client.on("message", async message => {
 let allyList = [
     /**ARTEMIS */
     //Kingdom Foxes
-    "Kingdom Foxes" ,
-    "Ombra" , 
-    "I Corps" ,
-    "Panic" ,
-    "Fluffy Unicorns" ,
-    "Project Ultimatum" ,
-    "Lunatic" ,
-    "Ex Nihilo" ,
-    "Odysseia" ,
-    "HaHaUnited" ,
-    "Ram Ranch" ,
+    "Kingdom Foxes",
+    "Ombra", 
+    "I Corps",
+    "Panic",
+    "Fluffy Unicorns",
+    "Project Ultimatum",
+    "Lunatic",
+    "Ex Nihilo",
+    "Odysseia",
+    "HaHaUnited",
+    "Ram Ranch",
    //Imperial
-    "Imperial" ,
-    "Metric" ,
-    "Minerva" ,
-    "Terra Steel" ,
-    "Kolibri" ,
-    "House of Sentinels" ,
-    "EPIcFORTNITEgAY" ,
-    "Germany FTW" ,
-    "Squad Zero" ,
-    "jerf" ,
+    "Imperial",
+    "Metric",
+    "Minerva",
+    "Terra Steel",
+    "Kolibri",
+    "House of Sentinels",
+    "EPIcFORTNITEgAY",
+    "Germany FTW",
+    "Squad Zero",
+    "jerf",
    //Phantom Hearts
-    "Phantom Hearts" ,
-    "Surprise" ,
-    "Phantom Menace" ,
-    "Fraternal Fire" ,
-    "Grand Explorers" ,
+    "Phantom Hearts",
+    "Surprise",
+    "Phantom Menace",
+    "Fraternal Fire",
+    "Grand Explorers",
    //Avicia
-    "Avicia" ,
-    "Invicta" ,
-    "Time for Pizza" ,
-    "Stud Squad" ,
-    "Avocados" ,
+    "Avicia",
+    "Invicta",
+    "Time for Pizza",
+    "Stud Squad",
+    "Avocados",
     "Ivory Tusk",
     "Afishia",
    //HackForums
-    "HackForums" ,
-    "vape god" ,
-    "Kingdom Furries" ,
-    "HeckForums" ,
+    "HackForums",
+    "vape god",
+    "Kingdom Furries",
+    "HeckForums",
     "Bruh Moment",
    //Paladins United
-    "Paladins United" ,
-    "Pirates United" ,
-    "Meow" ,
-    "Pirates Divided" ,
+    "Paladins United",
+    "Pirates United",
+    "Meow",
+    "Pirates Divided",
    //Titans Valor
-    "Titans Valor" ,
-    "Illustratus" ,
-    "Seekers of Arx" ,
-    "dinkle winks" ,
-    "The Tempest" ,
-    "Ice Babies" ,
-    "Exorcism" ,
+    "Titans Valor",
+    "Illustratus",
+    "Seekers of Arx",
+    "dinkle winks",
+    "The Tempest",
+    "Ice Babies",
+    "Exorcism",
    //Emorians
-    "Emorians" ,
-    "Audux" ,
-    "Mute Gang" ,
+    "Emorians",
+    "Audux",
+    "Mute Gang",
    //Lux Nova
-    "Lux Nova" ,
-    "Scat Club" ,
+    "Lux Nova",
+    "Scat Club",
    //Eden
-    "Eden" ,
-    "Heresy" ,
+    "Eden",
+    "Heresy",
    //Blue Nations United
-    "Blue Nations United" ,
-    "Hyacinthum" ,
-    "FortniteKSI" ,
-    "BlueStoneGroup" ,
-    "Byzantium" ,
+    "Blue Nations United",
+    "Hyacinthum",
+    "FortniteKSI",
+    "BlueStoneGroup",
+    "Byzantium",
     "IceBlue Fantasy",
     //Empire of Sindria
     "Empire of Sindria",
@@ -205,7 +253,94 @@ let allyList = [
     "The Turtle Society",
     //**NEUTRAL */
     "Vindicator"
-
+]
+let allyListTags = [
+        /**ARTEMIS */
+    //Kingdom Foxes
+    "Fox",
+    "Omb", 
+    "LFX",
+    "PaN",
+    "FuI",
+    "PxU",
+    "Mox",
+    "Nih",
+    "Oys",
+    "HHU",
+    "RMR",
+    //Imperial
+    "Imp",
+    "Met",
+    "Min",
+    "KLA",
+    "KLI",
+    "Snt",
+    "lMP",
+    "BKP",
+    "SdZ",
+    "jrf",
+    //Phantom Hearts
+    "Phi",
+    "FUU",
+    "UUF",
+    "FFi",
+    "GrE",
+    //Avicia
+    "AVO",
+    "IVA",
+    "VFN",
+    "STQ",
+    "JML",
+    "AVF",
+    "IVT",
+    //HackForums
+    "Hax",
+    "vpe",
+    "KFF",
+    "Hux",
+    "GJJ",
+    //Paladins United
+    "PUN",
+    "pun",
+    "Prr",
+    "PiD",
+    //Titans Valor
+    "ANO",
+    "Ius",
+    "Arx",
+    "zeb",
+    "Txp",
+    "IcB",
+    "xsm",
+    //Emorians
+    "ERN",
+    "uxu",
+    "VCT",
+    //Caeruleum Order
+    "Cdr",
+    //Empire of Sindria
+    "ESI",
+    //Lux Nova
+    "LXA",
+    "LAX",
+    "GnH",
+    //Eden
+    "EDN",
+    "Rsy",
+    //Blue Nations United
+    "BNU",
+    "HCM",
+    "XDF",
+    "GSB",
+    "TBE",
+    "IBF",
+    //**Cooperating**
+    "Snt",
+    "ARX",
+    "ILQ",
+    "KLL",
+    //NEUTRAL
+    "VMZ"
 ]
 let FoxClaim = [
    "Cinfras Thanos Transition", 
@@ -261,65 +396,10 @@ let FoxClaim = [
 "Thanos Valley West"
 ]
 let ImpClaim = [
-    "Cinfras Entrance",
-"Cinfras County Mid-Upper",
-"Gylia Lake North West",
-"Aldorei’s River",
-"Imperial Gate",
-"Efelim South Plains",
-"Light Forest North Entrance",
-"Light Forest West Lower",
-"Hobbit River",
-"Abandoned Church",
-"Graveyard North",
-"Dark Forest Cinfras Transition",
-"Cinfras County Mid-Lower",
-"Aldorei Valley Lower",
-"Aldorei’s Waterfall",
-"Efelim South East Plains",
-"Light Forest South Exit",
-"Light Forest West Mid",
-"Light Forest East Mid",
-"Light Forest Canyon",
-"Gromblins Hideout",
-"Dark Forest Village",
-"Corrupted Village",
-"Cinfras County Lower",
-"Gylia Lake North East",
-"Aldorei’s North Exit",
-"Corrupted Impact",
-"Gylia Lake South East",
-"Aldorei Lowlands",
-"Efelim East Plains",
-"Light Forest East Upper",
-"Gylia Lake South West",
-"Abandoned Tower",
-"Light Forest South Entrance",
-"Light Forest West Upper",
-"Path to Cinfras",
-"Arachnida Cave",
-"Cinfras County Upper",
-"Gert Camp",
-"Cinfras Outskirts",
-"Graveyard South",
-"Jitak’s Farm",
-"Aldorei Valley West Entrance",
-"Cinfras’s Small Farm",
-"Durum Isles East",
-"Light Forest North Exit",
-"Guild Hall",
-"Aldorei Valley South Entrance",
-"Mantis Nest",
-"Aldorei Valley Upper",
-"Light Forest East Lower",
-"Aldorei Valley Mid",
-"Banshees Cave",
-"Mesquis Tower",
-"Light Forest Entrance",
-"Efelim Village"
+    "Imperial Gate"
 ]
 let PhiClaim = [
-    "Lost Atoll",
+"Lost Atoll",
 "Volcano Lower",
 "Ragni North Entrance",
 "Ragni Plains",
@@ -330,7 +410,15 @@ let PhiClaim = [
 "Raider's Base Upper",
 "Farmers Valley",
 "Katoa Ranch",
-"Maltic Coast"
+"Maltic Coast",
+"Aldorei Valley Lower",
+"Aldorei Valley Mid",
+"Aldorei Valley Upper",
+"Aldorei’s River",
+"Aldorei’s Waterfall",
+"Aldorei Lowlands",
+"Aldorei Valley South Entrance",
+"Cinfras’s Small Farm",
 ]
 let AvoClaim = [
     "Light Realm East Mid-Upper",
@@ -372,7 +460,7 @@ let AvoClaim = [
 "Light Realm Mushrooms"
 ]
 let HaxClaim = [
-    "Path To The Arch",
+"Path To The Arch",
 "Canyon Upper North West",
 "Aldorei’s Arch",
 "Rodoroc",
@@ -385,7 +473,15 @@ let HaxClaim = [
 "Molten Heights Portal",
 "Canyon Survivor",
 "Canyon Dropoff",
-"Volcanic Slope"
+"Volcanic Slope",
+"Aldorei’s North Exit",
+"Cinfras County Lower",
+"Cinfras County Mid-Lower",
+"Cinfras County Mid-Upper",
+"Cinfras County Upper",
+"Gylia Lake South East",
+"Gylia Lake North East",
+"Gert Camp",
 ]
 let AnoClaim = [
     "Cliff Side of the Lost",
@@ -418,7 +514,7 @@ let AnoClaim = [
 "Lusuco"
 ]
 let ErnClaim = [
-    "Llevigar Farm Plains East",
+"Llevigar Farm Plains East",
 "Llevigar",
 "Swamp West Lower",
 "Swamp East Upper",
@@ -466,7 +562,17 @@ let ErnClaim = [
 "Swamp Mountain Transition Lower",
 "Swamp Mountain Transition Upper",
 "Swamp East Mid",
-"Llevigar Plains West Upper"
+"Llevigar Plains West Upper",
+"Light Forest South Entrance",
+"Light Forest West Lower",
+"Light Forest Entrance",
+"Light Forest West Mid",
+"Light Forest North Entrance",
+"Light Forest West Upper",
+"Efelim South Plains",
+"Efelim South East Plains",
+"Efelim Village",
+"Efelim East Plains"
 ]
 let LxaClaim = [
     "Nivla Forest Exit",
@@ -511,7 +617,19 @@ let EdnClaim = [
 "Plains Coast",
 "Ancient Nemract",
 "Cathedral Harbour",
-"Nether Plains Lower"
+"Nether Plains Lower",
+"Cinfras Entrance",
+"Mesquis Tower",
+"Path to Cinfras",
+"Light Forest East Mid",
+"Light Forest East Upper",
+"Light Forest East Lower",
+"Light Forest Canyon",
+"Light Forest North Exit",
+"Mantis Nest",
+"Light Forest South Exit",
+"Hobbit River",
+"Aldorei Valley West Entrance"
 ]
 let EsiClaim = [
     "Desert East Lower",
@@ -547,7 +665,7 @@ let EsiClaim = [
 ]
 let CdrClaim = []
 let IbtClaim = [
-    "Path To Prison",
+"Path To Prison",
 "Shanjugin’s River",
 "Lexdale",
 "Orc Road",
@@ -581,7 +699,23 @@ let IbtClaim = [
 "Pirate Town",
 "Selchar",
 "Bucie South West",
-"Black Camp"
+"Black Camp",
+"Gylia Lake North West",
+"Abandoned Church",
+"Graveyard North",
+"Dark Forest Cinfras Transition",
+"Gromblins Hideout",
+"Dark Forest Village",
+"Corrupted Village",
+"Corrupted Impact",
+"Gylia Lake South West",
+"Abandoned Tower",
+"Arachnida Cave",
+"Cinfras Outskirts",
+"Graveyard South",
+"Jitak’s Farm",
+"Durum Isles East",
+"Banshees Cave"
 ]
 let IlqClaim = [
     "Mage Island"
@@ -589,7 +723,7 @@ let IlqClaim = [
 let FFAList = [
 //Gavel
 "Cinfras", "Hive", "Qira's Battle Room", "Thesead", "Lava Lake", "Lava Lake Bridge",
-"Molten Reach", "Raider's Base Lower",
+"Molten Reach", "Raider's Base Lower", "Guild Hall",
 //Wynn
 "Detlas", "Emerald Trail", "Bob's Tomb", "Battle Tower", "Herb Cave", "Temple of Legends",
 //Silent Expanse
@@ -687,6 +821,9 @@ let xmlhttp = new XMLHttpRequest();
                                 }else if(CdrClaim.indexOf(property) != -1){
                                     missingTerrsAlly += `- [Cdr] ${property} (${resText.territories[property].guild}) \n`
                                     notOwnedAlly += 1; 
+                                }else if(ErnClaim.indexOf(property) != -1){
+                                    missingTerrsAlly += `- [ERN] ${property} (${resText.territories[property].guild}) \n`
+                                    notOwnedAlly += 1;
                                 }
                         }
                 }
@@ -845,11 +982,6 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
             }
         }
-
-    /* if(cmd == "guildtrack" && args[0] == "add"){
-        await message.channel.send(getGuild(args.slice(3)));
-    }
-  */ 
 });
 
 client.on("voiceStateUpdate", () =>{

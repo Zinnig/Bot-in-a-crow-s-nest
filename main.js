@@ -158,7 +158,7 @@ client.on("message", async message => {
         };
              
             
-    };  */
+    };  */ 
    
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
 "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 

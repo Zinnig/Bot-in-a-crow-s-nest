@@ -247,13 +247,15 @@ let allyList = [
     "Caeruleum Order",
     //Ice Blue Team
     "IceBlue Team",
-    //**Cooperating */
+    //*Cooperating */
     "House of Sentinels",
     "Seekers of Arx",
     "The Simple Ones",
     "The Turtle Society",
     //**NEUTRAL */
-    "Vindicator"
+    "Vindicator",
+    //**OTHER ALLIES **/
+    "Kangronomicon"
 ]
 let allyListTags = [
         /**ARTEMIS */
@@ -343,7 +345,9 @@ let allyListTags = [
     "ILQ",
     "KLL",
     //NEUTRAL
-    "VMZ"
+    "VMZ",
+    //Other allies
+    "Fuq"
 ]
 let FoxClaim = [
    "Cinfras Thanos Transition", 
@@ -979,7 +983,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(Hax)/gi)){
                 message.channel.send("Hax has the following subguilds: \n- [vpe] vape god \n- [KFF] Kingdom Furries \n- [Hux] HeckForums \n- [GJJ] Bruh Moment")
             }else if(args[0].match(/(LXA)/gi)){
-                message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club")
+                message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club \n- [GnH] Golden Hour")
             }else if(args[0].match(/(PUN)/gi)){
                 message.channel.send("PUN has the following subguilds: \n- [pun] Pirates United \n- [Prr] Meow \n- [PiD] Pirates Divided")
             }else if(args[0].match(/(Phi)/gi)){

@@ -60,7 +60,7 @@ client.on("message", async message => {
         let resText2 = "";
         let gxp10 = ""
         let sent4 = false;
-    if(cmd == "gxpleaderboard"){
+    /* if(cmd == "gxpleaderboard"){
         console.log("A")
             let xml = new XMLHttpRequest();
             xml.open("GET", "https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe={}");
@@ -158,7 +158,7 @@ client.on("message", async message => {
         };
              
             
-    }; 
+    };  */
    
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
 "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 

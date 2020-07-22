@@ -51,7 +51,7 @@ client.on("message", async message => {
             .setColor('#ffa20d')
             .setTitle('The pirated command list')
             .setDescription('This list has been discovered using a telescope!')
-            .addField('Text Commands', '- %help \n - %ping \n - %war \n - %subs GuildTagHere')  
+            .addField('Text Commands', '- %help \n - %ping \n - %war \n - %subs GuildTagHere \n - %caniattack GuildTagHere')  
             message.author.send(commandEmbed)
         }
         var mostGxpList = [];

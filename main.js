@@ -60,7 +60,7 @@ client.on("message", async message => {
         let resText2 = "";
         let gxp10 = ""
         let sent4 = false;
-    /* if(cmd == "gxpleaderboard"){
+    if(cmd == "gxpleaderboard"){
         console.log("A")
             let xml = new XMLHttpRequest();
             xml.open("GET", "https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe={}");
@@ -73,6 +73,7 @@ client.on("message", async message => {
                 for(i=0;i<100;i++){
                     xml1 = new XMLHttpRequest();
                     xml1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + resText1["data"][i]["name"]);
+                    xml1.send();
                     xml1.onreadystatechange = function(){
                             if(xml1.status == 200){
                                 try{
@@ -100,31 +101,30 @@ client.on("message", async message => {
                                         mostGxpListMult.sort(function(a, b){
                                             return b[2] - a[2];
                                         });
-                                    if(i == 99){
-                                        console.log("after for")
-                                        completed = [...new Set(alreadyrequested)];
-                                    
+                                        
+                                }catch(e){}
+                                completed = [...new Set(alreadyrequested)];
+                                console.log("already:" + alreadyrequested.length)
+                                console.log(completed.length)
+                                if(alreadyrequested.length >= 200){
+                                    console.log("after for")
+                                    console.log(mostGxpListMult)
                                         if(sent4 == false){
-                                            for (x = 0; x < 100; x++){
+                                            for (x = 0; x < 50; x++){
                                                 console.log("a")
                                                 gxp10 += (x+1) + ". " +  mostGxpListMult[x][0]+ "[" + mostGxpListMult[x][1] + "]" +": "+ formatNumber(mostGxpList[x]) + "\n";
                                                 }
-                                                gxpLeaderboardEmbed = new Discord.RichEmbed()
-                                                    .setColor('#2aeb5e')
-                                                    .setTitle("Guild Experience - Leaderboard")
-                                                    .addField("(not 100% accurate.)", gxp10)
-                                                    message.channel.send(gxpLeaderboardEmbed)
-                                                    message.channel.send("owo")
-                                                    sent4 = true;
-                                        }
-                                    }
-                                }catch(e){}
-                                    
+                                                message.channel.send("**Gxp-Leaderboard (not 100% accurate)**")
+                                                message.channel.send(gxp)
+                                                message.channel.send("owo")
+                                                sent4 = true;
+                                                            }
+                        }    
                             
-                          
+                    }  
                     
-            }
-            xml1.send();   
+            
+               
                 
             }
                 }
@@ -158,7 +158,7 @@ client.on("message", async message => {
         };
              
             
-    };  */
+    }; 
    
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
 "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 

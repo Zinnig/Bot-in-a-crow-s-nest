@@ -54,18 +54,18 @@ client.on("message", async message => {
             .addField('Text Commands', '- %help \n - %ping \n - %war \n - %subs GuildTagHere')  
             message.author.send(commandEmbed)
         }
-   /*      var mostGxpList = [];
+        var mostGxpList = [];
         var mostGxpListMult = [];
         let resText1 = "";
         let resText2 = "";
         let gxp10 = ""
         let sent4 = false;
-    if(cmd == "gxpleaderboard"){/* 
+    /* if(cmd == "gxpleaderboard"){
         console.log("A")
             let xml = new XMLHttpRequest();
             xml.open("GET", "https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe={}");
             xml.onreadystatechange = function(){
-            if(this.status == 200){
+            if(xml.status == 200){
                 try{
                 resText1 = JSON.parse(this.responseText);
                 let xml1;
@@ -74,7 +74,7 @@ client.on("message", async message => {
                     xml1 = new XMLHttpRequest();
                     xml1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + resText1["data"][i]["name"]);
                     xml1.onreadystatechange = function(){
-                            if(this.status == 200){
+                            if(xml1.status == 200){
                                 try{
                                         resText2 = JSON.parse(this.responseText);
                                         alreadyrequested.push(i)
@@ -158,8 +158,8 @@ client.on("message", async message => {
         };
              
             
-    }; 
-    */
+    };  */
+   
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
 "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 
 "Corkus Forest South", "Corkus Mountain", "Corkus Outskirts", "Corkus Sea Cove", "Corkus Sea Port", 
@@ -221,7 +221,7 @@ let allyList = [
     "Seekers of Arx",
     "dinkle winks",
     "The Tempest",
-    "Ice Babies",
+    "IceBabies",
     "Exorcism",
    //Emorians
     "Emorians",
@@ -230,6 +230,7 @@ let allyList = [
    //Lux Nova
     "Lux Nova",
     "Scat Club",
+    "Golden Hour",
    //Eden
     "Eden",
     "Heresy",
@@ -316,10 +317,6 @@ let allyListTags = [
     "ERN",
     "uxu",
     "VCT",
-    //Caeruleum Order
-    "Cdr",
-    //Empire of Sindria
-    "ESI",
     //Lux Nova
     "LXA",
     "LAX",
@@ -334,6 +331,12 @@ let allyListTags = [
     "GSB",
     "TBE",
     "IBF",
+    //Empire of Sindria
+    "ESI",
+    //Caeruleum Order
+    "Cdr",
+    //Ice Blue Team
+    "IBT",
     //**Cooperating**
     "Snt",
     "ARX",
@@ -776,8 +779,13 @@ let xmlhttp = new XMLHttpRequest();
                    if(resText.territories[property].guild != "Paladins United"){
                        regex = new RegExp(property, "g")
                        if(missingTerrs.search(regex) == -1){
-                        missingTerrs += `- ${property} (${resText.territories[property].guild}) \n`
-                        notOwned += 1;
+                           if(allyList.indexOf(resText.territories[property].guild) == -1){
+                                missingTerrs += `- ${property} (${resText.territories[property].guild}) \n`;
+                                notOwned += 1;
+                            }else if(allyList.indexOf(resText.territories[property].guild) != -1){
+                                missingTerrs += `- [Ally] ${property} (${resText.territories[property].guild}) \n`;
+                                notOwned += 1;
+                            }
                        }
                     }
 
@@ -980,6 +988,16 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send("ANO has the following subguilds: \n- [Ius] Illustratus \n- [ARX] Seekers of Arx \n- [zeb] dinkle winks \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism")
             }else{
                 message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
+            }
+        }
+        if(cmd == "caniattack"){
+            var upperCaseNames = allyListTags.map(function(value) {
+                return value.toUpperCase();
+              });
+            if(upperCaseNames.indexOf(args[0].toUpperCase()) == -1){
+                message.channel.send("You can attack this guild, it's not in Artemis/is no subguild of a guild in Artemis.");
+            }else if(upperCaseNames.indexOf(args[0].toUpperCase()) != -1){
+                message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
 });

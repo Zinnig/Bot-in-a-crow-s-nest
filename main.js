@@ -47,20 +47,36 @@ client.on("message", async message => {
         msg.edit(`Latency is ${Math.floor(msg.createdAt - message.createdAt)}ms \nAPI Latency is ${Math.round(client.ping)}ms`)
     }
     if(cmd == "help"){
+        message.channel.send(`*Sliding into your dms...*`)
         const commandEmbed = new Discord.RichEmbed()
             .setColor('#ffa20d')
             .setTitle('The pirated command list')
             .setDescription('This list has been discovered using a telescope!')
-            .addField('Text Commands', '- %help \n - %ping \n - %war \n - %subs GuildTagHere \n - %caniattack GuildTagHere')  
+            .addField('Text Commands', `
+            **- %help **
+                Gives you this fancy list of commands.
+            **- %ping **
+                Returns the Ping to the API/to the bot/host.
+            **- %war **
+                Gives you a list of territories you can attack. They're sorted by priority.
+            **- %subs GuildTagHere **
+                Lists the sub guilds of the selected guild (which is in Artemis)
+            **- %caniattack GuildTagHere **
+                Tells you if you should attack a certain guild.
+            ` )  
+                
             message.author.send(commandEmbed)
         }
+        /* 
+        if(cmd == "gxpleaderboard"){
+    
         var mostGxpList = [];
         var mostGxpListMult = [];
         let resText1 = "";
         let resText2 = "";
         let gxp10 = ""
         let sent4 = false;
-    /* if(cmd == "gxpleaderboard"){
+    
         console.log("A")
             let xml = new XMLHttpRequest();
             xml.open("GET", "https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe={}");
@@ -158,7 +174,7 @@ client.on("message", async message => {
         };
              
             
-    };  */ 
+    };  */  
    
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
 "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 

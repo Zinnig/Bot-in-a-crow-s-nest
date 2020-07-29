@@ -1003,7 +1003,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(LXA)/gi)){
                 message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club \n- [GnH] Golden Hour")
             }else if(args[0].match(/(PUN)/gi)){
-                message.channel.send("PUN has the following subguilds: \n- [pun] Pirates United \n- [Prr] Meow \n- [PiD] Pirates Divided \n - [RGX] Rat Gang")
+                message.channel.send("PUN has the following subguilds: \n- [pun] Pirates United \n- [Prr] Meow \n- [PiD] Pirates Divided \n- [RGX] Rat Gang")
             }else if(args[0].match(/(Phi)/gi)){
                 message.channel.send("Phi has the following subguilds: \n- [FUU] Surprise \n- [UUF] Phantom Menace \n- [FFi] Fraternal Fire \n- [GrE] Grand Explorers")
             }else if(args[0].match(/(ANO)/gi)){

@@ -67,7 +67,7 @@ client.on("message", async message => {
                 
             message.author.send(commandEmbed)
         }
-        /* 
+        
         if(cmd == "gxpleaderboard"){
     
         var mostGxpList = [];
@@ -122,16 +122,16 @@ client.on("message", async message => {
                                 completed = [...new Set(alreadyrequested)];
                                 console.log("already:" + alreadyrequested.length)
                                 console.log(completed.length)
-                                if(alreadyrequested.length >= 200){
+                                if(alreadyrequested.length >= 1){
                                     console.log("after for")
                                     console.log(mostGxpListMult)
                                         if(sent4 == false){
-                                            for (x = 0; x < 50; x++){
+                                            for (x = 0; x < 25; x++){
                                                 console.log("a")
                                                 gxp10 += (x+1) + ". " +  mostGxpListMult[x][0]+ "[" + mostGxpListMult[x][1] + "]" +": "+ formatNumber(mostGxpList[x]) + "\n";
                                                 }
                                                 message.channel.send("**Gxp-Leaderboard (not 100% accurate)**")
-                                                message.channel.send(gxp)
+                                                message.channel.send(gxp10)
                                                 message.channel.send("owo")
                                                 sent4 = true;
                                                             }
@@ -174,7 +174,7 @@ client.on("message", async message => {
         };
              
             
-    };  */  
+    };    
    
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
 "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North", 
@@ -231,6 +231,7 @@ let allyList = [
     "Pirates United",
     "Meow",
     "Pirates Divided",
+    "Rat Gang",
    //Titans Valor
     "Titans Valor",
     "Illustratus",
@@ -323,6 +324,7 @@ let allyListTags = [
     "pun",
     "Prr",
     "PiD",
+    "RGX",
     //Titans Valor
     "ANO",
     "Ius",
@@ -1001,7 +1003,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(LXA)/gi)){
                 message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club \n- [GnH] Golden Hour")
             }else if(args[0].match(/(PUN)/gi)){
-                message.channel.send("PUN has the following subguilds: \n- [pun] Pirates United \n- [Prr] Meow \n- [PiD] Pirates Divided")
+                message.channel.send("PUN has the following subguilds: \n- [pun] Pirates United \n- [Prr] Meow \n- [PiD] Pirates Divided \n - [RGX] Rat Gang")
             }else if(args[0].match(/(Phi)/gi)){
                 message.channel.send("Phi has the following subguilds: \n- [FUU] Surprise \n- [UUF] Phantom Menace \n- [FFi] Fraternal Fire \n- [GrE] Grand Explorers")
             }else if(args[0].match(/(ANO)/gi)){

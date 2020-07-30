@@ -244,6 +244,7 @@ let allyList = [
     "Emorians",
     "Audux",
     "Mute Gang",
+    "Toemorians",
    //Lux Nova
     "Lux Nova",
     "Scat Club",
@@ -337,6 +338,7 @@ let allyListTags = [
     "ERN",
     "uxu",
     "VCT",
+    "VHT",
     //Lux Nova
     "LXA",
     "LAX",
@@ -1008,6 +1010,8 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send("Phi has the following subguilds: \n- [FUU] Surprise \n- [UUF] Phantom Menace \n- [FFi] Fraternal Fire \n- [GrE] Grand Explorers")
             }else if(args[0].match(/(ANO)/gi)){
                 message.channel.send("ANO has the following subguilds: \n- [Ius] Illustratus \n- [ARX] Seekers of Arx \n- [zeb] dinkle winks \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism")
+            }else if(args[0].match(/(ERN)/gi)){
+                message.channel.send("ERN has the following subguilds: \n- [uxu] Adux \n- [VCT] Mute Gang \n- [VHT] Toemorians");
             }else{
                 message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
             }

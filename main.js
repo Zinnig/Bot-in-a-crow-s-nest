@@ -261,7 +261,6 @@ let allyList = [
     "House of Sentinels",
     "Seekers of Arx",
     "The Simple Ones",
-    "The Turtle Society",
     //**NEUTRAL */
     "Vindicator",
     //**OTHER ALLIES **/
@@ -357,7 +356,6 @@ let allyListTags = [
     "Snt",
     "ARX",
     "ILQ",
-    "KLL",
     //NEUTRAL
     "VMZ",
     //Other allies

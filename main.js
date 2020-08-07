@@ -67,8 +67,19 @@ client.on("message", async message => {
                 
             message.author.send(commandEmbed)
         }
-        
-        /* if(cmd == "gxpleaderboard"){
+        function index(contributed, arr) {
+            for (var i=0; i<arr.length; i++) {
+            for (var j=0; j<arr[i].length; j++) {
+            if (arr[i][j] == contributed) { return i; }
+            }
+            }
+            return -1;
+        }
+        function formatNumber(num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+          }
+       /*  if(cmd == "gxpleaderboard"){
+            console.log("a")
             var mostGxpList = [];
             var mostGxpListMult = [];
             let resText1 = "";
@@ -85,19 +96,9 @@ client.on("message", async message => {
         }
         xml.send();
         }
-            function index(contributed, arr) {
-                for (var i=0; i<arr.length; i++) {
-                for (var j=0; j<arr[i].length; j++) {
-                if (arr[i][j] == contributed) { return i; }
-                }
-                }
-                return -1;
-            }
-            function formatNumber(num) {
-                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-              }
-            let gxp10 = ""
-            function getGxp(guild){
+            
+            let gxp10;
+            function getGxp(guild, c){
                 try{
                 for(i=0;i<guild["members"].length;i++){
                     contributedMember = parseInt(guild.members[i].contributed)
@@ -119,39 +120,50 @@ client.on("message", async message => {
                 mostGxpListMult.sort(function(a, b){
                     return b[2] - a[2];
                 });
-            }
+                
+                    
+                    gxp10 = "\ ";
+                    for (i = 0; i < 10; i++){
+                         gxp10 += (i+1) + ". " +  mostGxpListMult[i][0]+ "[" + mostGxpListMult[i][1] + "]" +": "+ formatNumber(mostGxpList[i]) + "\n" ;
+                    }
+                    if(c.length == 100){
+                        console.log(mostGxpListMult);
+                        const gxpEmbed = new Discord.RichEmbed()
+                        .setColor('#7970F8')
+                        .setTitle("The Guild-XP Top 100")
+                        .addField("(not really accurate, because it's only checking the top 100 guilds)", gxp10)
+                        message.channel.send(gxpEmbed)
+                    }   
+    };
+    let already = false;
             let alreadyrequested = []
             function putInList(data){
+                if(already == false){
+                    already = true
                 let xml1
-                
                 for(i=0;i<100;i++){
+                     alreadyrequested.push(i)
                         xml1 = new XMLHttpRequest();
                         xml1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + data["data"][i]["name"]);
                         xml1.onreadystatechange = function(){
-                                if(this.status == 200){
+                                if(this.status == 200 && this.readyState == 4){
                                     try{
                                         resText2 = JSON.parse(this.responseText);
-                                        alreadyrequested.push(i)
-                                        getGxp(resText2); 
-                                        gxp10 = ""
-                for (i = 0; i < 100; i++){
-                    gxp10 += (i+1) + ". " +  mostGxpListMult[i][0]+ "[" + mostGxpListMult[i][1] + "]" +": "+ formatNumber(mostGxpList[i]) + "\n" ;
-                }
-                message.channel.send(gxp10);    
-                                        
-                                    }catch(e){}
-                                    
-                                    
-                                
+                                        getGxp(resText2, alreadyrequested); 
+                                    }catch(e){} 
                         }
                         
                 }
                 xml1.send();      
-                }};
-               
+                }
+                
+            }
+        } */
+            
                 
                 
-                 */
+                
+                
                
    
     let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
@@ -243,6 +255,8 @@ let allyList = [
     "Caeruleum Order",
     //Ice Blue Team
     "IceBlue Team",
+    //The Aquarium
+    "The Aquarium",
     //*Cooperating */
     "House of Sentinels",
     "Seekers of Arx",
@@ -337,6 +351,8 @@ let allyListTags = [
     "Cdr",
     //Ice Blue Team
     "IBT",
+    //The Aquarium
+    "TAq",
     //**Cooperating**
     "Snt",
     "ARX",

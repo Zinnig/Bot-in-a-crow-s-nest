@@ -222,6 +222,7 @@ let allyList = [
     "Meow",
     "Pirates Divided",
     "Rat Gang",
+    "PaladinForums",
    //Titans Valor
     "Titans Valor",
     "Illustratus",
@@ -317,6 +318,7 @@ let allyListTags = [
     "Prr",
     "PiD",
     "RGX",
+    "PAF",
     //Titans Valor
     "ANO",
     "Ius",
@@ -687,38 +689,26 @@ let IbtClaim = [
 "Path To Prison",
 "Shanjugin’s River",
 "Lexdale",
-"Orc Road",
 "Icy Island",
 "Dead Island South West",
 "Dead Island South East",
 "Skiens Island",
-"Bucie North West",
-"Red Camp",
 "Regular Island",
 "Maro Peaks",
 "Dead Island North East",
 "Half Moon Island",
-"Meteor Crater",
-"Llevigar Farm",
-"Pre-Light Forest Transition",
-"Orc Lake",
 "Black Magic",
 "Nodguj Nation",
 "Dujgon Nation",
 "The Bear Zoo",
-"Bucie North East",
 "Corrupted Hand",
-"Green Camp",
 "Dead Island North West",
 "Rooster Island",
-"Bucie South East",
 "Lexdales Prison",
 "Santa's Hideout",
 "Zhight Island",
 "Pirate Town",
 "Selchar",
-"Bucie South West",
-"Black Camp",
 "Gylia Lake North West",
 "Abandoned Church",
 "Graveyard North",
@@ -738,6 +728,20 @@ let IbtClaim = [
 ]
 let IlqClaim = [
     "Mage Island"
+]
+let TAqClaim = [
+    "Green Camp",
+    "Meteor Crater",
+    "Bucie North West",
+    "Bucie North East",
+    "Orc Lake",
+    "Black Camp",
+    "Bucie South West",
+    "Bucie South East",
+    "Orc Road",
+    "Red Camp",
+    "Llevigar Farm",
+    "Pre-Light Forest Transition"
 ]
 let FFAList = [
 //Gavel
@@ -848,7 +852,11 @@ let xmlhttp = new XMLHttpRequest();
                                 }else if(ErnClaim.indexOf(property) != -1){
                                     missingTerrsAlly += `- [ERN] ${property} (${resText.territories[property].guild}) \n`
                                     notOwnedAlly += 1;
+                                }else if(TAqClaim.indexOf(property) != -1){
+                                    missingTerrsAlly += `- [TAq] ${property} (${resText.territories[property].guild}) \n`
+                                    notOwnedAlly += 1;
                                 }
+
                         }
                 }
                     

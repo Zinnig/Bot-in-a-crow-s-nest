@@ -252,8 +252,6 @@ let allyList = [
     "IceBlue Fantasy",
     //Empire of Sindria
     "Empire of Sindria",
-    //Caeruleum Order
-    "Caeruleum Order",
     //Ice Blue Team
     "IceBlue Team",
     //The Aquarium
@@ -348,8 +346,6 @@ let allyListTags = [
     "IBF",
     //Empire of Sindria
     "ESI",
-    //Caeruleum Order
-    "Cdr",
     //Ice Blue Team
     "IBT",
     //The Aquarium
@@ -684,7 +680,6 @@ let EsiClaim = [
 "Abandoned Pass",
 "Ternaves Plains Upper"
 ]
-let CdrClaim = []
 let IbtClaim = [
 "Path To Prison",
 "Shanjugin’s River",
@@ -845,9 +840,6 @@ let xmlhttp = new XMLHttpRequest();
                                     notOwnedAlly += 1; 
                                 }else if(IlqClaim.indexOf(property) != -1){
                                     missingTerrsAlly += `- [ILQ] ${property} (${resText.territories[property].guild}) \n`
-                                    notOwnedAlly += 1; 
-                                }else if(CdrClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Cdr] ${property} (${resText.territories[property].guild}) \n`
                                     notOwnedAlly += 1; 
                                 }else if(ErnClaim.indexOf(property) != -1){
                                     missingTerrsAlly += `- [ERN] ${property} (${resText.territories[property].guild}) \n`

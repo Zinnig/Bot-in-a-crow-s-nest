@@ -196,12 +196,6 @@ let allyList = [
     "Germany FTW",
     "Squad Zero",
     "jerf",
-   //Phantom Hearts
-    "Phantom Hearts",
-    "Surprise",
-    "Phantom Menace",
-    "Fraternal Fire",
-    "Grand Explorers",
    //Avicia
     "Avicia",
     "Invicta",
@@ -290,12 +284,6 @@ let allyListTags = [
     "BKP",
     "SdZ",
     "jrf",
-    //Phantom Hearts
-    "Phi",
-    "FUU",
-    "UUF",
-    "FFi",
-    "GrE",
     //Avicia
     "AVO",
     "IVA",
@@ -385,7 +373,6 @@ let FoxClaim = [
 "Canyon Entrance Waterfall", 
 "Canyon Valley South", 
 "Wizard Tower North", 
-"Durum Isles Upper", 
 "Burning Farm", 
 "Canyon Path North West", 
 "Canyon Waterfall Mid North", 
@@ -415,28 +402,7 @@ let FoxClaim = [
 let ImpClaim = [
     "Imperial Gate"
 ]
-let PhiClaim = [
-"Lost Atoll",
-"Volcano Lower",
-"Ragni North Entrance",
-"Ragni Plains",
-"Ragni North Suburbs",
-"Coastal Trail",
-"Volcano Upper",
-"Maltic",
-"Raider's Base Upper",
-"Farmers Valley",
-"Katoa Ranch",
-"Maltic Coast",
-"Aldorei Valley Lower",
-"Aldorei Valley Mid",
-"Aldorei Valley Upper",
-"Aldorei’s River",
-"Aldorei’s Waterfall",
-"Aldorei Lowlands",
-"Aldorei Valley South Entrance",
-"Cinfras’s Small Farm",
-]
+
 let AvoClaim = [
     "Light Realm East Mid-Upper",
 "Orphion's Seal Upper",
@@ -474,7 +440,8 @@ let AvoClaim = [
 "Angry Village",
 "Sky Falls",
 "Nesaak Transition",
-"Light Realm Mushrooms"
+"Light Realm Mushrooms",
+"Raider's Base Upper",
 ]
 let HaxClaim = [
 "Path To The Arch",
@@ -499,6 +466,11 @@ let HaxClaim = [
 "Gylia Lake South East",
 "Gylia Lake North East",
 "Gert Camp",
+"Aldorei Valley South Entrance",
+"Cinfras’s Small Farm",
+"Gylia Lake North West",
+"Gylia Lake South West",
+"Jitak’s Farm",
 ]
 let AnoClaim = [
     "Cliff Side of the Lost",
@@ -589,7 +561,8 @@ let ErnClaim = [
 "Efelim South Plains",
 "Efelim South East Plains",
 "Efelim Village",
-"Efelim East Plains"
+"Efelim East Plains",
+"Durum Isles Upper", 
 ]
 let LxaClaim = [
     "Nivla Forest Exit",
@@ -614,7 +587,15 @@ let LxaClaim = [
 "Ragni Main Entrance",
 "Nivla Forest",
 "Abandoned Farm",
-"Ragni"
+"Ragni",
+"Ragni North Entrance",
+"Ragni Plains",
+"Ragni North Suburbs",
+"Coastal Trail",
+"Maltic",
+"Farmers Valley",
+"Katoa Ranch",
+"Maltic Coast",
 ]
 let EdnClaim = [
     "Nemract Road",
@@ -636,7 +617,6 @@ let EdnClaim = [
 "Cathedral Harbour",
 "Nether Plains Lower",
 "Cinfras Entrance",
-"Mesquis Tower",
 "Path to Cinfras",
 "Light Forest East Mid",
 "Light Forest East Upper",
@@ -646,7 +626,14 @@ let EdnClaim = [
 "Mantis Nest",
 "Light Forest South Exit",
 "Hobbit River",
-"Aldorei Valley West Entrance"
+"Aldorei Valley West Entrance",
+"Aldorei Valley Lower",
+"Aldorei Valley Mid",
+"Aldorei Valley Upper",
+"Aldorei’s River",
+"Aldorei’s Waterfall",
+"Aldorei Lowlands",
+
 ]
 let EsiClaim = [
     "Desert East Lower",
@@ -685,26 +672,22 @@ let IbtClaim = [
 "Shanjugin’s River",
 "Lexdale",
 "Icy Island",
-"Dead Island South West",
-"Dead Island South East",
 "Skiens Island",
 "Regular Island",
 "Maro Peaks",
-"Dead Island North East",
 "Half Moon Island",
 "Black Magic",
 "Nodguj Nation",
 "Dujgon Nation",
 "The Bear Zoo",
 "Corrupted Hand",
-"Dead Island North West",
 "Rooster Island",
 "Lexdales Prison",
 "Santa's Hideout",
 "Zhight Island",
 "Pirate Town",
 "Selchar",
-"Gylia Lake North West",
+
 "Abandoned Church",
 "Graveyard North",
 "Dark Forest Cinfras Transition",
@@ -712,14 +695,16 @@ let IbtClaim = [
 "Dark Forest Village",
 "Corrupted Village",
 "Corrupted Impact",
-"Gylia Lake South West",
 "Abandoned Tower",
 "Arachnida Cave",
 "Cinfras Outskirts",
 "Graveyard South",
-"Jitak’s Farm",
 "Durum Isles East",
-"Banshees Cave"
+"Banshees Cave",
+"Volcano Lower",
+"Volcano Upper",
+"Lost Atoll",
+"Mesquis Tower",
 ]
 let IlqClaim = [
     "Mage Island"
@@ -736,7 +721,11 @@ let TAqClaim = [
     "Orc Road",
     "Red Camp",
     "Llevigar Farm",
-    "Pre-Light Forest Transition"
+    "Pre-Light Forest Transition",
+    "Dead Island South West",
+    "Dead Island South East",
+    "Dead Island North East",
+    "Dead Island North West",
 ]
 let FFAList = [
 //Gavel
@@ -834,9 +823,6 @@ let xmlhttp = new XMLHttpRequest();
                                     notOwnedAlly += 1; 
                                 }else if(EdnClaim.indexOf(property) != -1){
                                     missingTerrsAlly += `- [EDN] ${property} (${resText.territories[property].guild}) \n`
-                                    notOwnedAlly += 1; 
-                                }else if(PhiClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Phi] ${property} (${resText.territories[property].guild}) \n`
                                     notOwnedAlly += 1; 
                                 }else if(IlqClaim.indexOf(property) != -1){
                                     missingTerrsAlly += `- [ILQ] ${property} (${resText.territories[property].guild}) \n`
@@ -998,8 +984,6 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club \n- [GnH] Golden Hour")
             }else if(args[0].match(/(PUN)/gi)){
                 message.channel.send("PUN has the following subguilds: \n- [pun] Pirates United \n- [Prr] Meow \n- [PiD] Pirates Divided \n- [RGX] Rat Gang \n- [PAF] PaladinForums")
-            }else if(args[0].match(/(Phi)/gi)){
-                message.channel.send("Phi has the following subguilds: \n- [FUU] Surprise \n- [UUF] Phantom Menace \n- [FFi] Fraternal Fire \n- [GrE] Grand Explorers")
             }else if(args[0].match(/(ANO)/gi)){
                 message.channel.send("ANO has the following subguilds: \n- [Ius] Illustratus \n- [ARX] Seekers of Arx \n- [zeb] dinkle winks \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism")
             }else if(args[0].match(/(ERN)/gi)){

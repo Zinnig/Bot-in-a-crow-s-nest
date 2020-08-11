@@ -442,6 +442,14 @@ let AvoClaim = [
 "Nesaak Transition",
 "Light Realm Mushrooms",
 "Raider's Base Upper",
+"Detlas Trail East Plains",
+"Detlas Trail West Plains",
+"Detlas Far Suburbs",
+"Detlas Suburbs",
+"Detlas Close Suburbs",
+"Nether Plains Upper",
+"Corrupted Road",
+"Nether Gate"
 ]
 let HaxClaim = [
 "Path To The Arch",
@@ -598,23 +606,9 @@ let LxaClaim = [
 "Maltic Coast",
 ]
 let EdnClaim = [
-    "Nemract Road",
-"Nether Gate",
-"Detlas Trail West Plains",
-"Nemract Plains West",
-"Corrupted Road",
-"Nemract Town",
-"Detlas Close Suburbs",
-"Detlas Trail East Plains",
-"Nemract Plains East",
-"Detlas Far Suburbs",
-"Detlas Suburbs",
-"Mt. Wynn",
-"Nether Plains Upper",
-"Nemract Cathedral",
-"Plains Coast",
-"Ancient Nemract",
-"Cathedral Harbour",
+
+
+
 "Nether Plains Lower",
 "Cinfras Entrance",
 "Path to Cinfras",
@@ -636,7 +630,7 @@ let EdnClaim = [
 
 ]
 let EsiClaim = [
-    "Desert East Lower",
+"Desert East Lower",
 "Desert West Upper",
 "Mining Base Upper",
 "Bremminglar",
@@ -665,7 +659,16 @@ let EsiClaim = [
 "Savannah West Upper",
 "Lion Lair",
 "Abandoned Pass",
-"Ternaves Plains Upper"
+"Ternaves Plains Upper",
+"Plains Coast",
+"Nemract Road",
+"Nemract Plains West",
+"Nemract Town",
+"Nemract Plains East",
+"Ancient Nemract",
+"Mt. Wynn",
+"Nemract Cathedral",
+"Cathedral Harbour",
 ]
 let IbtClaim = [
 "Path To Prison",

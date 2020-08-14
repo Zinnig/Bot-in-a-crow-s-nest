@@ -238,7 +238,6 @@ let allyList = [
     "Eden",
     "Heresy",
    //Blue Nations United
-    "Blue Nations United",
     "Hyacinthum",
     "FortniteKSI",
     "BlueStoneGroup",
@@ -326,7 +325,6 @@ let allyListTags = [
     "EDN",
     "Rsy",
     //Blue Nations United
-    "BNU",
     "HCM",
     "XDF",
     "GSB",
@@ -777,7 +775,7 @@ let xmlhttp = new XMLHttpRequest();
             try{
                 resText = JSON.parse(this.responseText);
             }catch(e){
-                
+                //empty
             }
 
             for(property in resText.territories){
@@ -965,9 +963,11 @@ let xmlhttp = new XMLHttpRequest();
                 sent3 = true
     }
     }
-        }catch(e){}
+        }catch(e){
+            //empty
         }
-        };
+        }
+        }
         if(cmd == "subs"){
             if(args[0].match(/(Fox)/gi)){
                 message.channel.send("Fox has the following subguilds: \n- [Omb] Ombra \n- [FNE] Fluorine \n- [LFX] I Corps \n- [PaN] Panic \n- [FuI] Fluffy Unicorns \n- [PxU] Project Ultimatum \n- [Mox] Lunatic \n- [Nih] Ex Nihilo \n- [Oys] Odysseia \n- [HHU] HaHaUnited \n- [RMR] Ram Ranch")
@@ -1022,82 +1022,3 @@ client.on("voiceStateUpdate", () =>{
     }
 }
 });
-
-   
-/* function getGuild(name){
-   guild = name;
-   $.getJSON('https://api.wynncraft.com/public_api.php?action=onlinePlayers', onlinePlayers()).done(function() {
-		console.log('online players request succeeded!');
-    });
-
-}
-playerList = [];
-function onlinePlayers(data){
-    console.log("Start collection");
-	if (!data.message) {
-		$.each(data, function(wc, list){
-			$.each(list, function(num, player){
-				playerList[player] = wc;
-			});
-		});
-	} else {
-		console.log("Error loading online players!");
-		console.log("API message: "+data.message);
-	}
-	playerListComplete = true;
-    console.log("Collection complete");
-    $.getJSON('https://api.wynncraft.com/public_api.php?action=guildStats&command=' + guild, loadStats()).done(function() {
-		console.log('guild stats request succeeded!');
-    
-})};
-function loadStats(guild){
-    var onlinePlayersCount = 0;
-    ranks = {
-        OWNER : [],
-        CHIEF: [],
-        CAPTAIN: [],
-        RECRUITER: [],
-        RECRUIT: []
-    };
-    onlineranks = {
-        OWNER : [],
-        CHIEF: [],
-        CAPTAIN: [],
-        RECRUITER: [],
-        RECRUIT: []
-    };
-    $.each(guild.members, function(num, member){
-        console.log(onlinePlayersCount)
-        rank = member.rank;
-        join_ts = new Date(member.joined).getTime();
-		join_ts--;
-		do {
-			join_ts++;
-		}while(rank in ranks[rank]);
-        ranks[rank][join_ts] = member;
-    });
-    var onlinePlayersString = [];
-    $.each(guild.members, function(rank, member){
-        if (member.name in playerList){
-            rank = member.rank;
-            wc = playerList[member.name];
-            onlinePlayersCount++;
-            join_ts = new Date(member.joined).getTime();
-		    join_ts--;
-		    do {
-			join_ts++;
-		}while(rank in onlineranks[rank]);
-            onlineranks[rank][join_ts] = member;
-            if(onlinePlayersCount > 0){
-                onlinePlayersString.push(
-                    "*",
-                    member.name,
-                    "[" + member.rank + "]",
-                    "is on" + " " + wc,
-                    "\n"
-                    )
-            }
-        }
-});
-        return onlinePlayersString;
-}; */

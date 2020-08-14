@@ -172,91 +172,91 @@ client.on("message", async message => {
 "Durum Isles Center", "Fallen Factory", "Factory Entrance", "Legendary Island", "Southern Outpost", 
 "Statue", "Corkus Abandoned Tower", "Road To Mine", "Ruined Houses", "Phinas Farm", "Lighthouse Plateau"]
 let allyList = [
-    /**ARTEMIS */
-    //Kingdom Foxes
-    "Kingdom Foxes",
-    "Ombra", 
-    "I Corps",
-    "Panic",
-    "Fluffy Unicorns",
-    "Project Ultimatum",
-    "Lunatic",
-    "Ex Nihilo",
-    "Odysseia",
-    "HaHaUnited",
-    "Ram Ranch",
-   //Imperial
-    "Imperial",
-    "Metric",
-    "Minerva",
-    "Terra Steel",
-    "Kolibri",
-    "House of Sentinels",
-    "EPIcFORTNITEgAY",
-    "Germany FTW",
-    "Squad Zero",
-    "jerf",
-   //Avicia
-    "Avicia",
-    "Invicta",
-    "Time for Pizza",
-    "Stud Squad",
-    "Avocados",
-    "Ivory Tusk",
-    "Afishia",
-   //HackForums
-    "HackForums",
-    "vape god",
-    "Kingdom Furries",
-    "HeckForums",
-    "Bruh Moment",
-   //Paladins United
-    "Paladins United",
-    "Pirates United",
-    "Meow",
-    "Pirates Divided",
-    "Rat Gang",
-    "PaladinForums",
-   //Titans Valor
-    "Titans Valor",
-    "Illustratus",
-    "Seekers of Arx",
-    "dinkle winks",
-    "The Tempest",
-    "IceBabies",
-    "Exorcism",
-   //Emorians
-    "Emorians",
-    "Audux",
-    "Mute Gang",
-    "Toemorians",
-   //Lux Nova
-    "Lux Nova",
-    "Scat Club",
-    "Golden Hour",
-   //Eden
-    "Eden",
-    "Heresy",
-   //Blue Nations United
-    "Hyacinthum",
-    "FortniteKSI",
-    "BlueStoneGroup",
-    "Byzantium",
-    "IceBlue Fantasy",
-    //Empire of Sindria
-    "Empire of Sindria",
-    //Ice Blue Team
-    "IceBlue Team",
-    //The Aquarium
-    "The Aquarium",
-    //*Cooperating */
-    "House of Sentinels",
-    "Seekers of Arx",
-    "The Simple Ones",
-    //**NEUTRAL */
-    "Vindicator",
-    //**OTHER ALLIES **/
-    "Kangronomicon"
+/**ARTEMIS */
+//Kingdom Foxes
+"Kingdom Foxes",
+"Ombra", 
+"I Corps",
+"Panic",
+"Fluffy Unicorns",
+"Project Ultimatum",
+"Lunatic",
+"Ex Nihilo",
+"Odysseia",
+"HaHaUnited",
+"Ram Ranch",
+//Imperial
+"Imperial",
+"Metric",
+"Minerva",
+"Terra Steel",
+"Kolibri",
+"House of Sentinels",
+"EPIcFORTNITEgAY",
+"Germany FTW",
+"Squad Zero",
+"jerf",
+//Avicia
+"Avicia",
+"Invicta",
+"Time for Pizza",
+"Stud Squad",
+"Avocados",
+"Ivory Tusk",
+"Afishia",
+//HackForums
+"HackForums",
+"vape god",
+"Kingdom Furries",
+"HeckForums",
+"Bruh Moment",
+//Paladins United
+"Paladins United",
+"Pirates United",
+"Meow",
+"Pirates Divided",
+"Rat Gang",
+"PaladinForums",
+//Titans Valor
+"Titans Valor",
+"Illustratus",
+"Seekers of Arx",
+"dinkle winks",
+"The Tempest",
+"IceBabies",
+"Exorcism",
+//Emorians
+"Emorians",
+"Audux",
+"Mute Gang",
+"Toemorians",
+//Lux Nova
+"Lux Nova",
+"Scat Club",
+"Golden Hour",
+//Eden
+"Eden",
+"Heresy",
+//Blue Nations United
+"Hyacinthum",
+"FortniteKSI",
+"BlueStoneGroup",
+"Byzantium",
+"IceBlue Fantasy",
+//Empire of Sindria
+"Empire of Sindria",
+//Ice Blue Team
+"IceBlue Team",
+//The Aquarium
+"The Aquarium",
+//*Cooperating */
+"House of Sentinels",
+"Seekers of Arx",
+"The Simple Ones",
+//**NEUTRAL */
+"Vindicator",
+//**OTHER ALLIES **/
+"Kangronomicon"
 ]
 let allyListTags = [
         /**ARTEMIS */
@@ -346,7 +346,7 @@ let allyListTags = [
     "Fuq"
 ]
 let FoxClaim = [
-   "Cinfras Thanos Transition", 
+"Cinfras Thanos Transition", 
 "Path To Ozoth’s Spire Mid", 
 "Canyon Path South West", 
 "Canyon Mountain East", 
@@ -402,7 +402,7 @@ let ImpClaim = [
 ]
 
 let AvoClaim = [
-    "Light Realm East Mid-Upper",
+"Light Realm East Mid-Upper",
 "Orphion's Seal Upper",
 "Old Coal Mine",
 "Angel Refuge",
@@ -476,10 +476,10 @@ let HaxClaim = [
 "Cinfras’s Small Farm",
 "Gylia Lake North West",
 "Gylia Lake South West",
-"Jitak’s Farm",
+"Jitak’s Farm"
 ]
 let AnoClaim = [
-    "Cliff Side of the Lost",
+"Cliff Side of the Lost",
 "Kandon Farm",
 "Dernal Jungle Upper",
 "Nesaak Plains Mid North West",
@@ -571,7 +571,7 @@ let ErnClaim = [
 "Durum Isles Upper", 
 ]
 let LxaClaim = [
-    "Nivla Forest Exit",
+"Nivla Forest Exit",
 "Pigmen Ravines Entrance",
 "Time Valley",
 "Road to Time Valley",
@@ -604,9 +604,6 @@ let LxaClaim = [
 "Maltic Coast",
 ]
 let EdnClaim = [
-
-
-
 "Nether Plains Lower",
 "Cinfras Entrance",
 "Path to Cinfras",
@@ -624,8 +621,7 @@ let EdnClaim = [
 "Aldorei Valley Upper",
 "Aldorei’s River",
 "Aldorei’s Waterfall",
-"Aldorei Lowlands",
-
+"Aldorei Lowlands"
 ]
 let EsiClaim = [
 "Desert East Lower",
@@ -666,7 +662,7 @@ let EsiClaim = [
 "Ancient Nemract",
 "Mt. Wynn",
 "Nemract Cathedral",
-"Cathedral Harbour",
+"Cathedral Harbour"
 ]
 let IbtClaim = [
 "Path To Prison",
@@ -688,7 +684,6 @@ let IbtClaim = [
 "Zhight Island",
 "Pirate Town",
 "Selchar",
-
 "Abandoned Church",
 "Graveyard North",
 "Dark Forest Cinfras Transition",
@@ -705,28 +700,28 @@ let IbtClaim = [
 "Volcano Lower",
 "Volcano Upper",
 "Lost Atoll",
-"Mesquis Tower",
+"Mesquis Tower"
 ]
 let IlqClaim = [
     "Mage Island"
 ]
 let TAqClaim = [
-    "Green Camp",
-    "Meteor Crater",
-    "Bucie North West",
-    "Bucie North East",
-    "Orc Lake",
-    "Black Camp",
-    "Bucie South West",
-    "Bucie South East",
-    "Orc Road",
-    "Red Camp",
-    "Llevigar Farm",
-    "Pre-Light Forest Transition",
-    "Dead Island South West",
-    "Dead Island South East",
-    "Dead Island North East",
-    "Dead Island North West",
+"Green Camp",
+"Meteor Crater",
+"Bucie North West",
+"Bucie North East",
+"Orc Lake",
+"Black Camp",
+"Bucie South West",
+"Bucie South East",
+"Orc Road",
+"Red Camp",
+"Llevigar Farm",
+"Pre-Light Forest Transition",
+"Dead Island South West",
+"Dead Island South East",
+"Dead Island North East",
+"Dead Island North West"
 ]
 let FFAList = [
 //Gavel

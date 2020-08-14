@@ -4,7 +4,9 @@
             "Paladins United",
             "Pirates United",
             "Meow",
-            "Pirates Divided"
+            "Pirates Divided",
+            "Rat Gang",
+            "PaladinForums"
         ],
         "Kingdom Foxes":[
             "Kingdom Foxes",
@@ -20,53 +22,47 @@
             "Ram Ranch"
         ],
         "Imperial":[
-            "Imperial" ,
-            "Metric" ,
-            "Minerva" ,
-            "Terra Steel" ,
-            "Kolibri" ,
-            "House of Sentinels" ,
-            "EPIcFORTNITEgAY" ,
-            "Germany FTW" ,
-            "Squad Zero" ,
+            "Imperial",
+            "Metric",
+            "Minerva",
+            "Terra Steel",
+            "Kolibri",
+            "House of Sentinels",
+            "EPIcFORTNITEgAY",
+            "Germany FTW",
+            "Squad Zero",
             "jerf"
         ],
-        "Phantom Hearts":[
-            "Phantom Hearts" ,
-            "Surprise" ,
-            "Phantom Menace" ,
-            "Fraternal Fire" ,
-            "Grand Explorers"
-        ],
         "Avicia":[
-            "Avicia" ,
-            "Invicta" ,
-            "Time for Pizza" ,
-            "Stud Squad" ,
-            "Avocados" ,
+            "Avicia",
+            "Invicta",
+            "Time for Pizza",
+            "Stud Squad",
+            "Avocados",
             "Ivory Tusk",
             "Afishia"
         ],
         "HackForums":[
-            "HackForums" ,
-            "vape god" ,
-            "Kingdom Furries" ,
-            "HeckForums" ,
+            "HackForums",
+            "vape god",
+            "Kingdom Furries",
+            "HeckForums",
             "Bruh Moment"
         ],
         "Titans Valor":[
-            "Titans Valor" ,
-            "Illustratus" ,
-            "Seekers of Arx" ,
-            "dinkle winks" ,
-            "The Tempest" ,
-            "Ice Babies" ,
+            "Titans Valor",
+            "Illustratus",
+            "Seekers of Arx",
+            "dinkle winks",
+            "The Tempest",
+            "IceBabies",
             "Exorcism"
         ],
         "Emorians":[
-            "Emorians" ,
-            "Audux" ,
-            "Mute Gang"
+            "Emorians",
+            "Audux",
+            "Mute Gang",
+            "Toemorians"
         ],
         "Lux Nova":[
             "Lux Nova",
@@ -78,11 +74,10 @@
             "Heresy"
         ],
         "Blue Nations United":[
-            "Blue Nations United" ,
-            "Hyacinthum" ,
-            "FortniteKSI" ,
-            "BlueStoneGroup" ,
-            "Byzantium" ,
+            "Hyacinthum",
+            "FortniteKSI",
+            "BlueStoneGroup",
+            "Byzantium",
             "IceBlue Fantasy"
         ],
         "Empire of Sindria":[
@@ -94,11 +89,13 @@
         "IceBlue Team":[
             "IceBlue Team"
         ],
+        "The Aquarium":[
+            "The Aquarium"
+        ],
         "Cooperating":[
             "House of Sentinels",
             "Seekers of Arx",
-            "The Simple Ones",
-            "The Turtle Society"
+            "The Simple Ones"
         ],
         "Neutral":[
             "Vindicator"
@@ -192,28 +189,6 @@
             "Imperial":[
                 "Imperial Gate"
             ],
-            "Phantom Hearts":[
-                "Lost Atoll",
-                "Volcano Lower",
-                "Ragni North Entrance",
-                "Ragni Plains",
-                "Ragni North Suburbs",
-                "Coastal Trail",
-                "Volcano Upper",
-                "Maltic",
-                "Raider's Base Upper",
-                "Farmers Valley",
-                "Katoa Ranch",
-                "Maltic Coast",
-                "Aldorei Valley Lower",
-                "Aldorei Valley Mid",
-                "Aldorei Valley Upper",
-                "Aldorei’s River",
-                "Aldorei’s Waterfall",
-                "Aldorei Lowlands",
-                "Aldorei Valley South Entrance",
-                "Cinfras’s Small Farm"
-            ],
             "Avicia":[
                 "Light Realm East Mid-Upper",
                 "Orphion's Seal Upper",
@@ -251,7 +226,16 @@
                 "Angry Village",
                 "Sky Falls",
                 "Nesaak Transition",
-                "Light Realm Mushrooms" 
+                "Light Realm Mushrooms",
+                "Raider's Base Upper",
+                "Detlas Trail East Plains",
+                "Detlas Trail West Plains",
+                "Detlas Far Suburbs",
+                "Detlas Suburbs",
+                "Detlas Close Suburbs",
+                "Nether Plains Upper",
+                "Corrupted Road",
+                "Nether Gate"
             ],
             "HackForums":[
                 "Path To The Arch",
@@ -275,7 +259,12 @@
                 "Cinfras County Upper",
                 "Gylia Lake South East",
                 "Gylia Lake North East",
-                "Gert Camp"
+                "Gert Camp",
+                "Aldorei Valley South Entrance",
+                "Cinfras’s Small Farm",
+                "Gylia Lake North West",
+                "Gylia Lake South West",
+                "Jitak’s Farm"
             ],
             "Titans Valor":[
                 "Cliff Side of the Lost",
@@ -357,7 +346,6 @@
                 "Swamp Mountain Transition Upper",
                 "Swamp East Mid",
                 "Llevigar Plains West Upper",
-                "Llevigar Plains West Upper",
                 "Light Forest South Entrance",
                 "Light Forest West Lower",
                 "Light Forest Entrance",
@@ -367,7 +355,8 @@
                 "Efelim South Plains",
                 "Efelim South East Plains",
                 "Efelim Village",
-                "Efelim East Plains"   
+                "Efelim East Plains",
+                "Durum Isles Upper"  
             ],
             "Lux Nova":[
                 "Nivla Forest Exit",
@@ -392,30 +381,19 @@
                 "Ragni Main Entrance",
                 "Nivla Forest",
                 "Abandoned Farm",
-                "Ragni"
+                "Ragni",
+                "Ragni North Entrance",
+                "Ragni Plains",
+                "Ragni North Suburbs",
+                "Coastal Trail",
+                "Maltic",
+                "Farmers Valley",
+                "Katoa Ranch",
+                "Maltic Coast"
             ],
             "Eden":[
-                "Nemract Road",
-                "Nether Gate",
-                "Detlas Trail West Plains",
-                "Nemract Plains West",
-                "Corrupted Road",
-                "Nemract Town",
-                "Detlas Close Suburbs",
-                "Detlas Trail East Plains",
-                "Nemract Plains East",
-                "Detlas Far Suburbs",
-                "Detlas Suburbs",
-                "Mt. Wynn",
-                "Nether Plains Upper",
-                "Nemract Cathedral",
-                "Plains Coast",
-                "Ancient Nemract",
-                "Cathedral Harbour",
-                "Nether Plains Lower",
                 "Nether Plains Lower",
                 "Cinfras Entrance",
-                "Mesquis Tower",
                 "Path to Cinfras",
                 "Light Forest East Mid",
                 "Light Forest East Upper",
@@ -425,7 +403,13 @@
                 "Mantis Nest",
                 "Light Forest South Exit",
                 "Hobbit River",
-                "Aldorei Valley West Entrance"
+                "Aldorei Valley West Entrance",
+                "Aldorei Valley Lower",
+                "Aldorei Valley Mid",
+                "Aldorei Valley Upper",
+                "Aldorei’s River",
+                "Aldorei’s Waterfall",
+                "Aldorei Lowlands"
             ],
             "Empire of Sindria":[
                 "Desert East Lower",
@@ -457,7 +441,16 @@
                 "Savannah West Upper",
                 "Lion Lair",
                 "Abandoned Pass",
-                "Ternaves Plains Upper"
+                "Ternaves Plains Upper",
+                "Plains Coast",
+                "Nemract Road",
+                "Nemract Plains West",
+                "Nemract Town",
+                "Nemract Plains East",
+                "Ancient Nemract",
+                "Mt. Wynn",
+                "Nemract Cathedral",
+                "Cathedral Harbour"
             ],
             "Caeruleum Order":[
 
@@ -466,40 +459,22 @@
                 "Path To Prison",
                 "Shanjugin’s River",
                 "Lexdale",
-                "Orc Road",
                 "Icy Island",
-                "Dead Island South West",
-                "Dead Island South East",
                 "Skiens Island",
-                "Bucie North West",
-                "Red Camp",
                 "Regular Island",
                 "Maro Peaks",
-                "Dead Island North East",
                 "Half Moon Island",
-                "Meteor Crater",
-                "Llevigar Farm",
-                "Pre-Light Forest Transition",
-                "Orc Lake",
                 "Black Magic",
                 "Nodguj Nation",
                 "Dujgon Nation",
                 "The Bear Zoo",
-                "Bucie North East",
                 "Corrupted Hand",
-                "Green Camp",
-                "Dead Island North West",
                 "Rooster Island",
-                "Bucie South East",
                 "Lexdales Prison",
                 "Santa's Hideout",
                 "Zhight Island",
                 "Pirate Town",
                 "Selchar",
-                "Bucie South West",
-                "Black Camp",
-                "Gylia Lake North West",
-                "Imperial Gate",
                 "Abandoned Church",
                 "Graveyard North",
                 "Dark Forest Cinfras Transition",
@@ -507,17 +482,37 @@
                 "Dark Forest Village",
                 "Corrupted Village",
                 "Corrupted Impact",
-                "Gylia Lake South West",
                 "Abandoned Tower",
                 "Arachnida Cave",
                 "Cinfras Outskirts",
                 "Graveyard South",
-                "Jitak’s Farm",
                 "Durum Isles East",
-                "Banshees Cave"
+                "Banshees Cave",
+                "Volcano Lower",
+                "Volcano Upper",
+                "Lost Atoll",
+                "Mesquis Tower"
             ],
             "The Simple Ones":[
                 "Mage Island"
+            ],
+            "The Aquarium":[
+                "Green Camp",
+                "Meteor Crater",
+                "Bucie North West",
+                "Bucie North East",
+                "Orc Lake",
+                "Black Camp",
+                "Bucie South West",
+                "Bucie South East",
+                "Orc Road",
+                "Red Camp",
+                "Llevigar Farm",
+                "Pre-Light Forest Transition",
+                "Dead Island South West",
+                "Dead Island South East",
+                "Dead Island North East",
+                "Dead Island North West"                
             ]
         },
         "FFA":{

@@ -2,3 +2,4 @@ node_modules
 ffmpeg
 package-lock.json
 .env
+votes.json

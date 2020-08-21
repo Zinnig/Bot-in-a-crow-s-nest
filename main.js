@@ -113,7 +113,6 @@ let allyList = [
 "Bruh Moment",
 //Paladins United
 "Paladins United",
-"Pirates United",
 "Meow",
 "Pirates Divided",
 "Rat Gang",
@@ -200,7 +199,6 @@ let allyListTags = [
     "GJJ",
     //Paladins United
     "PUN",
-    "pun",
     "Prr",
     "PiD",
     "RGX",
@@ -644,6 +642,18 @@ let notOwned = 0;
 let notOwnedAlly = 0;
 let notOwnedFFA = 0;
 let i = 0;
+
+function setupTimeDiff(diff){
+    days = Math.floor(diff/(24*60*60*1000))
+    hours = Math.floor((diff - days*(24*60*60*1000))/(60*60*1000))
+    minutes = Math.floor((diff - days*(24*60*60*1000) - hours*(60*60*1000))/(60*1000))
+    seconds = Math.floor(diff - days*(24*60*60*1000) - hours*(60*60*1000) - minutes*(60*1000))/1000
+    if(days == 0 && hours == 0 && minutes < 3){
+        return `on Cooldown (${minutes > 0? minutes + "min": ""}min:${seconds > 0? seconds + "s": ""}s left)`
+    }else{
+        return `${days > 0? days +"d:": ""}${hours > 0? hours + "h:": ""}${minutes > 0? minutes +"min:": ""}${seconds > 0? seconds +"s": ""}`;
+    }
+}
     if(cmd === "war"){
         notOwned = 0;
         sent = false;
@@ -681,10 +691,10 @@ let xmlhttp = new XMLHttpRequest();
                        regex = new RegExp(property, "g")
                        if(missingTerrs.search(regex) == -1){
                            if(allyList.indexOf(resText.territories[property].guild) == -1){
-                                missingTerrs += `- ${property} (${resText.territories[property].guild}) \n`;
+                                missingTerrs += `- ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n `;
                                 notOwned += 1;
                             }else if(allyList.indexOf(resText.territories[property].guild) != -1){
-                                missingTerrs += `- [Ally] ${property} (${resText.territories[property].guild}) \n`;
+                                missingTerrs += `- [Ally] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`;
                                 notOwned += 1;
                             }
                        }
@@ -695,40 +705,40 @@ let xmlhttp = new XMLHttpRequest();
                         if(missingTerrsAlly.search(regex1) == -1){
                             if(FFAList.indexOf(property) == -1){
                                 if(FoxClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Fox] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [Fox] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(ImpClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Imp] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [Imp] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(AvoClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [AVO]${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [AVO]${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(IbtClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [IBT] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [IBT] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(AnoClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [ANO] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [ANO] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(EsiClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [ESI] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [ESI] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(LxaClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [LXA] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [LXA] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(HaxClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Hax] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [Hax] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(EdnClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [EDN] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [EDN] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(IlqClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [ILQ] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [ILQ] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1; 
                                 }else if(ErnClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [ERN] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [ERN] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1;
                                 }else if(TAqClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [TAq] ${property} (${resText.territories[property].guild}) \n`
+                                    missingTerrsAlly += `- [TAq] ${property} (${resText.territories[property].guild}) [held: ${setupTimeDiff(new Date() -  new Date(Date.parse(resText.territories[property].acquired)))}] \n`
                                     notOwnedAlly += 1;
                                 }
 
@@ -882,7 +892,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(LXA)/gi)){
                 message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club \n- [GnH] Golden Hour")
             }else if(args[0].match(/(PUN)/gi)){
-                message.channel.send("PUN has the following subguilds: \n- [pun] Pirates United \n- [Prr] Meow \n- [PiD] Pirates Divided \n- [RGX] Rat Gang \n- [PAF] PaladinForums")
+                message.channel.send("PUN has the following subguilds: \n- [Prr] Meow \n- [PiD] Pirates Divided \n- [RGX] Rat Gang \n- [PAF] PaladinForums")
             }else if(args[0].match(/(ANO)/gi)){
                 message.channel.send("ANO has the following subguilds: \n- [Ius] Illustratus \n- [ARX] Seekers of Arx \n- [zeb] dinkle winks \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism")
             }else if(args[0].match(/(ERN)/gi)){
@@ -901,7 +911,87 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
+var fs = require('fs');
+fs.appendFile('votes.json', "", function(err){
+    if (err) throw err;
+    console.log("File created!")
 });
+/*          if(cmd == "vote"){
+            if(args[0] == "start"){
+                args.splice(0, 1);
+                let list = args;
+                let title = list.join().replace(/,/g, " ");
+                let colourOfVote = Math.floor(Math.random()*16777215).toString(16);
+                voteEmbed = new Discord.RichEmbed()
+                .setTitle(title)
+                .setColor(Math.floor(Math.random()*16777215).toString(16))
+                .addField("Options", "👍: yes \n 👎: no");
+                message.channel.send(voteEmbed).then(function(message){
+                    votes = JSON.parse(`{"{${message.id}":{"title": "${title}", "colour": "${colourOfVote}", "yes": 0, "no": 0}}}`)
+                    fs.writeFile('votes.json', JSON.stringify(votes), function(err){
+                        if (err) throw err;
+                        console.log("Updated File.")
+                    });
+                    message.react('👍');
+                    message.react('👎');
+                    message.pin();
+                });
+                //TODO fix votes
+            }if(args[0] == "end"){
+            } 
+        }
+});
+let yes = 0;
+let no = 0;
+let alreadyreactedYes = [];
+let alreadyreactedNo = [];
+client.on('messageReactionAdd', async (reaction, user) => {
+	// When we receive a reaction we check if the reaction is partial or not
+	if (reaction.partial) {
+		// If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
+		try {
+			await reaction.fetch();
+		} catch (error) {
+			console.log('Something went wrong when fetching the message: ', error);
+			// Return as `reaction.message.author` may be undefined/null
+			return;
+        }
+        
+    }
+    if(user.id != '639956302788820993'){
+    if(reaction.message.pinned){
+        console.log(localStorage.getItem(reaction.message.id))
+    if(reaction.emoji.name == '👍'){
+        if(alreadyreactedYes.indexOf(user.id) == -1 && alreadyreactedNo.indexOf(user.id) == -1){
+            reaction.message.reactions.get('👍').remove(user.id) //removing a reaction from a user.
+            alreadyreactedYes.push(user.id)
+            yes++;
+        }else if(alreadyreactedNo.indexOf(user.id) != -1 && alreadyreactedYes.indexOf(user.id) == -1){
+            reaction.message.reactions.get('👍').remove(user.id) //removing a reaction from a user.
+            alreadyreactedYes.push(user.id)
+            alreadyreactedNo.splice(alreadyreactedNo.indexOf(user.id), 1)
+            yes++;
+            no--;
+        }
+        reaction.message.reactions.first().remove(user.id)
+}else if(reaction.emoji.name == '👎'){
+    if(alreadyreactedNo.indexOf(user.id) == -1 && alreadyreactedYes.indexOf(user.id) == -1){
+        reaction.message.reactions.get('👎').remove(user.id) //removing a reaction from a user.
+        alreadyreactedNo.push(user.id)
+        no++;
+    }else if(alreadyreactedYes.indexOf(user.id) != -1 && alreadyreactedNo.indexOf(user.id) == -1){
+        reaction.message.reactions.get('👎').remove(user.id) //removing a reaction from a user.
+        alreadyreactedNo.push(user.id)
+        alreadyreactedYes.splice(alreadyreactedYes.indexOf(user.id), 1)
+        no++;
+        yes--;
+}
+    reaction.message.reactions.first().remove(user.id)
+}
+console.log(`yes: ${yes}, no: ${no}`)
+}
+}
+});  */
 
 client.on("voiceStateUpdate", () =>{
     const guild = client.guilds.get('463736564837777428')
@@ -918,3 +1008,4 @@ client.on("voiceStateUpdate", () =>{
     }
 }
 });
+})

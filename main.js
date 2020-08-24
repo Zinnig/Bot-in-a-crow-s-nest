@@ -134,6 +134,7 @@ let allyList = [
 "Lux Nova",
 "Scat Club",
 "Golden Hour",
+"Luwu Nowo",
 //Eden
 "Eden",
 "Heresy",
@@ -220,6 +221,7 @@ let allyListTags = [
     "LXA",
     "LAX",
     "GnH",
+    "Luw",
     //Eden
     "EDN",
     "Rsy",
@@ -871,7 +873,7 @@ let xmlhttp = new XMLHttpRequest();
     }
     }
         }catch(e){
-            //empty
+            console.log(e)
         }
         }
         }
@@ -891,7 +893,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(Hax)/gi)){
                 message.channel.send("Hax has the following subguilds: \n- [vpe] vape god \n- [KFF] Kingdom Furries \n- [Hux] HeckForums \n- [GJJ] Bruh Moment")
             }else if(args[0].match(/(LXA)/gi)){
-                message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club \n- [GnH] Golden Hour")
+                message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club \n- [GnH] Golden Hour\n- [Luw] Luwu Nowo")
             }else if(args[0].match(/(PUN)/gi)){
                 message.channel.send("PUN has the following subguilds: \n- [Prr] Meow \n- [PiD] Pirates Divided \n- [RGX] Rat Gang \n- [PAF] PaladinForums")
             }else if(args[0].match(/(ANO)/gi)){
@@ -917,7 +919,6 @@ let xmlhttp = new XMLHttpRequest();
 fs.readFile('votes.json', 'utf8', function(err, data){
     if(err) throw err;
         JSONdata = data;
-        console.log("data:" + data)
         });
          if(cmd == "vote"){
             if(args[0] == "start"){
@@ -930,19 +931,43 @@ fs.readFile('votes.json', 'utf8', function(err, data){
                 .setColor(Math.floor(Math.random()*16777215).toString(16))
                 .addField("Options", "👍: yes \n 👎: no");
                 message.channel.send(voteEmbed).then(function(message){
-                    
-                    let votes = "{" + JSONdata.replace(/{/, "").replace(/}([^}]*)$/, "") + `"${message.id}":{"title":"${title}","colour":"${colourOfVote}","yes": 0, "no": 0}}`
-                
-                    fs.writeFile('votes.json', votes, function(err){
-                        if (err) throw err;
-                        console.log("Updated File.")
-                    });
+                let voteDate = JSONdata == "" ? [] : JSON.parse(JSONdata);
+                let vote = new Object();
+                    vote.id = message.id
+                    vote.channelID = message.channel.id
+                    vote.title = title
+                    vote.colour = colourOfVote 
+                    vote.yes = 0
+                    vote.no = 0
+                    voteDate.push(vote)
+                    console.log("votedate: " + voteDate)
+                    console.log("vote" + vote)
+                let votes = JSON.stringify(voteDate)
+                console.log("votes" + votes)
+                fs.writeFile('votes.json', votes, function(err){
+                    if (err) throw err;
+                    console.log("Updated File.")
+                });
                     message.react('👍');
                     message.react('👎');
                     message.pin();
                 });
                 //TODO fix votes
             }if(args[0] == "end"){
+                let json = JSON.parse(JSONdata);
+                args.splice(0, 1);
+                let list = args;
+                let msg = list.join().replace(/,/g, " ");
+                for(property in json){
+                    if(json[property].channelID != message.channel.id) return;
+                    if(json[property].title.toUpperCase() == msg.toUpperCase()){
+                        let voteMsg = message.fetch(json[property].id)
+                        voteMsg.unpin();
+                        json.slice(property);
+                        message.channel.send(`The vote ${json[property].title} was ended, there were ${json[property].yes} votes for yes and ${json[property].no} votes for no; Total Votes: ${json[property].no + json[property].yes}`)
+                        
+                    }
+                }
             } 
         }
 });
@@ -955,15 +980,15 @@ fs.appendFile('votes.json', "", function(err){
     if (err) throw err;
     console.log("File created!")
 });
-let dataJSON = "";
-
+let dataJSONReact = "";
+let data1;
 client.on('messageReactionAdd', async (reaction, user) => {
     // When we receive a reaction we check if the reaction is partial or not
     fs.readFile('votes.json', 'utf8', function(err, data){
         if(err) throw err;
-        console.log(data);
-        dataJSON = JSON.parse(data)
+        data1 = data
     });
+    dataJSONReact = JSON.parse(data1)
 	if (reaction.partial) {
 		// If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
 		try {
@@ -975,44 +1000,56 @@ client.on('messageReactionAdd', async (reaction, user) => {
         }
         
     }
+    let prob;
     if(user.id != '639956302788820993'){
     if(reaction.message.pinned){
+        for(property in dataJSONReact){
+            console.log(property)
+            if(dataJSONReact[property].id == reaction.message.id){
+                prob = property;
+            }
+        }
     if(reaction.emoji.name == '👍'){
         if(alreadyreactedYes.indexOf(user.id) == -1 && alreadyreactedNo.indexOf(user.id) == -1){
             reaction.message.reactions.get('👍').remove(user.id) //removing a reaction from a user.
             alreadyreactedYes.push(user.id)
             yes++;
-            dataJSON[reaction.message.id].yes = yes;
+            dataJSONReact[prob].yes = yes;
         }else if(alreadyreactedNo.indexOf(user.id) != -1 && alreadyreactedYes.indexOf(user.id) == -1){
             reaction.message.reactions.get('👍').remove(user.id) //removing a reaction from a user.
             alreadyreactedYes.push(user.id)
             alreadyreactedNo.splice(alreadyreactedNo.indexOf(user.id), 1)
             yes++;
             no--;
-            dataJSON[reaction.message.id].yes = yes;
-            dataJSON[reaction.message.id].no = no;
+            dataJSONReact[prob].yes = yes;
+            dataJSONReact[prob].no = no;
         }
 }else if(reaction.emoji.name == '👎'){
     if(alreadyreactedNo.indexOf(user.id) == -1 && alreadyreactedYes.indexOf(user.id) == -1){
         reaction.message.reactions.get('👎').remove(user.id) //removing a reaction from a user.
         alreadyreactedNo.push(user.id)
         no++;
-        dataJSON[reaction.message.id].no = no;
+        dataJSONReact[prob].no = no;
     }else if(alreadyreactedYes.indexOf(user.id) != -1 && alreadyreactedNo.indexOf(user.id) == -1){
         reaction.message.reactions.get('👎').remove(user.id) //removing a reaction from a user.
         alreadyreactedNo.push(user.id)
         alreadyreactedYes.splice(alreadyreactedYes.indexOf(user.id), 1)
         no++;
         yes--;
-        dataJSON[reaction.message.id].no = no;
-        dataJSON[reaction.message.id].yes = yes;
+        dataJSONReact[prob].no = no;
+        dataJSONReact[prob].yes = yes;
 }
 }
-console.log(`yes: ${dataJSON[reaction.message.id].yes}, no: ${dataJSON[reaction.message.id].no}`)
+console.log(`yes: ${dataJSONReact[prob].yes}, no: ${dataJSONReact[prob].no}`)
+fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
+    if (err) throw err;
+    console.log("Updated File.")
+});
 }
-} */
+}
+*/
 }); 
-
+ 
 client.on("voiceStateUpdate", () =>{
     const guild = client.guilds.get('463736564837777428')
     const channels = guild.channels.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');

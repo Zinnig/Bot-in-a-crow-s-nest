@@ -299,7 +299,8 @@ let FoxClaim = [
 "Thanos Valley West"
 ]
 let ImpClaim = [
-    "Imperial Gate"
+    "Imperial Gate",
+    "Durum Isles East"
 ]
 
 let AvoClaim = [
@@ -573,7 +574,6 @@ let IbtClaim = [
 "Skiens Island",
 "Regular Island",
 "Maro Peaks",
-"Half Moon Island",
 "Black Magic",
 "Nodguj Nation",
 "Dujgon Nation",
@@ -596,15 +596,15 @@ let IbtClaim = [
 "Arachnida Cave",
 "Cinfras Outskirts",
 "Graveyard South",
-"Durum Isles East",
 "Banshees Cave",
 "Volcano Lower",
 "Volcano Upper",
 "Lost Atoll",
-"Mesquis Tower"
+"Mesquis Tower",
+"Mage Island"
 ]
 let IlqClaim = [
-    "Mage Island"
+    "Half Moon Island"
 ]
 let TAqClaim = [
 "Green Camp",
@@ -921,6 +921,7 @@ fs.readFile('votes.json', 'utf8', function(err, data){
         JSONdata = data;
         });
          if(cmd == "vote"){
+             console.log("before start/end: " + JSONdata)
             if(args[0] == "start"){
                 args.splice(0, 1);
                 let list = args;
@@ -940,10 +941,7 @@ fs.readFile('votes.json', 'utf8', function(err, data){
                     vote.yes = 0
                     vote.no = 0
                     voteDate.push(vote)
-                    console.log("votedate: " + voteDate)
-                    console.log("vote" + vote)
                 let votes = JSON.stringify(voteDate)
-                console.log("votes" + votes)
                 fs.writeFile('votes.json', votes, function(err){
                     if (err) throw err;
                     console.log("Updated File.")
@@ -954,6 +952,7 @@ fs.readFile('votes.json', 'utf8', function(err, data){
                 });
                 //TODO fix votes
             }if(args[0] == "end"){
+                console.log("jsondata: " + JSONdata)
                 let json = JSON.parse(JSONdata);
                 args.splice(0, 1);
                 let list = args;
@@ -980,15 +979,15 @@ fs.appendFile('votes.json', "", function(err){
     if (err) throw err;
     console.log("File created!")
 });
-let dataJSONReact = "";
+let dataJSONReact;
 let data1;
 client.on('messageReactionAdd', async (reaction, user) => {
     // When we receive a reaction we check if the reaction is partial or not
     fs.readFile('votes.json', 'utf8', function(err, data){
         if(err) throw err;
-        data1 = data
+        data1 = data;
     });
-    dataJSONReact = JSON.parse(data1)
+    
 	if (reaction.partial) {
 		// If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
 		try {
@@ -1003,8 +1002,11 @@ client.on('messageReactionAdd', async (reaction, user) => {
     let prob;
     if(user.id != '639956302788820993'){
     if(reaction.message.pinned){
+        try{
+        dataJSONReact = JSON.parse(data1);
+    }catch(e){}
+        console.log("data1: " + data1)
         for(property in dataJSONReact){
-            console.log(property)
             if(dataJSONReact[property].id == reaction.message.id){
                 prob = property;
             }
@@ -1046,8 +1048,8 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
     console.log("Updated File.")
 });
 }
-}
-*/
+} */
+
 }); 
  
 client.on("voiceStateUpdate", () =>{

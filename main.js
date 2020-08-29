@@ -116,7 +116,6 @@ let allyList = [
 "Meow",
 "Pirates Divided",
 "Rat Gang",
-"PaladinForums",
 //Titans Valor
 "Titans Valor",
 "Illustratus",
@@ -203,7 +202,6 @@ let allyListTags = [
     "Prr",
     "PiD",
     "RGX",
-    "PAF",
     //Titans Valor
     "ANO",
     "Ius",

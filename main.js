@@ -76,16 +76,15 @@ let allyList = [
 /**ARTEMIS */
 //Kingdom Foxes
 "Kingdom Foxes",
-"Ombra", 
 "I Corps",
 "Panic",
 "Fluffy Unicorns",
 "Project Ultimatum",
-"Lunatic",
-"Ex Nihilo",
 "Odysseia",
 "HaHaUnited",
 "Ram Ranch",
+"BlueStoneGroup",
+"Hyacinthum",
 //Imperial
 "Imperial",
 "Metric",
@@ -118,12 +117,11 @@ let allyList = [
 "Rat Gang",
 //Titans Valor
 "Titans Valor",
-"Illustratus",
 "Seekers of Arx",
-"dinkle winks",
 "The Tempest",
 "IceBabies",
 "Exorcism",
+"Tartaros",
 //Emorians
 "Emorians",
 "Audux",
@@ -138,9 +136,7 @@ let allyList = [
 "Eden",
 "Heresy",
 //Blue Nations United
-"Hyacinthum",
 "FortniteKSI",
-"BlueStoneGroup",
 "Byzantium",
 "IceBlue Fantasy",
 //Empire of Sindria
@@ -162,16 +158,15 @@ let allyListTags = [
         /**ARTEMIS */
     //Kingdom Foxes
     "Fox",
-    "Omb", 
     "LFX",
     "PaN",
     "FuI",
     "PxU",
-    "Mox",
-    "Nih",
     "Oys",
     "HHU",
     "RMR",
+    "GSB",
+    "HCM",
     //Imperial
     "Imp",
     "Met",
@@ -204,12 +199,11 @@ let allyListTags = [
     "RGX",
     //Titans Valor
     "ANO",
-    "Ius",
     "Arx",
-    "zeb",
     "Txp",
     "IcB",
     "xsm",
+    "JNC",
     //Emorians
     "ERN",
     "uxu",
@@ -224,9 +218,7 @@ let allyListTags = [
     "EDN",
     "Rsy",
     //Blue Nations United
-    "HCM",
     "XDF",
-    "GSB",
     "TBE",
     "IBF",
     //Empire of Sindria
@@ -877,13 +869,13 @@ let xmlhttp = new XMLHttpRequest();
         }
         if(cmd == "subs"){
             if(args[0].match(/(Fox)/gi)){
-                message.channel.send("Fox has the following subguilds: \n- [Omb] Ombra \n- [FNE] Fluorine \n- [LFX] I Corps \n- [PaN] Panic \n- [FuI] Fluffy Unicorns \n- [PxU] Project Ultimatum \n- [Mox] Lunatic \n- [Nih] Ex Nihilo \n- [Oys] Odysseia \n- [HHU] HaHaUnited \n- [RMR] Ram Ranch")
+                message.channel.send("Fox has the following subguilds: \n- [FNE] Fluorine \n- [LFX] I Corps \n- [PaN] Panic \n- [FuI] Fluffy Unicorns \n- [PxU] Project Ultimatum \n- [Oys] Odysseia \n- [HHU] HaHaUnited \n- [RMR] Ram Ranch \n- [GSB] BlueStoneGroup \n- [HCM] Hyacinthum ")
             }else if(args[0].match(/(Imp)/gi)){
                 message.channel.send("Imp has the following subguilds: \n- [Met] Metric \n- [Min] Minerva \n- [KLA] Terra Steel \n- [KLI] Kolibri \n- [Snt] House of Sentinels \n- [lMP] EPIcFORTNITEgAY \n- [BKP] Germany FTW \n- [SdZ] Squad Zero \n- [jrf] jerf")
             }else if(args[0].match(/(AVO)/gi)){
                 message.channel.send("AVO has the following subguilds: \n- [IVA] Invicta \n- [VFN] Time for Pizza \n- [STQ] Stud Squad \n- [JML] Avocados \n- [IVT] Ivory Tusk \n- [AVF] Afishia")
             }else if(args[0].match(/(BNU)/gi)){
-                message.channel.send("BNU has the following subguilds: \n- [HCM] Hyacinthum \n- [XDF] FortniteKSI \n- [GSB] BlueStoneGroup \n- [TBE] Byzantium \n- [IBF] IceBlue Fantasy")
+                message.channel.send("BNU has the following subguilds: \n- [XDF] FortniteKSI\n- [TBE] Byzantium \n- [IBF] IceBlue Fantasy\n- [GSB] BlueStoneGroup \n- [HCM] Hyacinthum")
             }else if(args[0].match(/(EDN)/gi)){
                 message.channel.send("EDN has the following subguilds: \n- [Rsy] Heresy")
             }else if(args[0].match(/(ESI)/gi)){
@@ -895,7 +887,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(PUN)/gi)){
                 message.channel.send("PUN has the following subguilds: \n- [Prr] Meow \n- [PiD] Pirates Divided \n- [RGX] Rat Gang \n- [PAF] PaladinForums")
             }else if(args[0].match(/(ANO)/gi)){
-                message.channel.send("ANO has the following subguilds: \n- [Ius] Illustratus \n- [ARX] Seekers of Arx \n- [zeb] dinkle winks \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism")
+                message.channel.send("ANO has the following subguilds: \n- [ARX] Seekers of Arx \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism\n- [JNC] Tartaros")
             }else if(args[0].match(/(ERN)/gi)){
                 message.channel.send("ERN has the following subguilds: \n- [uxu] Adux \n- [VCT] Mute Gang \n- [VHT] Toemorians");
             }else{
@@ -949,9 +941,10 @@ fs.readFile('votes.json', 'utf8', function(err, data){
                     message.pin();
                 });
                 //TODO fix votes
-            }if(args[0] == "end"){
+            }else if(args[0] == "end"){
                 console.log("jsondata: " + JSONdata)
-                let json = JSON.parse(JSONdata);
+                let json = JSONdata == "" ? [] : JSON.parse(JSONdata);
+                console.log(json)
                 args.splice(0, 1);
                 let list = args;
                 let msg = list.join().replace(/,/g, " ");
@@ -1045,9 +1038,16 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
     if (err) throw err;
     console.log("Updated File.")
 });
-}
-} */
 
+    let edit = new Discord.RichEmbed()
+    .setTitle(dataJSONReact[prob].title)
+    .setColor(dataJSONReact[prob].colour.toString(16))
+    .addField("Options", "👍: yes \n 👎: no")
+    .setFooter(`Total Votes: ${dataJSONReact[prob].yes + dataJSONReact[prob].no}`);
+    reaction.message.edit(edit)
+}
+}
+ */
 }); 
  
 client.on("voiceStateUpdate", () =>{

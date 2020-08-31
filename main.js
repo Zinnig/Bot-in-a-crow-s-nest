@@ -141,6 +141,7 @@ let allyList = [
 "IceBlue Fantasy",
 //Empire of Sindria
 "Empire of Sindria",
+"Sicko Mode",
 //Ice Blue Team
 "IceBlue Team",
 //The Aquarium
@@ -223,6 +224,7 @@ let allyListTags = [
     "IBF",
     //Empire of Sindria
     "ESI",
+    "SME",
     //Ice Blue Team
     "IBT",
     //The Aquarium
@@ -879,7 +881,7 @@ let xmlhttp = new XMLHttpRequest();
             }else if(args[0].match(/(EDN)/gi)){
                 message.channel.send("EDN has the following subguilds: \n- [Rsy] Heresy")
             }else if(args[0].match(/(ESI)/gi)){
-                message.channel.send("ESI has no subguilds.")
+                message.channel.send("ESI has the following subguilds: \n- [SME] Sicko Mode")
             }else if(args[0].match(/(Hax)/gi)){
                 message.channel.send("Hax has the following subguilds: \n- [vpe] vape god \n- [KFF] Kingdom Furries \n- [Hux] HeckForums \n- [GJJ] Bruh Moment")
             }else if(args[0].match(/(LXA)/gi)){
@@ -904,6 +906,44 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
+        let resText2 = "";
+        let resText3 = "";
+        if(cmd == "activity"){
+
+let xmlhttp1 = new XMLHttpRequest();
+    xmlhttp1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=Paladins%20United");
+    xmlhttp1.send(); 
+    xmlhttp1.onreadystatechange = function(){
+        if(this.status == 200){
+            try{
+                resText2 = JSON.parse(this.responseText);
+                playerstats(resText2)
+            }catch(e){
+                //empty
+            }
+        }
+    }
+let resText3;
+function playerstats(resText2){
+for(property in resText2.members){
+    console.log(property)
+    console.log(resText2.members[property].name)
+    xml12 = new XMLHttpRequest();
+    xml12.open("GET", "https://api.wynncraft.com/v2/player/" +resText2.members[property].name+  "/stats");
+    xml12.onreadystatechange = function(){
+        if(this.status == 200){
+            try{
+                resText3 = JSON.parse(this.responseText);
+                console.log(resText3)
+                message.channel.send(resText3.lastJoin)
+            }catch(e){
+                //empty
+            }
+}
+  }
+}
+        }
+    }
         
 /* let JSONdata;
 fs.readFile('votes.json', 'utf8', function(err, data){

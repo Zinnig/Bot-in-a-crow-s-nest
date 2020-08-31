@@ -906,8 +906,7 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
-        let resText2 = "";
-        let resText3 = "";
+       /*  let resText2 = "";
         if(cmd == "activity"){
 
 let xmlhttp1 = new XMLHttpRequest();
@@ -923,8 +922,9 @@ let xmlhttp1 = new XMLHttpRequest();
             }
         }
     }
-let resText3;
+
 function playerstats(resText2){
+    let resText3 = "";
 for(property in resText2.members){
     console.log(property)
     console.log(resText2.members[property].name)
@@ -943,7 +943,7 @@ for(property in resText2.members){
   }
 }
         }
-    }
+    } */
         
 /* let JSONdata;
 fs.readFile('votes.json', 'utf8', function(err, data){

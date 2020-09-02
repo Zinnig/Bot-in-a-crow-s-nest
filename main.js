@@ -388,11 +388,9 @@ let AnoClaim = [
 "Canyon Of The Lost",
 "Great Bridge Jungle",
 "Nesaak Plains North East",
-"Twain Mansion",
 "Nesaak Plains Lower North West",
 "Icy Descent",
 "Nesaak Village",
-"Twain Lake",
 "Jungle Upper",
 "Jungle Mid",
 "Dernal Jungle Lower",
@@ -596,7 +594,9 @@ let IbtClaim = [
 "Mage Island"
 ]
 let IlqClaim = [
-    "Half Moon Island"
+    "Half Moon Island",
+    "Twain Mansion",
+    "Twain Lake",
 ]
 let TAqClaim = [
 "Green Camp",
@@ -906,46 +906,61 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
-       /*  let resText2 = "";
+        let resText2 = "";
+        let response = "";
         if(cmd == "activity"){
 
-let xmlhttp1 = new XMLHttpRequest();
-    xmlhttp1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=Paladins%20United");
-    xmlhttp1.send(); 
-    xmlhttp1.onreadystatechange = function(){
-        if(this.status == 200){
-            try{
-                resText2 = JSON.parse(this.responseText);
-                playerstats(resText2)
-            }catch(e){
-                //empty
+            let xmlhttp1 = new XMLHttpRequest();
+            xmlhttp1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=Paladins%20United");
+            xmlhttp1.onreadystatechange = function(){
+                if(this.status == 200 && this.readyState == 4){
+                    try{
+                        resText2 = JSON.parse(this.responseText);
+                        let resText3 = "";
+                        console.log("playerstats uwu")
+                        console.log(resText2)
+                        for(property in resText2.members){
+                            console.log(property)
+                            console.log(resText2.members[property].name)
+                            xml12 = new XMLHttpRequest();
+                            xml12.open("GET", "https://api.wynncraft.com/v2/player/" +resText2.members[property].name+  "/stats");
+                            xml12.onreadystatechange = function(){
+                                if(this.status == 200){
+                                    try{
+                                        resText3 = JSON.parse(this.responseText);
+                                        console.log(resText2.members[property].name + "," + resText3.data[0].meta.lastJoin)
+                                        response += resText3.data[0].meta.lastJoin
+                                    }catch(e){
+                                        //empty
+                                    }
+        }
+          }
+                        xml12.send()
+        }
+                    }catch(e){
+                        //empty
+                    }
+                }
+                message.channel.send(response);
             }
+            xmlhttp1.send();
+
+    }
+    /* if(cmd == "say"){
+        if(message.author.id == '282964164358438922'){
+            message.channel.send(args.join().replace(/,/g, " "));
+            message.delete()
         }
     }
-
-function playerstats(resText2){
-    let resText3 = "";
-for(property in resText2.members){
-    console.log(property)
-    console.log(resText2.members[property].name)
-    xml12 = new XMLHttpRequest();
-    xml12.open("GET", "https://api.wynncraft.com/v2/player/" +resText2.members[property].name+  "/stats");
-    xml12.onreadystatechange = function(){
-        if(this.status == 200){
-            try{
-                resText3 = JSON.parse(this.responseText);
-                console.log(resText3)
-                message.channel.send(resText3.lastJoin)
-            }catch(e){
-                //empty
-            }
-}
-  }
-}
+    if(cmd == "join"){
+        if(message.author.id == '282964164358438922'){
+            message.delete();
+            let vc = message.member.voiceChannel;
+            vc.join()
         }
-    } */
+    }
         
-/* let JSONdata;
+let JSONdata;
 fs.readFile('votes.json', 'utf8', function(err, data){
     if(err) throw err;
         JSONdata = data;
@@ -1041,15 +1056,15 @@ client.on('messageReactionAdd', async (reaction, user) => {
             if(dataJSONReact[property].id == reaction.message.id){
                 prob = property;
             }
+
         }
     if(reaction.emoji.name == '👍'){
+        reaction.message.reactions.get('👍').remove(user.id) //removing a reaction from a user.
         if(alreadyreactedYes.indexOf(user.id) == -1 && alreadyreactedNo.indexOf(user.id) == -1){
-            reaction.message.reactions.get('👍').remove(user.id) //removing a reaction from a user.
             alreadyreactedYes.push(user.id)
             yes++;
             dataJSONReact[prob].yes = yes;
         }else if(alreadyreactedNo.indexOf(user.id) != -1 && alreadyreactedYes.indexOf(user.id) == -1){
-            reaction.message.reactions.get('👍').remove(user.id) //removing a reaction from a user.
             alreadyreactedYes.push(user.id)
             alreadyreactedNo.splice(alreadyreactedNo.indexOf(user.id), 1)
             yes++;
@@ -1058,13 +1073,12 @@ client.on('messageReactionAdd', async (reaction, user) => {
             dataJSONReact[prob].no = no;
         }
 }else if(reaction.emoji.name == '👎'){
+    reaction.message.reactions.get('👎').remove(user.id) //removing a reaction from a user.
     if(alreadyreactedNo.indexOf(user.id) == -1 && alreadyreactedYes.indexOf(user.id) == -1){
-        reaction.message.reactions.get('👎').remove(user.id) //removing a reaction from a user.
         alreadyreactedNo.push(user.id)
         no++;
         dataJSONReact[prob].no = no;
     }else if(alreadyreactedYes.indexOf(user.id) != -1 && alreadyreactedNo.indexOf(user.id) == -1){
-        reaction.message.reactions.get('👎').remove(user.id) //removing a reaction from a user.
         alreadyreactedNo.push(user.id)
         alreadyreactedYes.splice(alreadyreactedYes.indexOf(user.id), 1)
         no++;

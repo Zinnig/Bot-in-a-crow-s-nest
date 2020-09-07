@@ -906,8 +906,10 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
-        let resText2 = "";
+/*         let resText2 = "";
         let response = "";
+        let names = [];
+        let nameTime = [];
         if(cmd == "activity"){
 
             let xmlhttp1 = new XMLHttpRequest();
@@ -917,19 +919,18 @@ let xmlhttp = new XMLHttpRequest();
                     try{
                         resText2 = JSON.parse(this.responseText);
                         let resText3 = "";
-                        console.log("playerstats uwu")
-                        console.log(resText2)
                         for(property in resText2.members){
-                            console.log(property)
-                            console.log(resText2.members[property].name)
+                            count++;
+                            names.push(resText2.members[property].name);
                             xml12 = new XMLHttpRequest();
                             xml12.open("GET", "https://api.wynncraft.com/v2/player/" +resText2.members[property].name+  "/stats");
                             xml12.onreadystatechange = function(){
                                 if(this.status == 200){
                                     try{
                                         resText3 = JSON.parse(this.responseText);
-                                        console.log(resText2.members[property].name + "," + resText3.data[0].meta.lastJoin)
+                                        nameTime.push([names[count], resText3.data[0].meta.lastJoin])
                                         response += resText3.data[0].meta.lastJoin
+                                        console.log(nameTime)
                                     }catch(e){
                                         //empty
                                     }
@@ -940,13 +941,14 @@ let xmlhttp = new XMLHttpRequest();
                     }catch(e){
                         //empty
                     }
+                    message.channel.send(response);
                 }
-                message.channel.send(response);
+                
             }
             xmlhttp1.send();
 
     }
-    /* if(cmd == "say"){
+    if(cmd == "say"){
         if(message.author.id == '282964164358438922'){
             message.channel.send(args.join().replace(/,/g, " "));
             message.delete()

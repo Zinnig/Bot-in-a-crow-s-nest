@@ -146,6 +146,14 @@ let allyList = [
 "IceBlue Team",
 //The Aquarium
 "The Aquarium",
+//Phantom Hearts
+"Phantom Hearts",
+"Surprise",
+"Luna",
+"Jasmine Dragons",
+"Fraternal Fire",
+"Gaming",
+"Phantom Menace",
 //*Cooperating */
 "House of Sentinels",
 "Seekers of Arx",
@@ -229,6 +237,15 @@ let allyListTags = [
     "IBT",
     //The Aquarium
     "TAq",
+    //Phantom Hearts
+    "Phi",
+    "GrE",
+    "FUU",
+    "Lox",
+    "JsD",
+    "FFi",
+    "UcU",
+    "UUF",
     //**Cooperating**
     "Snt",
     "ARX",
@@ -616,6 +633,7 @@ let TAqClaim = [
 "Dead Island North East",
 "Dead Island North West"
 ]
+let PhiClaim = []
 let FFAList = [
 //Gavel
 "Cinfras", "Hive", "Qira's Battle Room", "Thesead", "Lava Lake", "Lava Lake Bridge",
@@ -734,6 +752,9 @@ let xmlhttp = new XMLHttpRequest();
                                     notOwnedAlly += 1;
                                 }else if(TAqClaim.indexOf(property) != -1){
                                     missingTerrsAlly += `- [TAq] ${property} (${resText.territories[property].guild})  \n`
+                                    notOwnedAlly += 1;
+                                }else if(PhiClaim.indexOf(property) != -1){
+                                    missingTerrsAlly += `- [Phi] ${property} (${resText.territories[property].guild})  \n`
                                     notOwnedAlly += 1;
                                 }
 
@@ -892,6 +913,8 @@ let xmlhttp = new XMLHttpRequest();
                 message.channel.send("ANO has the following subguilds: \n- [ARX] Seekers of Arx \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism\n- [JNC] Tartaros")
             }else if(args[0].match(/(ERN)/gi)){
                 message.channel.send("ERN has the following subguilds: \n- [uxu] Adux \n- [VCT] Mute Gang \n- [VHT] Toemorians");
+            }else if(args[0].match(/(Phi)/gi)){
+                message.channel.send("Phi has the following subguilds: \n- [GrE] Grand Explorers \n- [FUU] Surprise \n- [Lox] Lun \n- [JsD] Jasmine Dragons \n- [FFi] Fraternal Fire \nTechnically Sub-Guilds: \n- [UcU] Gaming \n- [UUF] Phantom Menace")
             }else{
                 message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
             }
@@ -907,41 +930,58 @@ let xmlhttp = new XMLHttpRequest();
             }
         }
 /*         let resText2 = "";
-        let response = "";
         let names = [];
         let nameTime = [];
         if(cmd == "activity"){
-
             let xmlhttp1 = new XMLHttpRequest();
             xmlhttp1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=Paladins%20United");
             xmlhttp1.onreadystatechange = function(){
                 if(this.status == 200 && this.readyState == 4){
                     try{
                         resText2 = JSON.parse(this.responseText);
-                        let resText3 = "";
+                        //Getting the UUID of the IGN
+                        let resTextUUID = "";
+                        let dashedUUID = "";
+                        let dashedUUIDs = [];
                         for(property in resText2.members){
-                            count++;
-                            names.push(resText2.members[property].name);
+                            let xmlUUID = new XMLHttpRequest();
+                            xmlUUID.open("GET", "https://mc-heads.net/minecraft/profile/" + resText2.members[property].name);
+                            xmlUUID.onreadystatechange = function(){
+                                try{
+                                resTextUUID = JSON.parse(this.responseText);
+                                dashedUUID =  resTextUUID.id.substr(0,8)+"-"+resTextUUID.id.substr(8,4)+"-"+resTextUUID.id.substr(12,4)+"-"+resTextUUID.id.substr(16,4)+"-"+resTextUUID.id.substr(20);
+                                dashedUUIDs.push(dashedUUID);
+                            }catch(e){
+                                //empty
+                            }
+                            }
+                            xmlUUID.send();
+                        }
+                        //Getting the stats of the players.
+                        let resText3 = "";
+                        for(property in dashedUUIDs){
+                            console.log("PStats")
+                            names.push(property);
                             xml12 = new XMLHttpRequest();
                             xml12.open("GET", "https://api.wynncraft.com/v2/player/" +resText2.members[property].name+  "/stats");
                             xml12.onreadystatechange = function(){
                                 if(this.status == 200){
                                     try{
                                         resText3 = JSON.parse(this.responseText);
-                                        nameTime.push([names[count], resText3.data[0].meta.lastJoin])
-                                        response += resText3.data[0].meta.lastJoin
-                                        console.log(nameTime)
+                                        if(nameTime.indexOf([names[names.indexOf(resText3.data[0].uuid)], resText3.data[0].meta.lastJoin]) == -1){
+                                            nameTime.push([names[names.indexOf(resText3.data[0].username)], resText3.data[0].meta.lastJoin])
+                                    }
+                                    console.log(nameTime);
                                     }catch(e){
                                         //empty
                                     }
         }
           }
                         xml12.send()
-        }
+                    }
                     }catch(e){
                         //empty
                     }
-                    message.channel.send(response);
                 }
                 
             }

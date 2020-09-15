@@ -255,395 +255,6 @@ let allyListTags = [
     //Other allies
     "Fuq"
 ]
-let FoxClaim = [
-"Cinfras Thanos Transition", 
-"Path To Ozoth’s Spire Mid", 
-"Canyon Path South West", 
-"Canyon Mountain East", 
-"Cliffside Valley", 
-"Cherry Blossom Forest", 
-"Eltom", 
-"Path To Thanos", 
-"Bandit Cave Lower", 
-"Thanos Exit", 
-"Thanos Exit Upper", 
-"Air Temple Upper", 
-"Entrance to Thesead North", 
-"Durum Isles Lower", 
-"Burning Airship", 
-"Path To Military Base", 
-"Path To Ozoth’s Spire Lower", 
-"Bandit Cave Upper", 
-"Canyon Path North Mid", 
-"Canyon Walk Way", 
-"Canyon High Path", 
-"Chained House", 
-"Canyon Entrance Waterfall", 
-"Canyon Valley South", 
-"Wizard Tower North", 
-"Burning Farm", 
-"Canyon Path North West", 
-"Canyon Waterfall Mid North", 
-"Cliffside Waterfall", 
-"Ranol’s Farm", 
-"Ghostly Path", 
-"Military Base Upper", 
-"Canyon Mountain South", 
-"Temple of the Lost East", 
-"Cliffside Passage North", 
-"Krolton’s Cave", 
-"Thesead Suburbs", 
-"Military Base", 
-"Canyon Fortress", 
-"Entrance to Thesead South", 
-"Bandit Camp Exit", 
-"Cliffside Passage", 
-"Path To Ozoth’s Spire Upper", 
-"Bandits Toll", 
-"Entrance to Rodoroc", 
-"Hive South", 
-"Military Base Lower", 
-"Thanos", 
-"Air Temple Lower", 
-"Thanos Valley West"
-]
-let ImpClaim = [
-    "Imperial Gate",
-    "Durum Isles East"
-]
-
-let AvoClaim = [
-"Light Realm East Mid-Upper",
-"Orphion's Seal Upper",
-"Old Coal Mine",
-"Angel Refuge",
-"Plains Lake",
-"Temple Island",
-"Light Realm Entrance",
-"Road to Corruption",
-"Dragonling Nests",
-"Wybel Island",
-"Jofash Docks",
-"Mine Base Plains",
-"Ahmsord",
-"Light Realm East Lower",
-"Orphion's Seal",
-"Frozen Fort",
-"Kandon Ridge",
-"Central Islands",
-"Jofash Tunnel",
-"Astraulus' Tower",
-"Light Realm Entrance Upper",
-"Sky Castle",
-"Sky Island Ascent",
-"Light Realm East Mid",
-"Swamp Island",
-"Light Realm Corruption",
-"Path to Ahmsord Lower",
-"Spiraling Trees",
-"Path to Ahmsord Upper",
-"Snail Island",
-"Ahmsord Outskirts",
-"Light Realm East",
-"Light Realm East Upper",
-"Angry Village",
-"Sky Falls",
-"Nesaak Transition",
-"Light Realm Mushrooms",
-"Raider's Base Upper",
-"Detlas Trail East Plains",
-"Detlas Trail West Plains",
-"Detlas Far Suburbs",
-"Detlas Suburbs",
-"Detlas Close Suburbs",
-"Nether Plains Upper",
-"Corrupted Road",
-"Nether Gate"
-]
-let HaxClaim = [
-"Path To The Arch",
-"Rodoroc",
-"Crater Descent",
-"Active Volcano",
-"Canyon Path South East",
-"Canyon Lower South East",
-"Molten Heights Portal",
-"Canyon Survivor",
-"Volcanic Slope",
-"Aldorei’s North Exit",
-"Cinfras County Lower",
-"Cinfras County Mid-Lower",
-"Cinfras County Mid-Upper",
-"Cinfras County Upper",
-"Gylia Lake South East",
-"Gylia Lake North East",
-"Gert Camp",
-"Aldorei Valley South Entrance",
-"Cinfras’s Small Farm",
-"Gylia Lake North West",
-"Gylia Lake South West",
-"Jitak’s Farm"
-]
-let AnoClaim = [
-"Cliff Side of the Lost",
-"Kandon Farm",
-"Dernal Jungle Upper",
-"Nesaak Plains Mid North West",
-"Nesaak Bridge Transition",
-"City of Troms",
-"Valley of the Lost",
-"Jungle Lower",
-"Nesaak Plains South West",
-"Mountain Edge",
-"Kandon-Beda",
-"Dernal Jungle Mid",
-"Canyon Of The Lost",
-"Great Bridge Jungle",
-"Nesaak Plains North East",
-"Nesaak Plains Lower North West",
-"Icy Descent",
-"Nesaak Village",
-"Jungle Upper",
-"Jungle Mid",
-"Dernal Jungle Lower",
-"Cliffside Lake",
-"Nesaak Plains Upper North West",
-"Nesaak Plains South East",
-"Great Bridge Nesaak",
-"Lusuco"
-]
-let ErnClaim = [
-"Llevigar Farm Plains East",
-"Llevigar",
-"Swamp West Lower",
-"Swamp East Upper",
-"Swamp West Mid-Upper",
-"Swamp Dark Forest Transition Upper",
-"Swamp Mountain Base",
-"Swamp Mountain Transition Mid-Upper",
-"Quartz Mines North West",
-"Road To Light Forest",
-"Lone Farmstead",
-"Gelibord Castle",
-"Mansion of Insanity",
-"Llevigar Farm Plains West",
-"Llevigar Plains West Lower",
-"Swamp East Lower",
-"Swamp East Mid-Upper",
-"Swamp Lower",
-"Swamp Mountain Transition Mid",
-"Quartz Mines South West",
-"Gelibord Corrupted Farm",
-"Fortress South",
-"Llevigar Gate West",
-"Leadin Fortress",
-"Llevigar Entrance",
-"Fleris Trail",
-"Llevigar Plains East Upper",
-"Swamp West Upper",
-"Entrance to Olux",
-"Swamp Plains Basin",
-"Gelibord",
-"Twisted Housing",
-"Llevigar Gate East",
-"Twisted Ridge",
-"Llevigar Plains East Lower",
-"Swamp West Mid",
-"Olux",
-"Quartz Mines South East",
-"Tree Island",
-"Swamp Dark Forest Transition Mid",
-"Quartz Mines North East",
-"Taproot Descent",
-"Swamp Dark Forest Transition Lower",
-"Fortress North",
-"Orc Battlegrounds",
-"Swamp Mountain Transition Lower",
-"Swamp Mountain Transition Upper",
-"Swamp East Mid",
-"Llevigar Plains West Upper",
-"Light Forest South Entrance",
-"Light Forest West Lower",
-"Light Forest Entrance",
-"Light Forest West Mid",
-"Light Forest North Entrance",
-"Light Forest West Upper",
-"Efelim South Plains",
-"Efelim South East Plains",
-"Efelim Village",
-"Efelim East Plains",
-"Durum Isles Upper", 
-]
-let LxaClaim = [
-"Nivla Forest Exit",
-"Pigmen Ravines Entrance",
-"Time Valley",
-"Road to Time Valley",
-"South Pigmen Ravines",
-"Plains",
-"Ragni East Suburbs",
-"Pigmen Ravines",
-"Animal Bridge",
-"Maltic Plains",
-"Little Wood",
-"Elkurn",
-"Nivla Forest Entrance",
-"Road to Elkurn",
-"North Nivla Forest",
-"Nivla Forest Edge",
-"Jungle Lake",
-"South Nivla Forest",
-"Elkurn Fields",
-"Ragni Main Entrance",
-"Nivla Forest",
-"Abandoned Farm",
-"Ragni",
-"Ragni North Entrance",
-"Ragni Plains",
-"Ragni North Suburbs",
-"Coastal Trail",
-"Maltic",
-"Farmers Valley",
-"Katoa Ranch",
-"Maltic Coast",
-]
-let EdnClaim = [
-"Nether Plains Lower",
-"Cinfras Entrance",
-"Path to Cinfras",
-"Light Forest East Mid",
-"Light Forest East Upper",
-"Light Forest East Lower",
-"Light Forest Canyon",
-"Light Forest North Exit",
-"Mantis Nest",
-"Light Forest South Exit",
-"Hobbit River",
-"Aldorei Valley West Entrance",
-"Aldorei Valley Lower",
-"Aldorei Valley Mid",
-"Aldorei Valley Upper",
-"Aldorei’s River",
-"Aldorei’s Waterfall",
-"Aldorei Lowlands"
-]
-let EsiClaim = [
-"Desert East Lower",
-"Desert West Upper",
-"Mining Base Upper",
-"Bremminglar",
-"Mining Base Lower",
-"Rymek East Upper",
-"Savannah East Lower",
-"Rymek West Lower",
-"Desert Mid-Lower",
-"Rymek East Lower",
-"Almuj City",
-"Rymek West Mid",
-"Detlas Savannah Transition",
-"Desert West Lower",
-"Savannah East Upper",
-"Desert East Upper",
-"Desert Lower",
-"Rymek East Mid",
-"Rymek West Upper",
-"Desert Upper",
-"Ternaves",
-"Savannah West Lower",
-"Desert East Mid",
-"Ternaves Plains Lower",
-"Mummy's Tomb",
-"Desert Mid-Upper",
-"Savannah West Upper",
-"Lion Lair",
-"Abandoned Pass",
-"Ternaves Plains Upper",
-"Plains Coast",
-"Nemract Road",
-"Nemract Plains West",
-"Nemract Town",
-"Nemract Plains East",
-"Ancient Nemract",
-"Mt. Wynn",
-"Nemract Cathedral",
-"Cathedral Harbour"
-]
-let IbtClaim = [
-"Path To Prison",
-"Shanjugin’s River",
-"Lexdale",
-"Black Magic",
-"The Bear Zoo",
-"Corrupted Hand",
-"Rooster Island",
-"Lexdales Prison",
-"Selchar",
-"Abandoned Church",
-"Graveyard North",
-"Dark Forest Cinfras Transition",
-"Gromblins Hideout",
-"Dark Forest Village",
-"Corrupted Village",
-"Corrupted Impact",
-"Abandoned Tower",
-"Arachnida Cave",
-"Cinfras Outskirts",
-"Graveyard South",
-"Banshees Cave",
-"Lost Atoll",
-"Mesquis Tower",
-"Mage Island"
-]
-let IlqClaim = [
-    "Half Moon Island",
-    "Twain Mansion",
-    "Twain Lake",
-]
-let TAqClaim = [
-    "Skiens Island",
-    "Dujgon Nation",
-    "Nodguj Nation",
-    "Dead Island North East",
-    "Dead Island South East",
-    "Dead Island North West",
-    "Dead Island South West",
-    "Maro Peaks",
-    "Green Camp",
-    "Orc Lake",
-    "Orc Road",
-    "Meteor Crater",
-    "Black Camp",
-    "Red Camp",
-    "Bucie North West",
-    "Bucie South West",
-    "Llevigar Farm",
-    "Bucie North East",
-    "Bucie South East",
-    "Pre-Light Forest Transition",
-    "Santa's Hideout",
-    "Regular Island",
-    "Icy Island"
-]
-let PhiClaim = [
-    "Zhight Island",
-    "Pirate Town",
-    "Volcano Upper",
-    "Volcano Lower",
-    "Aldorei’s Arch",
-    "Canyon Waterfall North",
-    "Canyon Upper North West",
-    "Canyon Dropoff",
-    "Mountain Path"
-]
-let FFAList = [
-//Gavel
-"Cinfras", "Hive", "Qira's Battle Room", "Thesead", "Lava Lake", "Lava Lake Bridge",
-"Molten Reach", "Raider's Base Lower", "Guild Hall",
-//Wynn
-"Detlas", "Emerald Trail", "Bob's Tomb", "Battle Tower", "Herb Cave", "Temple of Legends",
-//Silent Expanse
-"The Silent Road", "The Broken Road", "Worm Tunnel", "Gray Zone", "Forgotten Town", "Forest of Eyes", "Sinister Forest", "Lutho", "Paths of Sludge", "Toxic Drip", "Toxic Caves", "Gateway to Nothing", "Void Valley", "Sacrifice", "Bizarre Passage", "The Gate"
-]
 let resText = "";
 let missingTerrs = "";
 let missingTerrsAlly = "";
@@ -668,6 +279,7 @@ function setupTimeDiff(diff){
         return `${days > 0? days +"d:": ""}${hours > 0? hours + "h:": ""}${minutes > 0? minutes +"min:": ""}${seconds > 0? seconds +"s": ""}`;
     }
 }
+var fs = require('fs');
     if(cmd === "war"){
         notOwned = 0;
         sent = false;
@@ -686,8 +298,30 @@ function setupTimeDiff(diff){
  * DONE: 200
  */
 
-
-let xmlhttp = new XMLHttpRequest();
+let guildtags =
+{
+    "Paladins United": "PUN",
+    "Kingdom Foxes": "Fox",
+    "Imperial": "Imp",
+    "Phantom Hearts": "Phi",
+    "Lux Nova": "LXA",
+    "Titans Valor": "ANO",
+    "Eden": "EDN",
+    "IceBlue Team": "IBT",
+    "Empire of Sindria": "ESI",
+    "The Aquarium": "TAq",
+    "Avicia": "AVO",
+    "Emorians": "ERN",
+    "HackForums": "Hax",
+}
+let terrs;
+fs.readFile("Map.json", 'utf8', function(err, data){
+    if(err) throw err;
+    map = data
+    try{
+        terrs = JSON.parse(data);
+        }catch(e){}
+        let xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", "https://api.wynncraft.com/public_api.php?action=territoryList");
     xmlhttp.send(); 
     xmlhttp.onreadystatechange = function(){
@@ -699,7 +333,7 @@ let xmlhttp = new XMLHttpRequest();
             }
 
             for(property in resText.territories){
-                if(list.indexOf(property) != -1){
+                if(terrs.territories[property] == "PUN"){
                     i+=1;
                    if(resText.territories[property].guild != "Paladins United"){
                        regex = new RegExp(property, "g")
@@ -713,183 +347,145 @@ let xmlhttp = new XMLHttpRequest();
                             }
                        }
                     }
-
                 }else if(allyList.indexOf(resText.territories[property].guild) == -1){
-                        regex1 = new RegExp(property, "g")
-                        if(missingTerrsAlly.search(regex1) == -1){
-                            if(FFAList.indexOf(property) == -1){
-                                if(FoxClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Fox] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(ImpClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Imp] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(AvoClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [AVO] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(IbtClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [IBT] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(AnoClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [ANO] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(EsiClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [ESI] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(LxaClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [LXA] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(HaxClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Hax] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(EdnClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [EDN] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(IlqClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [ILQ] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1; 
-                                }else if(ErnClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [ERN] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1;
-                                }else if(TAqClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [TAq] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1;
-                                }else if(PhiClaim.indexOf(property) != -1){
-                                    missingTerrsAlly += `- [Phi] ${property} (${resText.territories[property].guild})  \n`
-                                    notOwnedAlly += 1;
-                                }
+                    regex1 = new RegExp(property, "g")
+                    if(missingTerrsAlly.search(regex1) == -1){
+                        if(terrs.territories[property] != null && terrs.territories[property] != "-"){
+                                missingTerrsAlly += `- [${terrs.territories[property]}] ${property} (${resText.territories[property].guild})  \n`
+                                notOwnedAlly += 1; 
 
                         }
-                }
-                    
-
-                   }
-                   if(FFAList.indexOf(property) != -1 && resText.territories[property].guild != "Paladins United"){
-                       missingFFAs += `- ${property} (${resText.territories[property].guild}) \n`
-                       notOwnedFFA += 1;
-                   }
+                    }
+                
+                
+               }else if((terrs.territories[property] == null || terrs.territories[property] == "-") && resText.territories[property].guild != "Paladins United"){
+                missingFFAs += `- ${property} (${resText.territories[property].guild}) \n`
+                notOwnedFFA += 1;
             }
-            
-    }
-    try{
-        if(sent == false && i >= list.length){
-            if (notOwned == 0){
-                terrEmbed = new Discord.RichEmbed()
-                .setColor('#582370')
-                .setTitle("Peace...")
-                .addField("We're not missing any territories." ,"Have a box of cookies.");
-                message.channel.send(terrEmbed)
-                sent = true
-            }else if(notOwned > 0 && notOwned <= 5){
-                terrEmbed = new Discord.RichEmbed()
-                    .setColor('#ffcc00')
-                    .setTitle("Get the man-o'-war ready!")
-                    .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs );
+            }    
+        }
+        try{
+            if(sent == false && i >= list.length){
+                if (notOwned == 0){
+                    terrEmbed = new Discord.RichEmbed()
+                    .setColor('#582370')
+                    .setTitle("Peace...")
+                    .addField("We're not missing any territories." ,"Have a box of cookies.");
                     message.channel.send(terrEmbed)
                     sent = true
-            }else if(notOwned > 5 && notOwned <= 10){
-                terrEmbed = new Discord.RichEmbed()
-                .setColor('#ff9d00')
-                .setTitle("Get the man-o'-war ready!")
-                .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs);
-                message.channel.send(terrEmbed)
-                sent = true
-            }else if(notOwned > 10 && notOwned <= 15){
-                terrEmbed = new Discord.RichEmbed()
-                    .setColor('#ff6f00')
+                }else if(notOwned > 0 && notOwned <= 5){
+                    terrEmbed = new Discord.RichEmbed()
+                        .setColor('#ffcc00')
+                        .setTitle("Get the man-o'-war ready!")
+                        .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs );
+                        message.channel.send(terrEmbed)
+                        sent = true
+                }else if(notOwned > 5 && notOwned <= 10){
+                    terrEmbed = new Discord.RichEmbed()
+                    .setColor('#ff9d00')
                     .setTitle("Get the man-o'-war ready!")
                     .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs);
                     message.channel.send(terrEmbed)
                     sent = true
-            }else if(notOwned > 15){
-                terrEmbed = new Discord.RichEmbed()
-                    .setColor('#ff000d')
-                    .setTitle("Get the man-o'-war ready!")
-                    .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs );
-                    message.channel.send(terrEmbed)
-                    sent = true
-        }
-        } 
-        if(sent2 == false && i>= list.length){
-            if (notOwnedAlly == 0){
-                terrAllyEmbed = new Discord.RichEmbed()
-                .setColor('#582370')
-                .setTitle("Peace for the whole alliance")
-                .addField("Our Allies are not missing any territories." ,"Have a box of cookies.");
-                message.channel.send(terrAllyEmbed)
-                sent2 = true
-            }else if(notOwnedAlly > 0 && notOwnedAlly <= 5){
-                terrAllyEmbed = new Discord.RichEmbed()
-                    .setColor('#ffcc00')
-                    .setTitle("Get the man-o'-war ready!")
-                    .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly );
+                }else if(notOwned > 10 && notOwned <= 15){
+                    terrEmbed = new Discord.RichEmbed()
+                        .setColor('#ff6f00')
+                        .setTitle("Get the man-o'-war ready!")
+                        .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs);
+                        message.channel.send(terrEmbed)
+                        sent = true
+                }else if(notOwned > 15){
+                    terrEmbed = new Discord.RichEmbed()
+                        .setColor('#ff000d')
+                        .setTitle("Get the man-o'-war ready!")
+                        .addField(`We're currently missing the following territories (${notOwned}):` , missingTerrs );
+                        message.channel.send(terrEmbed)
+                        sent = true
+            }
+            } 
+            if(sent2 == false && i>= list.length){
+                if (notOwnedAlly == 0){
+                    terrAllyEmbed = new Discord.RichEmbed()
+                    .setColor('#582370')
+                    .setTitle("Peace for the whole alliance")
+                    .addField("Our Allies are not missing any territories." ,"Have a box of cookies.");
                     message.channel.send(terrAllyEmbed)
                     sent2 = true
-            }else if(notOwnedAlly > 5 && notOwnedAlly <= 10){
-                terrAllyEmbed = new Discord.RichEmbed()
-                .setColor('#ff9d00')
-                .setTitle("Get the man-o'-war ready!")
-                .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly);
-                message.channel.send(terrAllyEmbed)
-                sent2 = true
-            }else if(notOwnedAlly > 10 && notOwnedAlly <= 15){
-                terrAllyEmbed = new Discord.RichEmbed()
-                    .setColor('#ff6f00')
+                }else if(notOwnedAlly > 0 && notOwnedAlly <= 5){
+                    terrAllyEmbed = new Discord.RichEmbed()
+                        .setColor('#ffcc00')
+                        .setTitle("Get the man-o'-war ready!")
+                        .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly );
+                        message.channel.send(terrAllyEmbed)
+                        sent2 = true
+                }else if(notOwnedAlly > 5 && notOwnedAlly <= 10){
+                    terrAllyEmbed = new Discord.RichEmbed()
+                    .setColor('#ff9d00')
                     .setTitle("Get the man-o'-war ready!")
                     .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly);
                     message.channel.send(terrAllyEmbed)
                     sent2 = true
-            }else if(notOwnedAlly > 15){
-                terrAllyEmbed = new Discord.RichEmbed()
-                    .setColor('#ff000d')
-                    .setTitle("Get the man-o'-war ready!")
-                    .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly );
-                    message.channel.send(terrAllyEmbed)
-                    sent2 = true
+                }else if(notOwnedAlly > 10 && notOwnedAlly <= 15){
+                    terrAllyEmbed = new Discord.RichEmbed()
+                        .setColor('#ff6f00')
+                        .setTitle("Get the man-o'-war ready!")
+                        .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly);
+                        message.channel.send(terrAllyEmbed)
+                        sent2 = true
+                }else if(notOwnedAlly > 15){
+                    terrAllyEmbed = new Discord.RichEmbed()
+                        .setColor('#ff000d')
+                        .setTitle("Get the man-o'-war ready!")
+                        .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):` , missingTerrsAlly );
+                        message.channel.send(terrAllyEmbed)
+                        sent2 = true
+            }
         }
-    }
-    if(sent3 == false && i>= list.length){
-        if (notOwnedFFA == 0){
-            ffaEmbed = new Discord.RichEmbed()
-            .setColor('#582370')
-            .setTitle("Peace ... - and also good xp gain!")
-            .addField("We're not missing any FFAs." ,"Have a box of cookies.");
-            message.channel.send(ffaEmbed)
-            sent3 = true
-        }else if(notOwnedFFA > 0 && notOwnedFFA <= 5){
-            ffaEmbed = new Discord.RichEmbed()
-                .setColor('#ffcc00')
-                .setTitle("Get the man-o'-war ready!")
-                .addField(`We're currently missing the following FFAs (${notOwnedFFA}):` , missingFFAs );
+        if(sent3 == false && i>= list.length){
+            if (notOwnedFFA == 0){
+                ffaEmbed = new Discord.RichEmbed()
+                .setColor('#582370')
+                .setTitle("Peace ... - and also good xp gain!")
+                .addField("We're not missing any FFAs." ,"Have a box of cookies.");
                 message.channel.send(ffaEmbed)
                 sent3 = true
-        }else if(notOwnedFFA > 5 && notOwnedFFA <= 10){
-            ffaEmbed = new Discord.RichEmbed()
-            .setColor('#ff9d00')
-            .setTitle("Get the man-o'-war ready!")
-            .addField(`We're currently missing the following FFAs (${notOwnedFFA}):` , missingFFAs);
-            message.channel.send(ffaEmbed)
-            sent3 = true
-        }else if(notOwnedFFA > 10 && notOwnedFFA <= 15){
-            ffaEmbed = new Discord.RichEmbed()
-                .setColor('#ff6f00')
+            }else if(notOwnedFFA > 0 && notOwnedFFA <= 5){
+                ffaEmbed = new Discord.RichEmbed()
+                    .setColor('#ffcc00')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`We're currently missing the following FFAs (${notOwnedFFA}):` , missingFFAs );
+                    message.channel.send(ffaEmbed)
+                    sent3 = true
+            }else if(notOwnedFFA > 5 && notOwnedFFA <= 10){
+                ffaEmbed = new Discord.RichEmbed()
+                .setColor('#ff9d00')
                 .setTitle("Get the man-o'-war ready!")
                 .addField(`We're currently missing the following FFAs (${notOwnedFFA}):` , missingFFAs);
                 message.channel.send(ffaEmbed)
                 sent3 = true
-        }else if(notOwnedFFA > 15){
-            ffaEmbed = new Discord.RichEmbed()
-                .setColor('#ff000d')
-                .setTitle("Get the man-o'-war ready!")
-                .addField(`We're currently missing the following FFAs (${notOwnedFFA}):` , missingFFAs );
-                message.channel.send(ffaEmbed)
-                sent3 = true
-    }
-    }
-        }catch(e){
-            console.log(e)
+            }else if(notOwnedFFA > 10 && notOwnedFFA <= 15){
+                ffaEmbed = new Discord.RichEmbed()
+                    .setColor('#ff6f00')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`We're currently missing the following FFAs (${notOwnedFFA}):` , missingFFAs);
+                    message.channel.send(ffaEmbed)
+                    sent3 = true
+            }else if(notOwnedFFA > 15){
+                ffaEmbed = new Discord.RichEmbed()
+                    .setColor('#ff000d')
+                    .setTitle("Get the man-o'-war ready!")
+                    .addField(`We're currently missing the following FFAs (${notOwnedFFA}):` , missingFFAs );
+                    message.channel.send(ffaEmbed)
+                    sent3 = true
         }
         }
+            }catch(e){
+                console.log(e)
+            }
+    }
+
+});
+
         }
         if(cmd == "subs"){
             if(args[0].match(/(Fox)/gi)){
@@ -1063,7 +659,6 @@ let yes = 0;
 let no = 0;
 let alreadyreactedYes = [];
 let alreadyreactedNo = [];
-var fs = require('fs');
 fs.appendFile('votes.json', "", function(err){
     if (err) throw err;
     console.log("File created!")

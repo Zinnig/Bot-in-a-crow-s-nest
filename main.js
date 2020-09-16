@@ -526,7 +526,16 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                 message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
-/*         let resText2 = "";
+        /*
+        function index(a, arr) {
+            for (var i=0; i<arr.length; i++) {
+            for (var j=0; j<arr[i].length; j++) {
+            if (arr[i][j] == a) { return i; }
+            }
+            }
+            return -1;
+        }
+      let resText2 = "";
         let names = [];
         let nameTime = [];
         if(cmd == "activity"){
@@ -547,35 +556,39 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                                 try{
                                 resTextUUID = JSON.parse(this.responseText);
                                 dashedUUID =  resTextUUID.id.substr(0,8)+"-"+resTextUUID.id.substr(8,4)+"-"+resTextUUID.id.substr(12,4)+"-"+resTextUUID.id.substr(16,4)+"-"+resTextUUID.id.substr(20);
-                                dashedUUIDs.push(dashedUUID);
+                                if(dashedUUIDs.indexOf(dashedUUID) == -1){
+                                    dashedUUIDs.push(dashedUUID);
+                                }
+                                //Getting the stats of the players.
+                                let resText3 = "";
+                                for(property in dashedUUIDs){
+                                    if(names.indexOf(dashedUUIDs[property]) == -1){
+                                        names.push(dashedUUIDs[property]);
+                                }
+                                    xml12 = new XMLHttpRequest();
+                                    xml12.open("GET", "https://api.wynncraft.com/v2/player/" + dashedUUIDs[property]+  "/stats");
+                                    xml12.onreadystatechange = function(){
+                                        if(this.status == 200){
+                                            try{
+                                                resText3 = JSON.parse(this.responseText);
+                                                if(index(resText3.data[0].username, nameTime) == -1){
+                                                    nameTime.push([resText3.data[0].username, resText3.data[0].meta.lastJoin])
+                                                console.table(nameTime)       
+                                            }
+                                            }catch(e){
+                                                //empty
+                                            }
+                                        }
+                                    }
+                                    xml12.send()
+                                }
                             }catch(e){
                                 //empty
                             }
                             }
                             xmlUUID.send();
                         }
-                        //Getting the stats of the players.
-                        let resText3 = "";
-                        for(property in dashedUUIDs){
-                            console.log("PStats")
-                            names.push(property);
-                            xml12 = new XMLHttpRequest();
-                            xml12.open("GET", "https://api.wynncraft.com/v2/player/" +resText2.members[property].name+  "/stats");
-                            xml12.onreadystatechange = function(){
-                                if(this.status == 200){
-                                    try{
-                                        resText3 = JSON.parse(this.responseText);
-                                        if(nameTime.indexOf([names[names.indexOf(resText3.data[0].uuid)], resText3.data[0].meta.lastJoin]) == -1){
-                                            nameTime.push([names[names.indexOf(resText3.data[0].username)], resText3.data[0].meta.lastJoin])
-                                    }
-                                    console.log(nameTime);
-                                    }catch(e){
-                                        //empty
-                                    }
-        }
-          }
-                        xml12.send()
-                    }
+                        
                     }catch(e){
                         //empty
                     }
@@ -585,6 +598,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
             xmlhttp1.send();
 
     }
+    /*
     if(cmd == "say"){
         if(message.author.id == '282964164358438922'){
             message.channel.send(args.join().replace(/,/g, " "));

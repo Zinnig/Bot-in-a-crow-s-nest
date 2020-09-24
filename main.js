@@ -83,8 +83,10 @@ let allyList = [
 "Odysseia",
 "HaHaUnited",
 "Ram Ranch",
-"BlueStoneGroup",
-"Hyacinthum",
+"Ombra",
+"Fluorine",
+"Lunatic",
+"Ex Nihilo",
 //Imperial
 "Imperial",
 "Metric",
@@ -110,6 +112,7 @@ let allyList = [
 "Kingdom Furries",
 "HeckForums",
 "Bruh Moment",
+"BoatForums",
 //Paladins United
 "Paladins United",
 "Meow",
@@ -130,15 +133,19 @@ let allyList = [
 //Lux Nova
 "Lux Nova",
 "Scat Club",
-"Golden Hour",
 "Luwu Nowo",
 //Eden
 "Eden",
 "Heresy",
+"Sinful",
 //Blue Nations United
 "FortniteKSI",
 "Byzantium",
 "IceBlue Fantasy",
+"Fantom Dreams",
+"BlueStoneGroup",
+"Hyacinthum",
+"hacsckgoruem",
 //Empire of Sindria
 "Empire of Sindria",
 "Sicko Mode",
@@ -174,8 +181,10 @@ let allyListTags = [
     "Oys",
     "HHU",
     "RMR",
-    "GSB",
-    "HCM",
+    "Omb",
+    "FNE",
+    "Mox",
+    "Nih",
     //Imperial
     "Imp",
     "Met",
@@ -201,6 +210,7 @@ let allyListTags = [
     "KFF",
     "Hux",
     "GJJ",
+    "Btx",
     //Paladins United
     "PUN",
     "Prr",
@@ -221,15 +231,19 @@ let allyListTags = [
     //Lux Nova
     "LXA",
     "LAX",
-    "GnH",
     "Luw",
     //Eden
     "EDN",
     "Rsy",
+    "Snu",
     //Blue Nations United
     "XDF",
     "TBE",
     "IBF",
+    "FII",
+    "GSB",
+    "HCM",
+    "tej",
     //Empire of Sindria
     "ESI",
     "SME",
@@ -537,7 +551,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
         }
       let resText2 = "";
         let names = [];
-        let nameTime = [];
+        let nameTime = [[]];
         if(cmd == "activity"){
             let xmlhttp1 = new XMLHttpRequest();
             xmlhttp1.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=Paladins%20United");
@@ -545,14 +559,17 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                 if(this.status == 200 && this.readyState == 4){
                     try{
                         resText2 = JSON.parse(this.responseText);
+                        
                         //Getting the UUID of the IGN
                         let resTextUUID = "";
                         let dashedUUID = "";
                         let dashedUUIDs = [];
+                        let i = 0;
                         for(property in resText2.members){
                             let xmlUUID = new XMLHttpRequest();
                             xmlUUID.open("GET", "https://mc-heads.net/minecraft/profile/" + resText2.members[property].name);
                             xmlUUID.onreadystatechange = function(){
+                                if(this.status == 200 && this.readyState == 4){
                                 try{
                                 resTextUUID = JSON.parse(this.responseText);
                                 dashedUUID =  resTextUUID.id.substr(0,8)+"-"+resTextUUID.id.substr(8,4)+"-"+resTextUUID.id.substr(12,4)+"-"+resTextUUID.id.substr(16,4)+"-"+resTextUUID.id.substr(20);
@@ -561,32 +578,37 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                                 }
                                 //Getting the stats of the players.
                                 let resText3 = "";
-                                for(property in dashedUUIDs){
-                                    if(names.indexOf(dashedUUIDs[property]) == -1){
-                                        names.push(dashedUUIDs[property]);
-                                }
+                                for(uuids in dashedUUIDs){
+                                    if(names.indexOf(dashedUUIDs[uuids]) == -1){
+                                        names.push(dashedUUIDs[uuids]);
+                                    }
                                     xml12 = new XMLHttpRequest();
-                                    xml12.open("GET", "https://api.wynncraft.com/v2/player/" + dashedUUIDs[property]+  "/stats");
-                                    xml12.onreadystatechange = function(){
-                                        if(this.status == 200){
+                                    xml12.open("GET", "https://api.wynncraft.com/v2/player/" + names[uuids]+  "/stats");
+                                    xml12.onreadystatechange = function(){0
+                                        i++;
+                                        if(this.status == 200 && this.readyState == 4){
                                             try{
                                                 resText3 = JSON.parse(this.responseText);
                                                 if(index(resText3.data[0].username, nameTime) == -1){
-                                                    nameTime.push([resText3.data[0].username, resText3.data[0].meta.lastJoin])
-                                                console.table(nameTime)       
-                                            }
+                                                    nameTime.push([resText3.data[0].username, resText3.data[0].meta.lastJoin]);
+                                                }
+                                                console.table(nameTime)
+                                                 
                                             }catch(e){
-                                                //empty
+                                                throw e
                                             }
                                         }
                                     }
                                     xml12.send()
                                 }
+                                
                             }catch(e){
                                 //empty
                             }
                             }
-                            xmlUUID.send();
+                            
+                        }
+                        xmlUUID.send();
                         }
                         
                     }catch(e){
@@ -598,7 +620,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
             xmlhttp1.send();
 
     }
-    /*
+    
     if(cmd == "say"){
         if(message.author.id == '282964164358438922'){
             message.channel.send(args.join().replace(/,/g, " "));

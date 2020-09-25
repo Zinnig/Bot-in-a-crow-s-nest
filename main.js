@@ -155,6 +155,7 @@ let allyList = [
 "The Aquarium",
 //Phantom Hearts
 "Phantom Hearts",
+"Grand Explorers",
 "Surprise",
 "Luna",
 "Jasmine Dragons",
@@ -311,7 +312,28 @@ var fs = require('fs');
  * LOADING: 200
  * DONE: 200
  */
-
+function isInJSON(ele, a){
+    for(property in a){
+        for(property2 in a[property]){
+            if(a[property][property2] == ele){
+                console.log("Success!")
+                }
+            }
+        }
+    }
+let returnStr;
+function makeSubGuildString(guildTag, a){
+        returnStr = "";
+    if(Object.keys(a["Subguilds"][guildTag]).length == 0){
+        returnStr = guildTag + " has no subguilds."
+}else{
+    returnStr = guildTag + " has the following subguilds: \n"
+    for(property in a["Subguilds"][guildTag]){
+        returnStr += `- [${a["Subguilds"][guildTag][property]}] ${property} \n`
+    }
+}
+return returnStr;
+}
 let guildtags =
 {
     "Paladins United": "PUN",
@@ -328,6 +350,120 @@ let guildtags =
     "Emorians": "ERN",
     "HackForums": "Hax",
 }
+let allyListJSON = {
+    "Artemis":{
+        "Paladins United": "PUN",
+        "Kingdom Foxes": "Fox",
+        "Imperial": "Imp",
+        "Phantom Hearts": "Phi",
+        "Lux Nova": "LXA",
+        "Titans Valor": "ANO",
+        "Eden": "EDN",
+        "IceBlue Team": "IBT",
+        "Empire of Sindria": "ESI",
+        "The Aquarium": "TAq",
+        "Avicia": "AVO",
+        "Emorians": "ERN",
+        "HackForums": "Hax",
+    },
+    "Cooperating":{
+        "House of Sentinels": "Snt",
+        "The Simple Ones": "ILQ",
+    },
+    "Neutral":{
+        "Vindicator": "VMZ",
+    },
+    "Other Allies":{
+        "Kangronomicon": "Fuq",
+    },
+    "Subguilds":{
+        "PUN": {
+            "Meow": "Prr",
+            "Pirates Divided": "PiD",
+            "Rat Gang": "RGX",
+        },
+        "Fox": {
+            "Ombra": "Omb",
+            "Fluorine": "FNE",
+            "I Corps": "LFX",
+            "Panic": "PaN",
+            "Fluffy Unicorns": "FuI",
+            "Project Ultimatum": "PxU",
+            "Lunatic": "Mox",
+            "Ex Nihilo": "Nih",
+            "Odysseia": "Oys",
+            "HaHaUnited": "HHU",
+            "Ram Ranch": "RMR",
+        },
+        "Imp": {
+            "Metric": "Met",
+            "Minerva": "Min",
+            "Terra Steel": "KLA",
+            "Kolibri": "KLI",
+            "House of Sentinels": "Snt",
+            "EPIcFORTNITEgAY": "lMP",
+            "Germany FTW": "BKP",
+            "Squad Zero": "SdZ",
+            "jerf": "jrf",
+        },
+        "Phi":{
+            "Grand Explorers": "GrE",
+            "Surprise": "FUU",
+            "Luna": "Lox",
+            "Jasmine Dragons": "JsD",
+            "Fraternal Fire": "FFi",
+            "Gaming": "UcU",
+            "Phantom Menace": "UUF",
+        },
+        "LXA": {
+            "Join Lux Nova": "JXA",
+            "Luwu Nowo": "Luw",
+        },
+        "ANO": {
+            "Tartaros": "JNC",
+            "Seekers of Arx": "ARX",
+            "The Tempest": "Txp",
+            "Ice Babies": "IcB",
+            "Exorcism": "xsm",
+        },
+        "EDN": {
+            "Heresy": "Rsy",
+            "Sinful": "Snu",
+        },
+        "BNU": {
+            "Fantom Dreams": "FII",
+            "Hyacinthum": "HCM",
+            "FortniteKSI": "XDF",
+            "BlueStoneGroup": "GSB",
+            "Byzantium": "TBE",
+            "IceBlue Fantasy": "IBF",
+            "hacsckgoruem": "tej",
+
+        },
+        "ESI": {},
+        "TAq": {},
+        "AVO": {
+            "Invicta": "IVA",
+            "Time for Pizza": "VFN",
+            "Stud Squad": "STQ",
+            "Avocados": "JML",
+            "Afishia": "AVF",
+            "Ivory Tusk": "IVT",
+        },
+        "ERN": {
+            "Audux": "uxu",
+            "Mute Gang": "VCT",
+            "Toemorians": "VHT"
+        },
+        "Hax": {
+            "vape god": "vpe",
+            "Kingdom Furries": "KFF",
+            "HeckForums": "Hux",
+            "Bruh Moment": "GJJ",
+            "BoatForums": "Btx",
+        },
+    }
+}
 let terrs;
 fs.readFile("Map.json", 'utf8', function(err, data){
     if(err) throw err;
@@ -342,6 +478,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
         if(this.status == 200){
             try{
                 resText = JSON.parse(this.responseText);
+                
             }catch(e){
                 //empty
             }
@@ -352,16 +489,16 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                    if(resText.territories[property].guild != "Paladins United"){
                        regex = new RegExp(property, "g")
                        if(missingTerrs.search(regex) == -1){
-                           if(allyList.indexOf(resText.territories[property].guild) == -1){
+                           if(isInJSON(resText.territories[property].guild, allyListJSON) == -1){
                                 missingTerrs += `- ${property} (${resText.territories[property].guild})  \n `;
                                 notOwned += 1;
-                            }else if(allyList.indexOf(resText.territories[property].guild) != -1){
+                            }else if(isInJSON(resText.territories[property].guild, allyListJSON) != -1){
                                 missingTerrs += `- [Ally] ${property} (${resText.territories[property].guild})  \n`;
                                 notOwned += 1;
                             }
                        }
                     }
-                }else if(allyList.indexOf(resText.territories[property].guild) == -1){
+                }else if(isInJSON(resText.territories[property].guild, allyListJSON) == -1){
                     regex1 = new RegExp(property, "g")
                     if(missingTerrsAlly.search(regex1) == -1){
                         if(terrs.territories[property] != null && terrs.territories[property] != "-"){
@@ -503,7 +640,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
         }
         if(cmd == "subs"){
             if(args[0].match(/(Fox)/gi)){
-                message.channel.send("Fox has the following subguilds: \n- [FNE] Fluorine \n- [LFX] I Corps \n- [PaN] Panic \n- [FuI] Fluffy Unicorns \n- [PxU] Project Ultimatum \n- [Oys] Odysseia \n- [HHU] HaHaUnited \n- [RMR] Ram Ranch \n- [GSB] BlueStoneGroup \n- [HCM] Hyacinthum ")
+                message.channel.send(makeSubGuildString("Fox", allyListJSON))
             }else if(args[0].match(/(Imp)/gi)){
                 message.channel.send("Imp has the following subguilds: \n- [Met] Metric \n- [Min] Minerva \n- [KLA] Terra Steel \n- [KLI] Kolibri \n- [Snt] House of Sentinels \n- [lMP] EPIcFORTNITEgAY \n- [BKP] Germany FTW \n- [SdZ] Squad Zero \n- [jrf] jerf")
             }else if(args[0].match(/(AVO)/gi)){

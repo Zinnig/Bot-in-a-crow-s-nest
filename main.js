@@ -72,284 +72,6 @@ client.on("message", async message => {
 "Corkus Forest South", "Corkus Mountain", "Corkus Outskirts", "Corkus Sea Cove", "Corkus Sea Port", 
 "Durum Isles Center", "Fallen Factory", "Factory Entrance", "Legendary Island", "Southern Outpost", 
 "Statue", "Corkus Abandoned Tower", "Road To Mine", "Ruined Houses", "Phinas Farm", "Lighthouse Plateau"]
-let allyList = [
-/**ARTEMIS */
-//Kingdom Foxes
-"Kingdom Foxes",
-"I Corps",
-"Panic",
-"Fluffy Unicorns",
-"Project Ultimatum",
-"Odysseia",
-"HaHaUnited",
-"Ram Ranch",
-"Ombra",
-"Fluorine",
-"Lunatic",
-"Ex Nihilo",
-//Imperial
-"Imperial",
-"Metric",
-"Minerva",
-"Terra Steel",
-"Kolibri",
-"House of Sentinels",
-"EPIcFORTNITEgAY",
-"Germany FTW",
-"Squad Zero",
-"jerf",
-//Avicia
-"Avicia",
-"Invicta",
-"Time for Pizza",
-"Stud Squad",
-"Avocados",
-"Ivory Tusk",
-"Afishia",
-//HackForums
-"HackForums",
-"vape god",
-"Kingdom Furries",
-"HeckForums",
-"Bruh Moment",
-"BoatForums",
-//Paladins United
-"Paladins United",
-"Meow",
-"Pirates Divided",
-"Rat Gang",
-//Titans Valor
-"Titans Valor",
-"Seekers of Arx",
-"The Tempest",
-"IceBabies",
-"Exorcism",
-"Tartaros",
-//Emorians
-"Emorians",
-"Audux",
-"Mute Gang",
-"Toemorians",
-//Lux Nova
-"Lux Nova",
-"Scat Club",
-"Luwu Nowo",
-//Eden
-"Eden",
-"Heresy",
-"Sinful",
-//Blue Nations United
-"FortniteKSI",
-"Byzantium",
-"IceBlue Fantasy",
-"Fantom Dreams",
-"BlueStoneGroup",
-"Hyacinthum",
-"hacsckgoruem",
-//Empire of Sindria
-"Empire of Sindria",
-"Sicko Mode",
-//Ice Blue Team
-"IceBlue Team",
-//The Aquarium
-"The Aquarium",
-//Phantom Hearts
-"Phantom Hearts",
-"Grand Explorers",
-"Surprise",
-"Luna",
-"Jasmine Dragons",
-"Fraternal Fire",
-"Gaming",
-"Phantom Menace",
-//*Cooperating */
-"House of Sentinels",
-"Seekers of Arx",
-"The Simple Ones",
-//**NEUTRAL */
-"Vindicator",
-//**OTHER ALLIES **/
-"Kangronomicon"
-]
-let allyListTags = [
-        /**ARTEMIS */
-    //Kingdom Foxes
-    "Fox",
-    "LFX",
-    "PaN",
-    "FuI",
-    "PxU",
-    "Oys",
-    "HHU",
-    "RMR",
-    "Omb",
-    "FNE",
-    "Mox",
-    "Nih",
-    //Imperial
-    "Imp",
-    "Met",
-    "Min",
-    "KLA",
-    "KLI",
-    "Snt",
-    "lMP",
-    "BKP",
-    "SdZ",
-    "jrf",
-    //Avicia
-    "AVO",
-    "IVA",
-    "VFN",
-    "STQ",
-    "JML",
-    "AVF",
-    "IVT",
-    //HackForums
-    "Hax",
-    "vpe",
-    "KFF",
-    "Hux",
-    "GJJ",
-    "Btx",
-    //Paladins United
-    "PUN",
-    "Prr",
-    "PiD",
-    "RGX",
-    //Titans Valor
-    "ANO",
-    "Arx",
-    "Txp",
-    "IcB",
-    "xsm",
-    "JNC",
-    //Emorians
-    "ERN",
-    "uxu",
-    "VCT",
-    "VHT",
-    //Lux Nova
-    "LXA",
-    "LAX",
-    "Luw",
-    //Eden
-    "EDN",
-    "Rsy",
-    "Snu",
-    //Blue Nations United
-    "XDF",
-    "TBE",
-    "IBF",
-    "FII",
-    "GSB",
-    "HCM",
-    "tej",
-    //Empire of Sindria
-    "ESI",
-    "SME",
-    //Ice Blue Team
-    "IBT",
-    //The Aquarium
-    "TAq",
-    //Phantom Hearts
-    "Phi",
-    "GrE",
-    "FUU",
-    "Lox",
-    "JsD",
-    "FFi",
-    "UcU",
-    "UUF",
-    //**Cooperating**
-    "Snt",
-    "ARX",
-    "ILQ",
-    //NEUTRAL
-    "VMZ",
-    //Other allies
-    "Fuq"
-]
-let resText = "";
-let missingTerrs = "";
-let missingTerrsAlly = "";
-let missingFFAs = "";
-let sent = false;
-let sent2 = false;
-let sent3 = false;
-let notOwned = 0;
-let notOwnedAlly = 0;
-let notOwnedFFA = 0;
-let i = 0;
-
-function setupTimeDiff(diff){
-    days = Math.floor(diff/(24*60*60*1000))
-    hours = Math.floor((diff - days*(24*60*60*1000))/(60*60*1000))
-    minutes = Math.floor((diff - days*(24*60*60*1000) - hours*(60*60*1000))/(60*1000))
-    seconds = Math.floor(diff - days*(24*60*60*1000) - hours*(60*60*1000) - minutes*(60*1000))/1000
-
-    if(days == 0 && hours == 0 && minutes < 3){
-        return `on Cooldown (${minutes > 0? minutes + "min:": ""}${seconds > 0? seconds + "s:": ""}s left)`
-    }else{
-        return `${days > 0? days +"d:": ""}${hours > 0? hours + "h:": ""}${minutes > 0? minutes +"min:": ""}${seconds > 0? seconds +"s": ""}`;
-    }
-}
-var fs = require('fs');
-    if(cmd === "war"){
-        notOwned = 0;
-        sent = false;
-        /**
- * ReadyState:
- * 0 	UNSENT 	Client has been created. open() not called yet.
- * 1 	OPENED 	open() has been called.
- * 2 	HEADERS_RECEIVED 	send() has been called, and headers and status are available.
- * 3 	LOADING 	Downloading; responseText holds partial data.
- * 4 	DONE 	The operation is complete.
- * Status:
- *
- * UNSENT: 0
- * OPENED: 0
- * LOADING: 200
- * DONE: 200
- */
-function isInJSON(ele, a){
-    for(property in a){
-        for(property2 in a[property]){
-            if(a[property][property2] == ele){
-                console.log("Success!")
-                }
-            }
-        }
-    }
-let returnStr;
-function makeSubGuildString(guildTag, a){
-        returnStr = "";
-    if(Object.keys(a["Subguilds"][guildTag]).length == 0){
-        returnStr = guildTag + " has no subguilds."
-}else{
-    returnStr = guildTag + " has the following subguilds: \n"
-    for(property in a["Subguilds"][guildTag]){
-        returnStr += `- [${a["Subguilds"][guildTag][property]}] ${property} \n`
-    }
-}
-return returnStr;
-}
-let guildtags =
-{
-    "Paladins United": "PUN",
-    "Kingdom Foxes": "Fox",
-    "Imperial": "Imp",
-    "Phantom Hearts": "Phi",
-    "Lux Nova": "LXA",
-    "Titans Valor": "ANO",
-    "Eden": "EDN",
-    "IceBlue Team": "IBT",
-    "Empire of Sindria": "ESI",
-    "The Aquarium": "TAq",
-    "Avicia": "AVO",
-    "Emorians": "ERN",
-    "HackForums": "Hax",
-}
 let allyListJSON = {
     "Artemis":{
         "Paladins United": "PUN",
@@ -463,6 +185,75 @@ let allyListJSON = {
             "BoatForums": "Btx",
         },
     }
+}
+let resText = "";
+let missingTerrs = "";
+let missingTerrsAlly = "";
+let missingFFAs = "";
+let sent = false;
+let sent2 = false;
+let sent3 = false;
+let notOwned = 0;
+let notOwnedAlly = 0;
+let notOwnedFFA = 0;
+let i = 0;
+
+function setupTimeDiff(diff){
+    days = Math.floor(diff/(24*60*60*1000))
+    hours = Math.floor((diff - days*(24*60*60*1000))/(60*60*1000))
+    minutes = Math.floor((diff - days*(24*60*60*1000) - hours*(60*60*1000))/(60*1000))
+    seconds = Math.floor(diff - days*(24*60*60*1000) - hours*(60*60*1000) - minutes*(60*1000))/1000
+
+    if(days == 0 && hours == 0 && minutes < 3){
+        return `on Cooldown (${minutes > 0? minutes + "min:": ""}${seconds > 0? seconds + "s:": ""}s left)`
+    }else{
+        return `${days > 0? days +"d:": ""}${hours > 0? hours + "h:": ""}${minutes > 0? minutes +"min:": ""}${seconds > 0? seconds +"s": ""}`;
+    }
+}
+var fs = require('fs');
+    if(cmd === "war"){
+        notOwned = 0;
+        sent = false;
+        /**
+ * ReadyState:
+ * 0 	UNSENT 	Client has been created. open() not called yet.
+ * 1 	OPENED 	open() has been called.
+ * 2 	HEADERS_RECEIVED 	send() has been called, and headers and status are available.
+ * 3 	LOADING 	Downloading; responseText holds partial data.
+ * 4 	DONE 	The operation is complete.
+ * Status:
+ *
+ * UNSENT: 0
+ * OPENED: 0
+ * LOADING: 200
+ * DONE: 200
+ */
+function isInJSON(ele, a){
+    for(property in a){
+        for(property2 in a[property]){
+            if(a[property][property2] == ele){
+                console.log("Success!")
+                }
+            }
+        }
+    }
+let returnStr;
+
+let guildtags =
+{
+    "Paladins United": "PUN",
+    "Kingdom Foxes": "Fox",
+    "Imperial": "Imp",
+    "Phantom Hearts": "Phi",
+    "Lux Nova": "LXA",
+    "Titans Valor": "ANO",
+    "Eden": "EDN",
+    "IceBlue Team": "IBT",
+    "Empire of Sindria": "ESI",
+    "The Aquarium": "TAq",
+    "Avicia": "AVO",
+    "Emorians": "ERN",
+    "HackForums": "Hax",
 }
 let terrs;
 fs.readFile("Map.json", 'utf8', function(err, data){
@@ -639,30 +430,42 @@ fs.readFile("Map.json", 'utf8', function(err, data){
 
         }
         if(cmd == "subs"){
+            function makeSubGuildString(guildTag, a){
+                returnStr = "";
+            if(Object.keys(a["Subguilds"][guildTag]).length == 0){
+                returnStr = guildTag + " has no subguilds."
+        }else{
+            returnStr = guildTag + " has the following subguilds: \n"
+            for(property in a["Subguilds"][guildTag]){
+                returnStr += `- [${a["Subguilds"][guildTag][property]}] ${property} \n`
+            }
+        }
+        return returnStr;
+        }
             if(args[0].match(/(Fox)/gi)){
                 message.channel.send(makeSubGuildString("Fox", allyListJSON))
             }else if(args[0].match(/(Imp)/gi)){
-                message.channel.send("Imp has the following subguilds: \n- [Met] Metric \n- [Min] Minerva \n- [KLA] Terra Steel \n- [KLI] Kolibri \n- [Snt] House of Sentinels \n- [lMP] EPIcFORTNITEgAY \n- [BKP] Germany FTW \n- [SdZ] Squad Zero \n- [jrf] jerf")
+                message.channel.send(makeSubGuildString("Imp", allyListJSON))
             }else if(args[0].match(/(AVO)/gi)){
-                message.channel.send("AVO has the following subguilds: \n- [IVA] Invicta \n- [VFN] Time for Pizza \n- [STQ] Stud Squad \n- [JML] Avocados \n- [IVT] Ivory Tusk \n- [AVF] Afishia")
+                message.channel.send(makeSubGuildString("AVO", allyListJSON))
             }else if(args[0].match(/(BNU)/gi)){
-                message.channel.send("BNU has the following subguilds: \n- [XDF] FortniteKSI\n- [TBE] Byzantium \n- [IBF] IceBlue Fantasy\n- [GSB] BlueStoneGroup \n- [HCM] Hyacinthum")
+                message.channel.send(makeSubGuildString("BNU", allyListJSON))
             }else if(args[0].match(/(EDN)/gi)){
-                message.channel.send("EDN has the following subguilds: \n- [Rsy] Heresy")
+                message.channel.send(makeSubGuildString("EDN", allyListJSON))
             }else if(args[0].match(/(ESI)/gi)){
-                message.channel.send("ESI has the following subguilds: \n- [SME] Sicko Mode")
+                message.channel.send(makeSubGuildString("ESI", allyListJSON))
             }else if(args[0].match(/(Hax)/gi)){
-                message.channel.send("Hax has the following subguilds: \n- [vpe] vape god \n- [KFF] Kingdom Furries \n- [Hux] HeckForums \n- [GJJ] Bruh Moment")
+                message.channel.send(makeSubGuildString("Hax", allyListJSON))
             }else if(args[0].match(/(LXA)/gi)){
-                message.channel.send("LXA has the following subguilds: \n- [LAX] Scat Club \n- [GnH] Golden Hour\n- [Luw] Luwu Nowo")
+                message.channel.send(makeSubGuildString("LXA", allyListJSON))
             }else if(args[0].match(/(PUN)/gi)){
-                message.channel.send("PUN has the following subguilds: \n- [Prr] Meow \n- [PiD] Pirates Divided \n- [RGX] Rat Gang \n- [PAF] PaladinForums")
+                message.channel.send(makeSubGuildString("PUN", allyListJSON))
             }else if(args[0].match(/(ANO)/gi)){
-                message.channel.send("ANO has the following subguilds: \n- [ARX] Seekers of Arx \n- [Txp] The Tempest \n- [IcB] Ice Babies \n- [xsm] Exorcism\n- [JNC] Tartaros")
+                message.channel.send(makeSubGuildString("ANO", allyListJSON))
             }else if(args[0].match(/(ERN)/gi)){
-                message.channel.send("ERN has the following subguilds: \n- [uxu] Adux \n- [VCT] Mute Gang \n- [VHT] Toemorians");
+                message.channel.send(makeSubGuildString("ERN", allyListJSON))
             }else if(args[0].match(/(Phi)/gi)){
-                message.channel.send("Phi has the following subguilds: \n- [GrE] Grand Explorers \n- [FUU] Surprise \n- [Lox] Lun \n- [JsD] Jasmine Dragons \n- [FFi] Fraternal Fire \nTechnically Sub-Guilds: \n- [UcU] Gaming \n- [UUF] Phantom Menace")
+                message.channel.send(makeSubGuildString("Phi", allyListJSON))
             }else{
                 message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
             }
@@ -677,7 +480,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                 message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
-        /*
+        
         function index(a, arr) {
             for (var i=0; i<arr.length; i++) {
             for (var j=0; j<arr[i].length; j++) {
@@ -771,7 +574,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
             vc.join()
         }
     }
-        
+     /*   
 let JSONdata;
 fs.readFile('votes.json', 'utf8', function(err, data){
     if(err) throw err;

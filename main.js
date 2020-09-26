@@ -298,7 +298,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                             }
                        }
                     }
-                }else if(terrs.territories[property] != null && terrs.territories[property] != "-"){
+                }else if(allyList.indexOf(resText.territories[property].guild) == -1 && terrs.territories[property] != null && terrs.territories[property] != "-"){
                     regex1 = new RegExp(property, "g")
                     if(missingTerrsAlly.search(regex1) == -1){                      
                                 missingTerrsAlly += `- [${terrs.territories[property]}] ${property} (${resText.territories[property].guild})  \n`

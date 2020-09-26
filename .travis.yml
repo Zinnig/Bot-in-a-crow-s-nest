@@ -10,3 +10,6 @@ install:
   
 script:
  - npm run test:elint
+ 
+ notifications:
+  webhooks: http://your-domain.com/notifications

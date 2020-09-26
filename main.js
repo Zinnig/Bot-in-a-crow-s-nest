@@ -268,7 +268,9 @@ fs.readFile("Map.json", 'utf8', function(err, data){
     map = data
     try{
         terrs = JSON.parse(data);
-        }catch(e){}
+        }catch(e){
+            //empty
+        }
         let xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", "https://api.wynncraft.com/public_api.php?action=territoryList");
     xmlhttp.send(); 
@@ -296,14 +298,12 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                             }
                        }
                     }
-                }else if(allyList.indexOf(resText.territories[property].guild) == -1){
+                }else if(terrs.territories[property] != null && terrs.territories[property] != "-"){
                     regex1 = new RegExp(property, "g")
-                    if(missingTerrsAlly.search(regex1) == -1){
-                        if(terrs.territories[property] != null && terrs.territories[property] != "-"){
+                    if(missingTerrsAlly.search(regex1) == -1){                      
                                 missingTerrsAlly += `- [${terrs.territories[property]}] ${property} (${resText.territories[property].guild})  \n`
                                 notOwnedAlly += 1; 
 
-                        }
                     }
                 
                 
@@ -436,8 +436,8 @@ fs.readFile("Map.json", 'utf8', function(err, data){
 });
 
         }
+        let returnStr;
         if(cmd == "subs"){
-            let returnStr;
             function makeSubGuildString(guildTag, a){
                 returnStr = "";
             if(Object.keys(a["Subguilds"][guildTag]).length == 0){

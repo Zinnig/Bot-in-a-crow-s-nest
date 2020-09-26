@@ -12,4 +12,4 @@ script:
  - npm run test:elint
  
  notifications:
-  webhooks: http://your-domain.com/notifications
+  webhooks: https://ptb.discordapp.com/api/webhooks/759436309470773258/WOixQkiFKMxLqDH7PksVIDuPbfCXs8jYMjYg30DzPtmVB5iON_BPMPD97Tx--b8OBPZN

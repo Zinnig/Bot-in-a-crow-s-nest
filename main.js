@@ -436,20 +436,20 @@ fs.readFile("Map.json", 'utf8', function(err, data){
 });
 
         }
-        let returnStr;
+let returnStr;
+function makeSubGuildString(guildTag, a){
+    returnStr = "";
+if(Object.keys(a["Subguilds"][guildTag]).length == 0){
+    returnStr = guildTag + " has no subguilds."
+    }else{
+        returnStr = guildTag + " has the following subguilds: \n"
+        for(property in a["Subguilds"][guildTag]){
+            returnStr += `- [${a["Subguilds"][guildTag][property]}] ${property} \n`
+        }
+    }
+    return returnStr;
+    }
         if(cmd == "subs"){
-            function makeSubGuildString(guildTag, a){
-                returnStr = "";
-            if(Object.keys(a["Subguilds"][guildTag]).length == 0){
-                returnStr = guildTag + " has no subguilds."
-        }else{
-            returnStr = guildTag + " has the following subguilds: \n"
-            for(property in a["Subguilds"][guildTag]){
-                returnStr += `- [${a["Subguilds"][guildTag][property]}] ${property} \n`
-            }
-        }
-        return returnStr;
-        }
             if(args[0].match(/(Fox)/gi)){
                 message.channel.send(makeSubGuildString("Fox", allyListJSON))
             }else if(args[0].match(/(Imp)/gi)){

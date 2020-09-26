@@ -210,6 +210,23 @@ function setupTimeDiff(diff){
         return `${days > 0? days +"d:": ""}${hours > 0? hours + "h:": ""}${minutes > 0? minutes +"min:": ""}${seconds > 0? seconds +"s": ""}`;
     }
 }
+let output = [];
+let includeList = ["Artemis", "Cooperating", "Neutral", "Other Allies"]
+function makeAllyList(){
+    includeList.forEach(function(elem){
+        for(property2 in allyListJSON[elem]){
+    if(output.indexOf(property2) == -1){
+            output.push(property2)
+            }
+        }
+    })
+    for(property in allyListJSON["Subguilds"]){
+        for(property3 in allyListJSON["Subguilds"][property]){
+            output.push(property3)
+            }
+        }
+    return output;
+    }
 var fs = require('fs');
     if(cmd === "war"){
         notOwned = 0;
@@ -228,16 +245,6 @@ var fs = require('fs');
  * LOADING: 200
  * DONE: 200
  */
-function isInJSON(ele, a){
-    for(property in a){
-        for(property2 in a[property]){
-            if(a[property][property2] == ele){
-                console.log("Success!")
-                }
-            }
-        }
-    }
-let returnStr;
 
 let guildtags =
 {
@@ -273,23 +280,23 @@ fs.readFile("Map.json", 'utf8', function(err, data){
             }catch(e){
                 //empty
             }
-
+            let allyList = makeAllyList();
             for(property in resText.territories){
                 if(terrs.territories[property] == "PUN"){
                     i+=1;
                    if(resText.territories[property].guild != "Paladins United"){
                        regex = new RegExp(property, "g")
                        if(missingTerrs.search(regex) == -1){
-                           if(isInJSON(resText.territories[property].guild, allyListJSON) == -1){
+                           if(allyList.indexOf(resText.territories[property].guild) == -1){
                                 missingTerrs += `- ${property} (${resText.territories[property].guild})  \n `;
                                 notOwned += 1;
-                            }else if(isInJSON(resText.territories[property].guild, allyListJSON) != -1){
+                            }else if(allyList.indexOf(resText.territories[property].guild) != -1){
                                 missingTerrs += `- [Ally] ${property} (${resText.territories[property].guild})  \n`;
                                 notOwned += 1;
                             }
                        }
                     }
-                }else if(isInJSON(resText.territories[property].guild, allyListJSON) == -1){
+                }else if(allyList.indexOf(resText.territories[property].guild) == -1){
                     regex1 = new RegExp(property, "g")
                     if(missingTerrsAlly.search(regex1) == -1){
                         if(terrs.territories[property] != null && terrs.territories[property] != "-"){
@@ -430,6 +437,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
 
         }
         if(cmd == "subs"){
+            let returnStr;
             function makeSubGuildString(guildTag, a){
                 returnStr = "";
             if(Object.keys(a["Subguilds"][guildTag]).length == 0){
@@ -470,7 +478,23 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                 message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
             }
         }
-        if(cmd == "caniattack"){
+        let output1 = [];
+        let listA = ["Artemis", "Cooperating", "Neutral", "Other Allies"]
+        function makeAllyTagList(){
+            listA.forEach(function(elem){
+                for(property in allyListJSON[elem]){
+                    output1.push(allyListJSON[elem][property])
+                }
+            })
+            for(property2 in allyListJSON["Subguilds"]){
+                for(property3 in allyListJSON["Subguilds"][property2])
+                    output1.push(allyListJSON["Subguilds"][property2][property3])
+                    }
+            return output1
+        }
+        if(cmd == "caniattack"){ 
+            let allyListTags = makeAllyTagList();
+            allyList = makeAllyList();          
             var upperCaseNames = allyListTags.map(function(value) {
                 return value.toUpperCase();
               });
@@ -480,7 +504,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
                 message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
             }
         }
-        
+     /*   
         function index(a, arr) {
             for (var i=0; i<arr.length; i++) {
             for (var j=0; j<arr[i].length; j++) {
@@ -574,7 +598,7 @@ fs.readFile("Map.json", 'utf8', function(err, data){
             vc.join()
         }
     }
-     /*   
+       
 let JSONdata;
 fs.readFile('votes.json', 'utf8', function(err, data){
     if(err) throw err;

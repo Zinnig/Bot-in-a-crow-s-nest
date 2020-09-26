@@ -11,5 +11,11 @@ install:
 script:
  - npm run test:elint
  
- notifications:
-  webhooks: https://ptb.discordapp.com/api/webhooks/759436309470773258/WOixQkiFKMxLqDH7PksVIDuPbfCXs8jYMjYg30DzPtmVB5iON_BPMPD97Tx--b8OBPZN
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL

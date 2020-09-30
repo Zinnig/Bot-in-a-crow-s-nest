@@ -500,7 +500,7 @@ client.on("message", async message => {
     let recruitString = "";
     let e = 1;
     if (cmd == "timeinguild") {
-        let = args.join().replace(/,/, " ");
+        let input = args.join().replace(/,/, " ");
         let now = Date.now()
         xmlTime = new XMLHttpRequest();
         xmlTime.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + input);
@@ -588,6 +588,7 @@ client.on("message", async message => {
         }
         return -1;
     }
+    /*
     let gList = [[]]
     function guildList(str) {
         for (i = 1; i <= inputStats.match(/#/g).length; i++) {

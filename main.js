@@ -474,6 +474,8 @@ function errorResponse(type, extraInfo){
             message.channel.send(makeSubGuildString("ERN", allyListJSON))
         } else if (args[0].match(/(Phi)/gi)) {
             message.channel.send(makeSubGuildString("Phi", allyListJSON))
+        }else if (args[0].match(/(TNL)/gi)){
+            message.channel.send(makeSubGuildString("TNL", allyListJSON))
         } else {
             message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
         }

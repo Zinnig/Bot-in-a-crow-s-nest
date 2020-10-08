@@ -31,6 +31,14 @@ client.on("ready", () => {
     }, 1000);
 
 });
+function index(a, arr) {
+    for (var i = 0; i < arr.length; i++) {
+        for (var j = 0; j < arr[i].length; j++) {
+            if (arr[i][j] == a) { return i; }
+        }
+    }
+    return -1;
+}
 client.on("message", async message => {
     const prefix = process.env.prefix;
 
@@ -515,7 +523,7 @@ function errorResponse(type, extraInfo){
     let captainString = "";
     let recruiterString = "";
     let recruitString = "";
-    let e = 1;
+    let e = 0;
     if (cmd == "timeinguild") {
         let input = args.join().replace(/,/, " ");
         let now = Date.now()
@@ -578,7 +586,7 @@ function errorResponse(type, extraInfo){
                                                     "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "``` " : "Error");
                                 }
                             } else {
-                                timeEmbed.addField(chiefString == rankStrings[property] ? "Chiefs" : captainString == rankStrings[property] ? "Captains" : recruiterString == rankStrings[property] ? "Recruiters" : recruitString == rankStrings[property] ? "Recruiters" : "Error", chiefString == rankStrings[property] ? "```" + chiefString + "```" : captainString == rankStrings[property] ? "```" + captainString + "```" : recruiterString == rankStrings[property] ? "```" + recruiterString + "```" : recruitString == rankStrings[property] ? "```" + recruitString + "```" : "Error");
+                                timeEmbed.addField(chiefString == rankStrings[property] ? "Chiefs" : captainString == rankStrings[property] ? "Captains" : recruiterString == rankStrings[property] ? "Recruiters" : recruitString == rankStrings[property] ? "Recruits" : "Error", chiefString == rankStrings[property] ? "```" + chiefString + "```" : captainString == rankStrings[property] ? "```" + captainString + "```" : recruiterString == rankStrings[property] ? "```" + recruiterString + "```" : recruitString == rankStrings[property] ? "```" + recruitString + "```" : "Error");
                             }
                         }
                         if (sentTime == false) {
@@ -597,14 +605,48 @@ function errorResponse(type, extraInfo){
         xmlTime.send();
     }
 
-    function index(a, arr) {
-        for (var i = 0; i < arr.length; i++) {
-            for (var j = 0; j < arr[i].length; j++) {
-                if (arr[i][j] == a) { return i; }
-            }
+  /*  
+    //RoleName, Emoji, Title ... (with spaces)
+    if(cmd == "reactionroles"){ 
+        if(args.length < 3) message.channel.send(errorResponse("wrongargs", "MANAGE_GUILD"))
+        if(message.member.hasPermission("MANAGE_GUILD")){
+            let reactionEmbed = new Discord.RichEmbed()
+            .setColor("#ABCDEF")
+            .setTitle(args.slice(2).toString().replace(/,/g, " "))
+            .setDescription(args[1])
+            message.channel.send(reactionEmbed).then((message) => {
+                message.react(args[1].replace(">", ""))
+                let xmlReactionGET = new XMLHttpRequest();
+                xmlReactionGET.open("GET", process.env.reactionURL)
+                xmlReactionGET.setRequestHeader("Content-Type", "application/json");
+                xmlReactionGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                xmlReactionGET.setRequestHeader("versioning", false)
+                xmlReactionGET.onreadystatechange = function(){
+                    console.log(this.status)
+                    if(this.status == 200 && this.readyState == 4){
+                        try{
+                            resTextReaction = JSON.parse(this.responseText);
+                            resTextReaction.data.push([message.id, args[1], args[0]])
+                            let xmlReaction = new XMLHttpRequest();
+                            xmlReaction.open("PUT", process.env.reactionURL)
+                            xmlReaction.setRequestHeader("Content-Type", "application/json");
+                            xmlReaction.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                            xmlReaction.setRequestHeader("versioning", false)
+                            xmlReaction.send(JSON.stringify(resTextReaction))  
+                        }catch(e){
+                            throw e
+                        }
+                    }
+                }
+
+                xmlReactionGET.send();
+                
+            })
+            
+
         }
-        return -1;
     }
+
  /*   
     let gList = [[]]
     function guildList(str) {
@@ -1198,7 +1240,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         
     }
     let prob;
-    if(user.id != '639956302788820993'){
+    if(user.id != '639956302788820993'){-
     if(reaction.message.pinned){
         try{
         dataJSONReact = JSON.parse(data1);
@@ -1253,8 +1295,42 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
     reaction.message.edit(edit)
 }
 }
- */
-});
+ })
+client.on("messageReactionAdd", async (reaction, user) => {
+    console.log("e")
+    if (reaction.partial) {
+        // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            console.log('Something went wrong when fetching the message: ', error);
+            // Return as `reaction.message.author` may be undefined/null
+            return;
+        }
+        
+    }
+    console.log("ed")
+    let xmlReactionAddGET = new XMLHttpRequest();
+    xmlReactionAddGET.open("GET", process.env.reactionURL)
+    xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
+    xmlReactionAddGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+    xmlReactionAddGET.setRequestHeader("versioning", false)
+    xmlReactionAddGET.onreadystatechange = function(){
+        if(this.status == 200 && this.readyState == 4){
+            try{
+            resTextReactionAdd = JSON.parse(this.responseText)
+            if(index(reaction.message.id.toString(), resTextReactionAdd) != -1){
+                
+                user.addRole(resTextReactionAdd[index(reaction.message.id, resTextReactionAdd)][2])
+            }
+            }catch(e){
+                throw e;
+            }
+        }
+    }
+    xmlReactionAddGET.send();
+*/    
+})
 
 client.on("voiceStateUpdate", () => {
     const guild = client.guilds.get('463736564837777428')

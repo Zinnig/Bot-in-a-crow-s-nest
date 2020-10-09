@@ -1288,7 +1288,7 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
 }
 */
  })
- 
+ /*
 client.on("messageReactionAdd", async (reaction, user) => {
     console.log("reaction")
     if (reaction.message.partial) {
@@ -1323,7 +1323,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
     }
     xmlReactionAddGET.send();  
 })
-
+*/
 client.on("voiceStateUpdate", () => {
     const guild = client.guilds.get('463736564837777428')
     const channels = guild.channels.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');

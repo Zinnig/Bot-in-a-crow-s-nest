@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var fs = require('fs');
 //for local testing
@@ -103,7 +103,6 @@ function errorResponse(type, extraInfo){
             "Phantom Hearts": "Phi",
             "Lux Nova": "LXA",
             "Titans Valor": "ANO",
-            "Eden": "EDN",
             "IceBlue Team": "IBT",
             "Empire of Sindria": "ESI",
             "The Aquarium": "TAq",
@@ -172,10 +171,6 @@ function errorResponse(type, extraInfo){
                 "Ice Babies": "IcB",
                 "Exorcism": "xsm",
                 "Avorians": "AVM",
-            },
-            "EDN": {
-                "Heresy": "Rsy",
-                "Sinful": "Snu",
             },
             "BNU": {
                 "Fantom Dreams": "FII",
@@ -311,7 +306,6 @@ function errorResponse(type, extraInfo){
                             if (missingTerrsAlly.search(regex1) == -1) {
                                 missingTerrsAlly += `- [${terrs.territories[property]}] ${property} (${resText.territories[property].guild})  \n`
                                 notOwnedAlly += 1;
-
                             }
 
 
@@ -466,8 +460,6 @@ function errorResponse(type, extraInfo){
             message.channel.send(makeSubGuildString("AVO", allyListJSON))
         } else if (args[0].match(/(BNU)/gi)) {
             message.channel.send(makeSubGuildString("BNU", allyListJSON))
-        } else if (args[0].match(/(EDN)/gi)) {
-            message.channel.send(makeSubGuildString("EDN", allyListJSON))
         } else if (args[0].match(/(ESI)/gi)) {
             message.channel.send(makeSubGuildString("ESI", allyListJSON))
         } else if (args[0].match(/(Hax)/gi)) {
@@ -605,7 +597,7 @@ function errorResponse(type, extraInfo){
         xmlTime.send();
     }
 
-  /*  
+  /* 
     //RoleName, Emoji, Title ... (with spaces)
     if(cmd == "reactionroles"){ 
         if(args.length < 3) message.channel.send(errorResponse("wrongargs", "MANAGE_GUILD"))
@@ -622,7 +614,6 @@ function errorResponse(type, extraInfo){
                 xmlReactionGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
                 xmlReactionGET.setRequestHeader("versioning", false)
                 xmlReactionGET.onreadystatechange = function(){
-                    console.log(this.status)
                     if(this.status == 200 && this.readyState == 4){
                         try{
                             resTextReaction = JSON.parse(this.responseText);
@@ -647,7 +638,7 @@ function errorResponse(type, extraInfo){
         }
     }
 
- /*   
+    
     let gList = [[]]
     function guildList(str) {
         for (i = 1; i <= inputStats.match(/#/g).length; i++) {
@@ -1295,10 +1286,13 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
     reaction.message.edit(edit)
 }
 }
+*/
  })
+ 
 client.on("messageReactionAdd", async (reaction, user) => {
-    console.log("e")
-    if (reaction.partial) {
+    console.log("reaction")
+    if (reaction.message.partial) {
+        console.log("oldreaction")
         // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
         try {
             await reaction.fetch();
@@ -1309,7 +1303,6 @@ client.on("messageReactionAdd", async (reaction, user) => {
         }
         
     }
-    console.log("ed")
     let xmlReactionAddGET = new XMLHttpRequest();
     xmlReactionAddGET.open("GET", process.env.reactionURL)
     xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
@@ -1319,8 +1312,8 @@ client.on("messageReactionAdd", async (reaction, user) => {
         if(this.status == 200 && this.readyState == 4){
             try{
             resTextReactionAdd = JSON.parse(this.responseText)
-            if(index(reaction.message.id.toString(), resTextReactionAdd) != -1){
-                
+            if(index(reaction.message.id, resTextReactionAdd) != -1){
+                console.log(resTextReactionAdd[index(reaction.message.id, resTextReactionAdd)][2])
                 user.addRole(resTextReactionAdd[index(reaction.message.id, resTextReactionAdd)][2])
             }
             }catch(e){
@@ -1328,8 +1321,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
             }
         }
     }
-    xmlReactionAddGET.send();
-*/    
+    xmlReactionAddGET.send();  
 })
 
 client.on("voiceStateUpdate", () => {

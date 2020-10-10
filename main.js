@@ -598,7 +598,6 @@ function errorResponse(type, extraInfo){
     }
 
  
-    //RoleName, Emoji, Title ... (with spaces)
     if(cmd == "reactionroles"){ 
         if(args.length < 3) message.channel.send(errorResponse("wrongargs", "MANAGE_GUILD"))
         if(message.member.hasPermission("MANAGE_GUILD")){
@@ -626,7 +625,7 @@ function errorResponse(type, extraInfo){
                             xmlReaction.setRequestHeader("versioning", false)
                             xmlReaction.send(JSON.stringify(resTextReaction))  
                         }catch(e){
-                            throw e
+                            //empty
                         }
                     }
                 }
@@ -1312,7 +1311,7 @@ client.on("raw", packet => {
                         });
                     }
             }catch(e){
-                throw e;
+                //empty
             }
         }
     }
@@ -1334,7 +1333,7 @@ client.on("raw", packet => {
                         });
                     }
             }catch(e){
-                throw e;
+                //empty
             }
         }
     }

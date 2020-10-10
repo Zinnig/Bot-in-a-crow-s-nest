@@ -597,7 +597,7 @@ function errorResponse(type, extraInfo){
         xmlTime.send();
     }
 
-  /* 
+ 
     //RoleName, Emoji, Title ... (with spaces)
     if(cmd == "reactionroles"){ 
         if(args.length < 3) message.channel.send(errorResponse("wrongargs", "MANAGE_GUILD"))
@@ -605,7 +605,8 @@ function errorResponse(type, extraInfo){
             let reactionEmbed = new Discord.RichEmbed()
             .setColor("#ABCDEF")
             .setTitle(args.slice(2).toString().replace(/,/g, " "))
-            .setDescription(args[1])
+            .setDescription("React with "+ args[1] + " to get the role.")
+            message.delete();
             message.channel.send(reactionEmbed).then((message) => {
                 message.react(args[1].replace(">", ""))
                 let xmlReactionGET = new XMLHttpRequest();
@@ -638,7 +639,7 @@ function errorResponse(type, extraInfo){
         }
     }
 
-    
+    /*
     let gList = [[]]
     function guildList(str) {
         for (i = 1; i <= inputStats.match(/#/g).length; i++) {
@@ -1000,6 +1001,7 @@ function errorResponse(type, extraInfo){
             message.channel.send(errorResponse("noperms", "MANAGE_GUILD"))
         }
     }
+    /*
     let outputSinceLast = "";
     let g = 0;
     let nowList = [];
@@ -1145,14 +1147,16 @@ function errorResponse(type, extraInfo){
             vc.join()
         }
     }
-       /*
+       
 let JSONdata;
 fs.readFile('votes.json', 'utf8', function(err, data){
     if(err) throw err;
         JSONdata = data;
         });
          if(cmd == "vote"){
-             console.log("before start/end: " + JSONdata)
+             if(message.user.hasPermission("MANAGE_GUILD")){
+
+            console.log("before start/end: " + JSONdata)
             if(args[0] == "start"){
                 args.splice(0, 1);
                 let list = args;
@@ -1199,7 +1203,8 @@ fs.readFile('votes.json', 'utf8', function(err, data){
                         
                     }
                 }
-            } 
+            }
+        } 
         }
 });
 let yes = 0;
@@ -1231,7 +1236,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
         
     }
     let prob;
-    if(user.id != '639956302788820993'){-
     if(reaction.message.pinned){
         try{
         dataJSONReact = JSON.parse(data1);
@@ -1288,42 +1292,55 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
 }
 */
  })
- /*
-client.on("messageReactionAdd", async (reaction, user) => {
-    console.log("reaction")
-    if (reaction.message.partial) {
-        console.log("oldreaction")
-        // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            console.log('Something went wrong when fetching the message: ', error);
-            // Return as `reaction.message.author` may be undefined/null
-            return;
-        }
-        
-    }
-    let xmlReactionAddGET = new XMLHttpRequest();
-    xmlReactionAddGET.open("GET", process.env.reactionURL)
-    xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
-    xmlReactionAddGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-    xmlReactionAddGET.setRequestHeader("versioning", false)
-    xmlReactionAddGET.onreadystatechange = function(){
+ 
+client.on("raw", packet => {
+    if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
+    if(packet.t == 'MESSAGE_REACTION_ADD'){
+        let guild = client.guilds.get(packet.d.guild_id);
+        let xmlReactionAddGET = new XMLHttpRequest();
+        xmlReactionAddGET.open("GET", process.env.reactionURL)
+        xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
+        xmlReactionAddGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+        xmlReactionAddGET.setRequestHeader("versioning", false)
+        xmlReactionAddGET.onreadystatechange = function(){
         if(this.status == 200 && this.readyState == 4){
             try{
-            resTextReactionAdd = JSON.parse(this.responseText)
-            if(index(reaction.message.id, resTextReactionAdd) != -1){
-                console.log(resTextReactionAdd[index(reaction.message.id, resTextReactionAdd)][2])
-                user.addRole(resTextReactionAdd[index(reaction.message.id, resTextReactionAdd)][2])
-            }
+                resTextReactionAdd = JSON.parse(this.responseText)
+                    if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
+                        guild.fetchMember(packet.d.user_id).then(member => {
+                            member.addRole(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
+                        });
+                    }
             }catch(e){
                 throw e;
             }
         }
     }
     xmlReactionAddGET.send();  
+    }else if(packet.t == 'MESSAGE_REACTION_REMOVE'){
+        let guild = client.guilds.get(packet.d.guild_id);
+        let xmlReactionAddGET = new XMLHttpRequest();
+        xmlReactionAddGET.open("GET", process.env.reactionURL)
+        xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
+        xmlReactionAddGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+        xmlReactionAddGET.setRequestHeader("versioning", false)
+        xmlReactionAddGET.onreadystatechange = function(){
+        if(this.status == 200 && this.readyState == 4){
+            try{
+                resTextReactionAdd = JSON.parse(this.responseText)
+                    if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
+                        guild.fetchMember(packet.d.user_id).then(member => {
+                            member.removeRole(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
+                        });
+                    }
+            }catch(e){
+                throw e;
+            }
+        }
+    }
+    xmlReactionAddGET.send();  
+    }
 })
-*/
 client.on("voiceStateUpdate", () => {
     const guild = client.guilds.get('463736564837777428')
     const channels = guild.channels.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');

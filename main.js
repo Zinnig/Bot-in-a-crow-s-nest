@@ -139,6 +139,7 @@ function errorResponse(type, extraInfo){
                 "Odysseia": "Oys",
                 "HaHaUnited": "HHU",
                 "Ram Ranch": "RMR",
+                "Kingdom Furries": "KFF"
             },
             "Imp": {
                 "Metric": "Met",
@@ -199,7 +200,6 @@ function errorResponse(type, extraInfo){
             },
             "Hax": {
                 "vape god": "vpe",
-                "Kingdom Furries": "KFF",
                 "HeckForums": "Hux",
                 "Bruh Moment": "GJJ",
                 "BoatForums": "Btx",
@@ -1146,74 +1146,107 @@ function errorResponse(type, extraInfo){
             vc.join()
         }
     }
-       
-let JSONdata;
-fs.readFile('votes.json', 'utf8', function(err, data){
-    if(err) throw err;
-        JSONdata = data;
-        });
+    
+   let sentEnd = false;
+   let alreadyThere = false;
          if(cmd == "vote"){
-             if(message.user.hasPermission("MANAGE_GUILD")){
-
-            console.log("before start/end: " + JSONdata)
-            if(args[0] == "start"){
-                args.splice(0, 1);
-                let list = args;
-                let title = list.join().replace(/,/g, " ");
-                let colourOfVote = Math.floor(Math.random()*16777215).toString(16);
-                voteEmbed = new Discord.RichEmbed()
-                .setTitle(title)
-                .setColor(Math.floor(Math.random()*16777215).toString(16))
-                .addField("Options", "👍: yes \n 👎: no");
-                message.channel.send(voteEmbed).then(function(message){
-                let voteDate = JSONdata == "" ? [] : JSON.parse(JSONdata);
-                let vote = new Object();
-                    vote.id = message.id
-                    vote.channelID = message.channel.id
-                    vote.title = title
-                    vote.colour = colourOfVote 
-                    vote.yes = 0
-                    vote.no = 0
-                    voteDate.push(vote)
-                let votes = JSON.stringify(voteDate)
-                fs.writeFile('votes.json', votes, function(err){
-                    if (err) throw err;
-                    console.log("Updated File.")
-                });
-                    message.react('👍');
-                    message.react('👎');
-                    message.pin();
-                });
-                //TODO fix votes
-            }else if(args[0] == "end"){
-                console.log("jsondata: " + JSONdata)
-                let json = JSONdata == "" ? [] : JSON.parse(JSONdata);
-                console.log(json)
-                args.splice(0, 1);
-                let list = args;
-                let msg = list.join().replace(/,/g, " ");
-                for(property in json){
-                    if(json[property].channelID != message.channel.id) return;
-                    if(json[property].title.toUpperCase() == msg.toUpperCase()){
-                        let voteMsg = message.fetch(json[property].id)
-                        voteMsg.unpin();
-                        json.slice(property);
-                        message.channel.send(`The vote ${json[property].title} was ended, there were ${json[property].yes} votes for yes and ${json[property].no} votes for no; Total Votes: ${json[property].no + json[property].yes}`)
+            if(message.member.hasPermission("MANAGE_GUILD")){
+                if(args[0] == "start"){
+                        let xmlVoteGET = new XMLHttpRequest();
+                        xmlVoteGET.open("GET", process.env.voteURL);
+                        xmlVoteGET.setRequestHeader("Content-Type", "application/json");
+                        xmlVoteGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                        xmlVoteGET.setRequestHeader("versioning", false)
+                        xmlVoteGET.onreadystatechange = function(){
+                            if(xmlVoteGET.status == 200 && xmlVoteGET.readyState == 4){
+                                try{
+                                    resTextVote = JSON.parse(xmlVoteGET.responseText);  
+                                    args.splice(0, 1);
+                                    let list = args;
+                                    let title = list.join().replace(/,/g, " ");
+                                    let colourOfVote = Math.floor(Math.random()*16777215).toString(16);
+                                    voteEmbed = new Discord.RichEmbed()
+                                    .setTitle(title)
+                                    .setColor(Math.floor(Math.random()*16777215).toString(16))
+                                    .addField("Options", "👍: yes \n 👎: no");
+                                    message.channel.send(voteEmbed).then(async message =>{
+                                        try{
+                                            await message.react('👍');
+                                            await message.react('👎');
+                                            message.pin();
+                                        }catch(e){
+                                            //empty
+                                        }
+                                    resTextVote.data.push([message.id, message.channel.id, title, colourOfVote, 0, 0, [], []])
+                                    let xmlVotePUT = new XMLHttpRequest();
+                                    xmlVotePUT.open("PUT", process.env.voteURL);
+                                    xmlVotePUT.setRequestHeader("Content-Type", "application/json");
+                                    xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                                    xmlVotePUT.setRequestHeader("versioning", false)
+                                    xmlVotePUT.send(JSON.stringify(resTextVote))
+                                });
+                                }catch(e){
+                                    throw e;
+                                }
+                            }
+                        }
+                        xmlVoteGET.send();
                         
+                }else if(args[0] == "end"){
+                    
+                    //message.id, message.channel.id, title, colour, yes, no
+                    let xmlVoteGET = new XMLHttpRequest();
+                    xmlVoteGET.open("GET", process.env.voteURL);
+                    xmlVoteGET.setRequestHeader("Content-Type", "application/json");
+                    xmlVoteGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                    xmlVoteGET.setRequestHeader("versioning", false)
+                    xmlVoteGET.onreadystatechange = function(){
+                        if(xmlVoteGET.status == 200 && xmlVoteGET.readyState == 4){
+                            try{
+                                let resTextVote = JSON.parse(xmlVoteGET.responseText);
+                                args.splice(0, 1);
+                                let list = args;
+                                let msg = list.join().replace(/,/g, " ");
+                                for(property in resTextVote.data){
+                                    if(resTextVote.data[property][2].toUpperCase() == msg.toUpperCase()){
+                                        message.channel.fetchMessage(resTextVote.data[property][0]).then(message => {
+                                            if(message.pinned){
+                                                console.log("E")
+                                                message.unpin();
+                                            }
+                                        })
+                                        resTextVote.data.splice(property, 1)
+                                        let xmlVotePUT = new XMLHttpRequest();
+                                        xmlVotePUT.open("PUT", process.env.voteURL)
+                                        xmlVotePUT.setRequestHeader("Content-Type", "application/json");
+                                        xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                                        xmlVotePUT.setRequestHeader("versioning", false)
+                                        xmlVotePUT.send(JSON.stringify(resTextVote))
+                                        if(sentEnd == false){
+                                            message.channel.send(`The vote "${resTextVote.data[property][2]}" was ended, there were ${resTextVote.data[property][4]} votes for yes and ${resTextVote.data[property][5]} votes for no; Total Votes: ${resTextVote.data[property][4] + resTextVote.data[property][5]}`)
+                                            sendEnd = true;
+                                        }
+                                    }
+                                }
+                            }catch(e){
+                                throw e;
+                            }
+                            
+                        }
                     }
+                    xmlVoteGET.send();
+                }else{
+                    message.channel.send(errorResponse("wrongargs", "start, end"))
                 }
-            }
-        } 
+            }else{
+                message.channel.send(errorResponse("noperms", "MANAGE_GUILD"))
+            } 
         }
 });
-let yes = 0;
+/* let yes = 0;
 let no = 0;
 let alreadyreactedYes = [];
 let alreadyreactedNo = [];
-fs.appendFile('votes.json', "", function(err){
-    if (err) throw err;
-    console.log("File created!")
-});
 let dataJSONReact;
 let data1;
 client.on('messageReactionAdd', async (reaction, user) => {
@@ -1287,36 +1320,99 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
     .addField("Options", "👍: yes \n 👎: no")
     .setFooter(`Total Votes: ${dataJSONReact[prob].yes + dataJSONReact[prob].no}`);
     reaction.message.edit(edit)
-}
-}
-*/
- })
- 
+} */
+}) 
+/*
 client.on("raw", packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
     if(packet.t == 'MESSAGE_REACTION_ADD'){
-        let guild = client.guilds.get(packet.d.guild_id);
-        let xmlReactionAddGET = new XMLHttpRequest();
-        xmlReactionAddGET.open("GET", process.env.reactionURL)
-        xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
-        xmlReactionAddGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-        xmlReactionAddGET.setRequestHeader("versioning", false)
-        xmlReactionAddGET.onreadystatechange = function(){
-        if(this.status == 200 && this.readyState == 4){
-            try{
-                resTextReactionAdd = JSON.parse(this.responseText)
-                    if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
-                        guild.fetchMember(packet.d.user_id).then(member => {
-                            member.addRole(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                        });
+        if(packet.d.user_id == client.user.id) return;
+        if(packet.d.emoji.name == '👍' || packet.d.emoji.name == '👎') {
+            let xmlVoteRaw = new XMLHttpRequest();
+            xmlVoteRaw.open("GET", process.env.voteURL)
+            xmlVoteRaw.setRequestHeader("Content-Type", "application/json");
+            xmlVoteRaw.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+            xmlVoteRaw.setRequestHeader("versioning", false)
+            xmlVoteRaw.onreadystatechange = function(){
+                    if(this.status == 200 && this.readyState == 4){
+                        try{
+                            let resTextVoteRaw = JSON.parse(this.responseText)
+                            let yes = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][4];
+                            let no = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][5]
+                            client.channels.get(packet.d.channel_id).fetchMessage(packet.d.message_id).then(message => {
+                            if(packet.d.emoji.name == '👍'){
+                                message.reactions.get('👍').remove(packet.d.user_id) //removing a reaction from a user.
+                                if(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) == -1 && resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].indexOf(packet.d.user_id) == -1){
+                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].push(packet.d.user_id)
+                                    yes++;
+                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][4] = yes;
+                                }else if(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].indexOf(packet.d.user_id) != -1 && resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) == -1){
+                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].push(packet.d.user_id)
+                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].splice(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].indexOf(packet.d.user_id), 1)
+                                    yes++;
+                                    no--;
+                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][4] = yes;
+                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][5] = no;
+                                }
+                                    let xmlVotePUT = new XMLHttpRequest();
+                                    xmlVotePUT.open("PUT", process.env.voteURL)
+                                    xmlVotePUT.setRequestHeader("Content-Type", "application/json");
+                                    xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                                    xmlVotePUT.setRequestHeader("versioning", false)
+                                    xmlVotePUT.send(JSON.stringify(resTextVoteRaw)) 
+                        }else if(packet.d.emoji.name == '👎'){
+                            message.reactions.get('👎').remove(packet.d.user_id) //removing a reaction from a user.
+                            if(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].indexOf(packet.d.user_id) == -1 && resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) == -1){
+                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].push(packet.d.user_id)
+                                no++;
+                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][5] = no;
+                            }else if(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) != -1 && resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) == -1){
+                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].push(packet.d.user_id)
+                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].splice(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id), 1)
+                                no++;
+                                yes--;
+                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][5] = no;
+                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][4] = yes;
+                                }
+                                xmlVotePUT.open("PUT", process.env.voteURL)
+                                xmlVotePUT.setRequestHeader("Content-Type", "application/json");
+                                xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                                xmlVotePUT.setRequestHeader("versioning", false)
+                                xmlVotePUT.send(JSON.stringify(resTextVoteRaw)) 
+                            }
+                        })
+                        }catch(e){
+                            throw e;
+                        }
                     }
-            }catch(e){
-                //empty
+                }
+            xmlVoteRaw.send()
+           
+        }else{
+            let guild = client.guilds.get(packet.d.guild_id);
+            let xmlReactionAddGET = new XMLHttpRequest();
+            xmlReactionAddGET.open("GET", process.env.reactionURL)
+            xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
+            xmlReactionAddGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+            xmlReactionAddGET.setRequestHeader("versioning", false)
+            xmlReactionAddGET.onreadystatechange = function(){
+            if(this.status == 200 && this.readyState == 4){
+                try{
+                    resTextReactionAdd = JSON.parse(this.responseText)
+                        if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
+                            guild.fetchMember(packet.d.user_id).then(member => {
+                                member.addRole(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
+                            });
+                        }
+                }catch(e){
+                    //empty
+                }
             }
         }
-    }
-    xmlReactionAddGET.send();  
+        xmlReactionAddGET.send(); 
+    } 
     }else if(packet.t == 'MESSAGE_REACTION_REMOVE'){
+        if(packet.d.user_id == client.id) return;
         let guild = client.guilds.get(packet.d.guild_id);
         let xmlReactionAddGET = new XMLHttpRequest();
         xmlReactionAddGET.open("GET", process.env.reactionURL)
@@ -1340,6 +1436,7 @@ client.on("raw", packet => {
     xmlReactionAddGET.send();  
     }
 })
+*/
 client.on("voiceStateUpdate", () => {
     const guild = client.guilds.get('463736564837777428')
     const channels = guild.channels.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');

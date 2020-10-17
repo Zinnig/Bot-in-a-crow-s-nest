@@ -83,7 +83,7 @@ client.on("message", async message => {
             client.commands.get('timeinguild').execute(message, args);
             break;
         default:
-            let unknownCommandEmbed = new Discord.RichEmbed()
+            unknownCommandEmbed = new Discord.RichEmbed()
             .setColor("#ff0000")
             .setTitle("Unknown Command!")
             .setDescription(`Try ${prefix}help for a command list.`)
@@ -753,7 +753,7 @@ client.on("raw", packet => {
                                 }
                         })
                         }catch(e){
-                            throw e;
+                            //empty
                         }
                     }
                 }

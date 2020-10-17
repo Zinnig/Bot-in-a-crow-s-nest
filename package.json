@@ -16,6 +16,7 @@
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
     "ffmpeg-binaries": "^3.2.2-3",
+    "google-spreadsheet": "^3.0.13",
     "highlight.js": "^9.18.0",
     "jquery": "^3.5.0",
     "jsdom": "^15.2.1",

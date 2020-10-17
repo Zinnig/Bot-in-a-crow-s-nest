@@ -7,7 +7,14 @@ require('custom-env').env()
 const token = process.env.token;
 
 client.login(token);
+client.commands = new Discord.Collection();
 
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
 let statuses = ["online", "idle", "dnd"];
 let i = 0;
 let astatus;
@@ -50,594 +57,39 @@ client.on("message", async message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
-function errorResponse(type, extraInfo){
-    let errorEmbed = new Discord.RichEmbed()
-    .setColor("#ff0000")
-    switch(type){
-        case "noperms":
-            errorEmbed.setTitle(`You don't have the permission "${extraInfo}".`)
+    switch(cmd){
+        case "ping":
+            client.commands.get('ping').execute(message, args, client.ping);
             break;
-        case "wrongargs":
-            errorEmbed.setTitle(`Invalid Arguments! Valid Arguments: ${extraInfo}`)
+        case "help":
+            client.commands.get('help').execute(message, args);
+            break;
+        case "war":
+            client.commands.get('war').execute(message, args)
+            break;
+        case "subs":
+            client.commands.get('subs').execute(message, args);
+            break;
+        case "caniattack":
+            client.commands.get('caniattack').execute(message, args);
+            break;
+        case "timeinguild":
+            client.commands.get('timeinguild').execute(message, args);
+            break;
+        case "reactionroles":
+            client.commands.get('timeinguild').execute(message, args);
+            break;
+        case "vote":
+            client.commands.get('timeinguild').execute(message, args);
+            break;
+        default:
+            let unknownCommandEmbed = new Discord.RichEmbed()
+            .setColor("#ff0000")
+            .setTitle("Unknown Command!")
+            .setDescription(`Try ${prefix}help for a command list.`)
+            message.channel.send(unknownCommandEmbed);
+            break;
     }
-    return errorEmbed
-}
-    if (cmd == "ping") {
-        const msg = await message.channel.send(`Pinging...`);
-
-        msg.edit(`Latency is ${Math.floor(msg.createdAt - message.createdAt)}ms \nAPI Latency is ${Math.round(client.ping)}ms`)
-    }
-    if (cmd == "help") {
-        message.channel.send(`*Sliding into your dms...*`)
-        const commandEmbed = new Discord.RichEmbed()
-            .setColor('#ffa20d')
-            .setTitle('The pirated command list')
-            .setDescription('This list has been discovered using a telescope!')
-            .addField('Text Commands', `
-            **- %help **
-                Gives you this fancy list of commands.
-            **- %ping **
-                Returns the Ping to the API/to the bot/host.
-            **- %war **
-                Gives you a list of territories you can attack. They're sorted by priority.
-            **- %subs GuildTagHere **
-                Lists the sub guilds of the selected guild (which is in Artemis)
-            **- %caniattack GuildTagHere **
-                Tells you if you should attack a certain guild.
-            **- %timeinguild GuildNameHere **
-                Lists all players in a guild and how long they've been in it.
-            ` )
-
-        message.author.send(commandEmbed)
-    }
-    let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
-        "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North",
-        "Corkus Forest South", "Corkus Mountain", "Corkus Outskirts", "Corkus Sea Cove", "Corkus Sea Port",
-        "Durum Isles Center", "Fallen Factory", "Factory Entrance", "Legendary Island", "Southern Outpost",
-        "Statue", "Corkus Abandoned Tower", "Road To Mine", "Ruined Houses", "Phinas Farm", "Lighthouse Plateau"]
-    let allyListJSON = {
-        "Artemis":{
-            "Paladins United": "PUN",
-            "Kingdom Foxes": "Fox",
-            "Imperial": "Imp",
-            "Phantom Hearts": "Phi",
-            "Lux Nova": "LXA",
-            "Titans Valor": "ANO",
-            "IceBlue Team": "IBT",
-            "Empire of Sindria": "ESI",
-            "The Aquarium": "TAq",
-            "Avicia": "AVO",
-            "Emorians": "ERN",
-            "HackForums": "Hax",
-            "TheNoLifes": "TNL"
-        },
-        "Cooperating":{
-            "House of Sentinels": "Snt",
-            "The Simple Ones": "ILQ",
-        },
-        "Neutral":{
-            "Vindicator": "VMZ",
-        },
-        "Other Allies":{
-            "Kangronomicon": "Fuq",
-        },
-        "Subguilds":{
-            "PUN": {
-                "Meow": "Prr",
-                "Pirates Divided": "PiD",
-                "Rat Gang": "RGX",
-            },
-            "Fox": {
-                "Ombra": "Omb",
-                "Fluorine": "FNE",
-                "I Corps": "LFX",
-                "Panic": "PaN",
-                "Fluffy Unicorns": "FuI",
-                "Project Ultimatum": "PxU",
-                "Lunatic": "Mox",
-                "Ex Nihilo": "Nih",
-                "Odysseia": "Oys",
-                "HaHaUnited": "HHU",
-                "Ram Ranch": "RMR",
-                "Kingdom Furries": "KFF"
-            },
-            "Imp": {
-                "Metric": "Met",
-                "Minerva": "Min",
-                "Terra Steel": "KLA",
-                "Kolibri": "KLI",
-                "House of Sentinels": "Snt",
-                "EPIcFORTNITEgAY": "lMP",
-                "Germany FTW": "BKP",
-                "Squad Zero": "SdZ",
-                "jerf": "jrf",
-            },
-            "Phi":{
-                "Grand Explorers": "GrE",
-                "Surprise": "FUU",
-                "Luna": "Lox",
-                "Jasmine Dragons": "JsD",
-                "Fraternal Fire": "FFi",
-                "Gaming": "UcU",
-                "Phantom Menace": "UUF",
-            },
-            "LXA": {
-                "Join Lux Nova": "JXA",
-                "Luwu Nowo": "Luw",
-            },
-            "ANO": {
-                "Tartaros": "JNC",
-                "Seekers of Arx": "ARX",
-                "The Tempest": "Txp",
-                "Ice Babies": "IcB",
-                "Exorcism": "xsm",
-                "Avorians": "AVM",
-            },
-            "BNU": {
-                "Fantom Dreams": "FII",
-                "Hyacinthum": "HCM",
-                "FortniteKSI": "XDF",
-                "BlueStoneGroup": "GSB",
-                "Byzantium": "TBE",
-                "IceBlue Fantasy": "IBF",
-                "hacsckgoruem": "tej",
-    
-            },
-            "ESI": {},
-            "TAq": {},
-            "AVO": {
-                "Invicta": "IVA",
-                "Time for Pizza": "VFN",
-                "Stud Squad": "STQ",
-                "Avocados": "JML",
-                "Afishia": "AVF",
-                "Ivory Tusk": "IVT",
-            },
-            "ERN": {
-                "Audux": "uxu",
-                "Mute Gang": "VCT",
-                "Toemorians": "VHT"
-            },
-            "Hax": {
-                "vape god": "vpe",
-                "HeckForums": "Hux",
-                "Bruh Moment": "GJJ",
-                "BoatForums": "Btx",
-            },
-            "TNL":{}
-        }
-    }
-
-    let resText = "";
-    let missingTerrs = "";
-    let missingTerrsAlly = "";
-    let missingFFAs = "";
-    let sent = false;
-    let sent2 = false;
-    let sent3 = false;
-    let notOwned = 0;
-    let notOwnedAlly = 0;
-    let notOwnedFFA = 0;
-    let i = 0;
-
-    function setupTimeDiff(diff) {
-        years = Math.floor(diff / (365 * 24 * 60 * 60 * 1000))
-        days = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000))
-        hours = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000)) / (60 * 60 * 1000))
-        minutes = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000) - hours * (60 * 60 * 1000)) / (60 * 1000))
-        //seconds = Math.floor(diff  - years*(365*24*60*60*1000) - days*(24*60*60*1000) - hours*(60*60*1000) - minutes*(60*1000))/1000
-
-        return `${years > 0 ? years + "y:" : ""}${days > 0 ? days + "d:" : ""}${hours > 0 ? hours + "h:" : ""}${minutes > 0 ? minutes + "min" : ""}`;
-    }
-    let output = [];
-    let includeList = ["Artemis", "Cooperating", "Neutral", "Other Allies"]
-    function makeAllyList() {
-        includeList.forEach(function (elem) {
-            for (property2 in allyListJSON[elem]) {
-                if (output.indexOf(property2) == -1) {
-                    output.push(property2)
-                }
-            }
-        })
-        for (property in allyListJSON["Subguilds"]) {
-            for (property3 in allyListJSON["Subguilds"][property]) {
-                output.push(property3)
-            }
-        }
-        return output;
-    }
-
-    if (cmd === "war") {
-        notOwned = 0;
-        sent = false;
-        /**
- * ReadyState:
- * 0 	UNSENT 	Client has been created. open() not called yet.
- * 1 	OPENED 	open() has been called.
- * 2 	HEADERS_RECEIVED 	send() has been called, and headers and status are available.
- * 3 	LOADING 	Downloading; responseText holds partial data.
- * 4 	DONE 	The operation is complete.
- * Status:
- *
- * UNSENT: 0
- * OPENED: 0
- * LOADING: 200
- * DONE: 200
- */
-
-        let terrs;
-        fs.readFile("Map.json", 'utf8', function (err, data) {
-            if (err) throw err;
-            map = data
-            try {
-                terrs = JSON.parse(data);
-            } catch (e) {
-                //empty
-            }
-            let xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "https://api.wynncraft.com/public_api.php?action=territoryList");
-            xmlhttp.send();
-            xmlhttp.onreadystatechange = function () {
-                if (this.status == 200) {
-                    try {
-                        resText = JSON.parse(this.responseText);
-
-                    } catch (e) {
-                        //empty
-                    }
-                    let allyList = makeAllyList();
-                    for (property in resText.territories) {
-                        if (terrs.territories[property] == "PUN") {
-                            i += 1;
-                            if (resText.territories[property].guild != "Paladins United") {
-                                regex = new RegExp(property, "g")
-                                if (missingTerrs.search(regex) == -1) {
-                                    if (allyList.indexOf(resText.territories[property].guild) == -1) {
-                                        missingTerrs += `- ${property} (${resText.territories[property].guild})  \n `;
-                                        notOwned += 1;
-                                    } else if (allyList.indexOf(resText.territories[property].guild) != -1) {
-                                        missingTerrs += `- [Ally] ${property} (${resText.territories[property].guild})  \n`;
-                                        notOwned += 1;
-                                    }
-                                }
-                            }
-                        } else if (allyList.indexOf(resText.territories[property].guild) == -1 && terrs.territories[property] != null && terrs.territories[property] != "-") {
-                            regex1 = new RegExp(property, "g")
-                            if (missingTerrsAlly.search(regex1) == -1) {
-                                missingTerrsAlly += `- [${terrs.territories[property]}] ${property} (${resText.territories[property].guild})  \n`
-                                notOwnedAlly += 1;
-                            }
-
-
-                        } else if ((terrs.territories[property] == null || terrs.territories[property] == "-") && resText.territories[property].guild != "Paladins United") {
-                            missingFFAs += `- ${property} (${resText.territories[property].guild}) \n`
-                            notOwnedFFA += 1;
-                        }
-                    }
-                }
-                try {
-                    if (sent == false && i >= list.length) {
-                        if (notOwned == 0) {
-                            terrEmbed = new Discord.RichEmbed()
-                                .setColor('#582370')
-                                .setTitle("Peace...")
-                                .addField("We're not missing any territories.", "Have a box of cookies.");
-                            message.channel.send(terrEmbed)
-                            sent = true
-                        } else if (notOwned > 0 && notOwned <= 5) {
-                            terrEmbed = new Discord.RichEmbed()
-                                .setColor('#ffcc00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
-                            message.channel.send(terrEmbed)
-                            sent = true
-                        } else if (notOwned > 5 && notOwned <= 10) {
-                            terrEmbed = new Discord.RichEmbed()
-                                .setColor('#ff9d00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
-                            message.channel.send(terrEmbed)
-                            sent = true
-                        } else if (notOwned > 10 && notOwned <= 15) {
-                            terrEmbed = new Discord.RichEmbed()
-                                .setColor('#ff6f00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
-                            message.channel.send(terrEmbed)
-                            sent = true
-                        } else if (notOwned > 15) {
-                            terrEmbed = new Discord.RichEmbed()
-                                .setColor('#ff000d')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
-                            message.channel.send(terrEmbed)
-                            sent = true
-                        }
-                    }
-                    if (sent2 == false && i >= list.length) {
-                        if (notOwnedAlly == 0) {
-                            terrAllyEmbed = new Discord.RichEmbed()
-                                .setColor('#582370')
-                                .setTitle("Peace for the whole alliance")
-                                .addField("Our Allies are not missing any territories.", "Have a box of cookies.");
-                            message.channel.send(terrAllyEmbed)
-                            sent2 = true
-                        } else if (notOwnedAlly > 0 && notOwnedAlly <= 5) {
-                            terrAllyEmbed = new Discord.RichEmbed()
-                                .setColor('#ffcc00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
-                            message.channel.send(terrAllyEmbed)
-                            sent2 = true
-                        } else if (notOwnedAlly > 5 && notOwnedAlly <= 10) {
-                            terrAllyEmbed = new Discord.RichEmbed()
-                                .setColor('#ff9d00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
-                            message.channel.send(terrAllyEmbed)
-                            sent2 = true
-                        } else if (notOwnedAlly > 10 && notOwnedAlly <= 15) {
-                            terrAllyEmbed = new Discord.RichEmbed()
-                                .setColor('#ff6f00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
-                            message.channel.send(terrAllyEmbed)
-                            sent2 = true
-                        } else if (notOwnedAlly > 15) {
-                            terrAllyEmbed = new Discord.RichEmbed()
-                                .setColor('#ff000d')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
-                            message.channel.send(terrAllyEmbed)
-                            sent2 = true
-                        }
-                    }
-                    if (sent3 == false && i >= list.length) {
-                        if (notOwnedFFA == 0) {
-                            ffaEmbed = new Discord.RichEmbed()
-                                .setColor('#582370')
-                                .setTitle("Peace ... - and also good xp gain!")
-                                .addField("We're not missing any FFAs.", "Have a box of cookies.");
-                            message.channel.send(ffaEmbed)
-                            sent3 = true
-                        } else if (notOwnedFFA > 0 && notOwnedFFA <= 5) {
-                            ffaEmbed = new Discord.RichEmbed()
-                                .setColor('#ffcc00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`We're currently missing the following FFAs (${notOwnedFFA}):`, missingFFAs);
-                            message.channel.send(ffaEmbed)
-                            sent3 = true
-                        } else if (notOwnedFFA > 5 && notOwnedFFA <= 10) {
-                            ffaEmbed = new Discord.RichEmbed()
-                                .setColor('#ff9d00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`We're currently missing the following FFAs (${notOwnedFFA}):`, missingFFAs);
-                            message.channel.send(ffaEmbed)
-                            sent3 = true
-                        } else if (notOwnedFFA > 10 && notOwnedFFA <= 15) {
-                            ffaEmbed = new Discord.RichEmbed()
-                                .setColor('#ff6f00')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`We're currently missing the following FFAs (${notOwnedFFA}):`, missingFFAs);
-                            message.channel.send(ffaEmbed)
-                            sent3 = true
-                        } else if (notOwnedFFA > 15) {
-                            ffaEmbed = new Discord.RichEmbed()
-                                .setColor('#ff000d')
-                                .setTitle("Get the man-o'-war ready!")
-                                .addField(`We're currently missing the following FFAs (${notOwnedFFA}):`, missingFFAs);
-                            message.channel.send(ffaEmbed)
-                            sent3 = true
-                        }
-                    }
-                } catch (e) {
-                    console.log(e)
-                }
-            }
-
-        });
-
-    }
-    let returnStr;
-    function makeSubGuildString(guildTag, a) {
-        returnStr = "";
-        if (Object.keys(a["Subguilds"][guildTag]).length == 0) {
-            returnStr = guildTag + " has no subguilds."
-        } else {
-            returnStr = guildTag + " has the following subguilds: \n"
-            for (property in a["Subguilds"][guildTag]) {
-                returnStr += `- [${a["Subguilds"][guildTag][property]}] ${property} \n`
-            }
-        }
-        return returnStr;
-    }
-    if (cmd == "subs") {
-        if (args[0].match(/(Fox)/gi)) {
-            message.channel.send(makeSubGuildString("Fox", allyListJSON))
-        } else if (args[0].match(/(Imp)/gi)) {
-            message.channel.send(makeSubGuildString("Imp", allyListJSON))
-        } else if (args[0].match(/(AVO)/gi)) {
-            message.channel.send(makeSubGuildString("AVO", allyListJSON))
-        } else if (args[0].match(/(BNU)/gi)) {
-            message.channel.send(makeSubGuildString("BNU", allyListJSON))
-        } else if (args[0].match(/(ESI)/gi)) {
-            message.channel.send(makeSubGuildString("ESI", allyListJSON))
-        } else if (args[0].match(/(Hax)/gi)) {
-            message.channel.send(makeSubGuildString("Hax", allyListJSON))
-        } else if (args[0].match(/(LXA)/gi)) {
-            message.channel.send(makeSubGuildString("LXA", allyListJSON))
-        } else if (args[0].match(/(PUN)/gi)) {
-            message.channel.send(makeSubGuildString("PUN", allyListJSON))
-        } else if (args[0].match(/(ANO)/gi)) {
-            message.channel.send(makeSubGuildString("ANO", allyListJSON))
-        } else if (args[0].match(/(ERN)/gi)) {
-            message.channel.send(makeSubGuildString("ERN", allyListJSON))
-        } else if (args[0].match(/(Phi)/gi)) {
-            message.channel.send(makeSubGuildString("Phi", allyListJSON))
-        }else if (args[0].match(/(TNL)/gi)){
-            message.channel.send(makeSubGuildString("TNL", allyListJSON))
-        } else {
-            message.channel.send("The guild with this tag doesn't exist, or isn't in Artemis.")
-        }
-    }
-    let output1 = [];
-    let listA = ["Artemis", "Cooperating", "Neutral", "Other Allies"]
-    function makeAllyTagList() {
-        listA.forEach(function (elem) {
-            for (property in allyListJSON[elem]) {
-                output1.push(allyListJSON[elem][property])
-            }
-        })
-        for (property2 in allyListJSON["Subguilds"]) {
-            for (property3 in allyListJSON["Subguilds"][property2])
-                output1.push(allyListJSON["Subguilds"][property2][property3])
-        }
-        return output1
-    }
-    if (cmd == "caniattack") {
-        let allyListTags = makeAllyTagList();
-        allyList = makeAllyList();
-        var upperCaseNames = allyListTags.map(function (value) {
-            return value.toUpperCase();
-        });
-        if (upperCaseNames.indexOf(args[0].toUpperCase()) == -1) {
-            message.channel.send("You can attack this guild, it's not in Artemis/is no subguild of a guild in Artemis.");
-        } else if (upperCaseNames.indexOf(args[0].toUpperCase()) != -1) {
-            message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
-        }
-    }
-    let sorting = ["OWNER", "CHIEF", "CAPTAIN", "RECRUITER", "RECRUIT"]
-    let timeList = [];
-    let resTime = "";
-    let sentTime = false;
-    let ownerString = "";
-    let chiefString = "";
-    let captainString = "";
-    let recruiterString = "";
-    let recruitString = "";
-    let e = 0;
-    if (cmd == "timeinguild") {
-        let input = args.join().replace(/,/, " ");
-        let now = Date.now()
-        xmlTime = new XMLHttpRequest();
-        xmlTime.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + input);
-        xmlTime.onreadystatechange = function () {
-            if (this.status == 200 && this.readyState == 4) {
-                try {
-                    resTime = JSON.parse(this.responseText);
-                } catch (e) {
-                    //empty
-                }
-                for (property in resTime.members) {
-                    if (index(resTime.members[property].name, timeList) == -1) {
-                        timeList.push([resTime.members[property].name, resTime.members[property].rank, setupTimeDiff(now - Date.parse(resTime.members[property].joined))]);
-                        timeList.sort(function (a, b) {
-                            return sorting.indexOf(a[1]) - sorting.indexOf(b[1]);
-                        });
-                    }
-                }
-            }
-            if (sentTime == false) {
-                for (property in timeList) {
-                    e++;
-                    switch (timeList[property][1]) {
-                        case "OWNER":
-                            ownerString = `- ${timeList[0][0]} has been in the guild for ${timeList[0][2]}`;
-                            break;
-                        case "CHIEF":
-                            chiefString += `- ${timeList[property][0]} has been in the guild for ${timeList[property][2]}\n`;
-                            break;
-                        case "CAPTAIN":
-                            captainString += `- ${timeList[property][0]} has been in the guild for ${timeList[property][2]}\n`;
-                            break;
-                        case "RECRUITER":
-                            recruiterString += `- ${timeList[property][0]} has been in the guild for ${timeList[property][2]}\n`;
-                            break;
-                        case "RECRUIT":
-                            recruitString += `- ${timeList[property][0]} has been in the guild for ${timeList[property][2]}\n`;
-                            break;
-                    }
-                    if (e >= timeList.length) {
-                        let rankStrings = [chiefString, captainString, recruiterString, recruitString];
-                        let timeEmbed = new Discord.RichEmbed()
-                            .setTitle(`Time in the guild "${input}"`)
-                            .setColor("#123456")
-                            .addField("Owner", "```" + ownerString + "```")
-                        for (property in rankStrings) {
-                            if (rankStrings[property].length > 1024) {
-                                let n = Math.floor(rankStrings[property].length / 1024)
-                                for (i = 0; i <= n; i++) {
-                                    timeEmbed.addField(chiefString == rankStrings[property] ?
-                                        "Chiefs Part " + (i + 1) : captainString == rankStrings[property] ?
-                                            "Captains Part " + (i + 1) : recruiterString == rankStrings[property] ?
-                                                "Recruiters Part " + (i + 1) : recruitString == rankStrings[property] ?
-                                                    "Recruits Part " + (i + 1) : "Error", chiefString == rankStrings[property] ?
-                                        "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : captainString == rankStrings[property] ?
-                                            "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "``` " : recruiterString == rankStrings[property] ?
-                                                "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "``` " : recruitString == rankStrings[property] ?
-                                                    "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "``` " : "Error");
-                                }
-                            } else {
-                                timeEmbed.addField(chiefString == rankStrings[property] ? "Chiefs" : captainString == rankStrings[property] ? "Captains" : recruiterString == rankStrings[property] ? "Recruiters" : recruitString == rankStrings[property] ? "Recruits" : "Error", chiefString == rankStrings[property] ? "```" + chiefString + "```" : captainString == rankStrings[property] ? "```" + captainString + "```" : recruiterString == rankStrings[property] ? "```" + recruiterString + "```" : recruitString == rankStrings[property] ? "```" + recruitString + "```" : "Error");
-                            }
-                        }
-                        if (sentTime == false) {
-                            message.channel.send(timeEmbed)
-                            sentTime = true;
-                        }
-
-                    }
-
-                }
-
-
-            }
-
-        }
-        xmlTime.send();
-    }
-
- 
-    if(cmd == "reactionroles"){ 
-        if(args.length < 3) message.channel.send(errorResponse("wrongargs", "MANAGE_GUILD"))
-        if(message.member.hasPermission("MANAGE_GUILD")){
-            let reactionEmbed = new Discord.RichEmbed()
-            .setColor("#ABCDEF")
-            .setTitle(args.slice(2).toString().replace(/,/g, " "))
-            .setDescription("React with "+ args[1] + " to get the role.")
-            message.delete();
-            message.channel.send(reactionEmbed).then((message) => {
-                message.react(args[1].replace(">", ""))
-                let xmlReactionGET = new XMLHttpRequest();
-                xmlReactionGET.open("GET", process.env.reactionURL)
-                xmlReactionGET.setRequestHeader("Content-Type", "application/json");
-                xmlReactionGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                xmlReactionGET.setRequestHeader("versioning", false)
-                xmlReactionGET.onreadystatechange = function(){
-                    if(this.status == 200 && this.readyState == 4){
-                        try{
-                            resTextReaction = JSON.parse(this.responseText);
-                            resTextReaction.data.push([message.id, args[1], args[0]])
-                            let xmlReaction = new XMLHttpRequest();
-                            xmlReaction.open("PUT", process.env.reactionURL)
-                            xmlReaction.setRequestHeader("Content-Type", "application/json");
-                            xmlReaction.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                            xmlReaction.setRequestHeader("versioning", false)
-                            xmlReaction.send(JSON.stringify(resTextReaction))  
-                        }catch(e){
-                            //empty
-                        }
-                    }
-                }
-
-                xmlReactionGET.send();
-                
-            })
-            
-
-        }
-    }
-
     /*
     let gList = [[]]
     function guildList(str) {
@@ -1146,104 +598,10 @@ function errorResponse(type, extraInfo){
             vc.join()
         }
     }
-    
-   let sentEnd = false;
-   let alreadyThere = false;
-         if(cmd == "vote"){
-            if(message.member.hasPermission("MANAGE_GUILD")){
-                if(args[0] == "start"){
-                        let xmlVoteGET = new XMLHttpRequest();
-                        xmlVoteGET.open("GET", process.env.voteURL);
-                        xmlVoteGET.setRequestHeader("Content-Type", "application/json");
-                        xmlVoteGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                        xmlVoteGET.setRequestHeader("versioning", false)
-                        xmlVoteGET.onreadystatechange = function(){
-                            if(xmlVoteGET.status == 200 && xmlVoteGET.readyState == 4){
-                                try{
-                                    resTextVote = JSON.parse(xmlVoteGET.responseText);  
-                                    args.splice(0, 1);
-                                    let list = args;
-                                    let title = list.join().replace(/,/g, " ");
-                                    let colourOfVote = Math.floor(Math.random()*16777215).toString(16);
-                                    voteEmbed = new Discord.RichEmbed()
-                                    .setTitle(title)
-                                    .setColor(Math.floor(Math.random()*16777215).toString(16))
-                                    .addField("Options", "👍: yes \n 👎: no");
-                                    message.channel.send(voteEmbed).then(async message =>{
-                                        try{
-                                            await message.react('👍');
-                                            await message.react('👎');
-                                            message.pin();
-                                        }catch(e){
-                                            //empty
-                                        }
-                                    resTextVote.data.push([message.id, message.channel.id, title, colourOfVote, 0, 0, [], []])
-                                    let xmlVotePUT = new XMLHttpRequest();
-                                    xmlVotePUT.open("PUT", process.env.voteURL);
-                                    xmlVotePUT.setRequestHeader("Content-Type", "application/json");
-                                    xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                                    xmlVotePUT.setRequestHeader("versioning", false)
-                                    xmlVotePUT.send(JSON.stringify(resTextVote))
-                                });
-                                }catch(e){
-                                    throw e;
-                                }
-                            }
-                        }
-                        xmlVoteGET.send();
-                        
-                }else if(args[0] == "end"){
-                    
-                    //message.id, message.channel.id, title, colour, yes, no
-                    let xmlVoteGET = new XMLHttpRequest();
-                    xmlVoteGET.open("GET", process.env.voteURL);
-                    xmlVoteGET.setRequestHeader("Content-Type", "application/json");
-                    xmlVoteGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                    xmlVoteGET.setRequestHeader("versioning", false)
-                    xmlVoteGET.onreadystatechange = function(){
-                        if(xmlVoteGET.status == 200 && xmlVoteGET.readyState == 4){
-                            try{
-                                let resTextVote = JSON.parse(xmlVoteGET.responseText);
-                                args.splice(0, 1);
-                                let list = args;
-                                let msg = list.join().replace(/,/g, " ");
-                                for(property in resTextVote.data){
-                                    if(resTextVote.data[property][2].toUpperCase() == msg.toUpperCase()){
-                                        message.channel.fetchMessage(resTextVote.data[property][0]).then(message => {
-                                            if(message.pinned){
-                                                console.log("E")
-                                                message.unpin();
-                                            }
-                                        })
-                                        resTextVote.data.splice(property, 1)
-                                        let xmlVotePUT = new XMLHttpRequest();
-                                        xmlVotePUT.open("PUT", process.env.voteURL)
-                                        xmlVotePUT.setRequestHeader("Content-Type", "application/json");
-                                        xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                                        xmlVotePUT.setRequestHeader("versioning", false)
-                                        xmlVotePUT.send(JSON.stringify(resTextVote))
-                                        if(sentEnd == false){
-                                            message.channel.send(`The vote "${resTextVote.data[property][2]}" was ended, there were ${resTextVote.data[property][4]} votes for yes and ${resTextVote.data[property][5]} votes for no; Total Votes: ${resTextVote.data[property][4] + resTextVote.data[property][5]}`)
-                                            sendEnd = true;
-                                        }
-                                    }
-                                }
-                            }catch(e){
-                                throw e;
-                            }
-                            
-                        }
-                    }
-                    xmlVoteGET.send();
-                }else{
-                    message.channel.send(errorResponse("wrongargs", "start, end"))
-                }
-            }else{
-                message.channel.send(errorResponse("noperms", "MANAGE_GUILD"))
-            } 
-        }
-});
-/* let yes = 0;
+    */
+}); 
+/*
+let yes = 0;
 let no = 0;
 let alreadyreactedYes = [];
 let alreadyreactedNo = [];
@@ -1320,9 +678,9 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
     .addField("Options", "👍: yes \n 👎: no")
     .setFooter(`Total Votes: ${dataJSONReact[prob].yes + dataJSONReact[prob].no}`);
     reaction.message.edit(edit)
-} */
+} 
 }) 
-/*
+*/
 client.on("raw", packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
     if(packet.t == 'MESSAGE_REACTION_ADD'){
@@ -1337,49 +695,62 @@ client.on("raw", packet => {
                     if(this.status == 200 && this.readyState == 4){
                         try{
                             let resTextVoteRaw = JSON.parse(this.responseText)
-                            let yes = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][4];
-                            let no = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][5]
+                            let voteArray = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)];
+                            let yes = voteArray[4];
+                            let no = voteArray[5]
                             client.channels.get(packet.d.channel_id).fetchMessage(packet.d.message_id).then(message => {
                             if(packet.d.emoji.name == '👍'){
                                 message.reactions.get('👍').remove(packet.d.user_id) //removing a reaction from a user.
-                                if(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) == -1 && resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].indexOf(packet.d.user_id) == -1){
-                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].push(packet.d.user_id)
+                                if(voteArray[6].indexOf(packet.d.user_id) == -1 && voteArray[7].indexOf(packet.d.user_id) == -1){
+                                    voteArray[6].push(packet.d.user_id)
                                     yes++;
-                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][4] = yes;
-                                }else if(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].indexOf(packet.d.user_id) != -1 && resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) == -1){
-                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].push(packet.d.user_id)
-                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].splice(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].indexOf(packet.d.user_id), 1)
+                                    voteArray[4] = yes;
+                                }else if(voteArray[7].indexOf(packet.d.user_id) != -1 && voteArray[6].indexOf(packet.d.user_id) == -1){
+                                    voteArray[6].push(packet.d.user_id)
+                                    voteArray[7].splice(voteArray[7].indexOf(packet.d.user_id), 1)
                                     yes++;
                                     no--;
-                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][4] = yes;
-                                    resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][5] = no;
+                                    voteArray[4] = yes;
+                                    voteArray[5] = no;
                                 }
                                     let xmlVotePUT = new XMLHttpRequest();
                                     xmlVotePUT.open("PUT", process.env.voteURL)
                                     xmlVotePUT.setRequestHeader("Content-Type", "application/json");
                                     xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
                                     xmlVotePUT.setRequestHeader("versioning", false)
+                                    xmlVotePUT.send(JSON.stringify(resTextVoteRaw))
+                                    let edit = new Discord.RichEmbed()
+                                    .setTitle(voteArray[2])
+                                    .setColor(voteArray[3])
+                                    .addField("Options", "👍: yes \n 👎: no")
+                                    .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
+                                    message.edit(edit)
+                            }else if(packet.d.emoji.name == '👎'){
+                                message.reactions.get('👎').remove(packet.d.user_id) //removing a reaction from a user.
+                                if(voteArray[7].indexOf(packet.d.user_id) == -1 && voteArray[6].indexOf(packet.d.user_id) == -1){
+                                    voteArray[7].push(packet.d.user_id)
+                                    no++;
+                                    voteArray[5] = no;
+                                }else if(voteArray[6].indexOf(packet.d.user_id) != -1 && voteArray[6].indexOf(packet.d.user_id) == -1){
+                                    voteArray[7].push(packet.d.user_id)
+                                    voteArray[6].splice(voteArray[6].indexOf(packet.d.user_id), 1)
+                                    no++;
+                                    yes--;
+                                    voteArray[5] = no;
+                                    voteArray[4] = yes;
+                                    }
+                                    xmlVotePUT.open("PUT", process.env.voteURL)
+                                    xmlVotePUT.setRequestHeader("Content-Type", "application/json");
+                                    xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                                    xmlVotePUT.setRequestHeader("versioning", false)
                                     xmlVotePUT.send(JSON.stringify(resTextVoteRaw)) 
-                        }else if(packet.d.emoji.name == '👎'){
-                            message.reactions.get('👎').remove(packet.d.user_id) //removing a reaction from a user.
-                            if(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].indexOf(packet.d.user_id) == -1 && resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) == -1){
-                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].push(packet.d.user_id)
-                                no++;
-                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][5] = no;
-                            }else if(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) != -1 && resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id) == -1){
-                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][7].push(packet.d.user_id)
-                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].splice(resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][6].indexOf(packet.d.user_id), 1)
-                                no++;
-                                yes--;
-                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][5] = no;
-                                resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)][4] = yes;
+                                    let edit = new Discord.RichEmbed()
+                                    .setTitle(voteArray[2])
+                                    .setColor(voteArray[3])
+                                    .addField("Options", "👍: yes \n 👎: no")
+                                    .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
+                                    message.edit(edit)
                                 }
-                                xmlVotePUT.open("PUT", process.env.voteURL)
-                                xmlVotePUT.setRequestHeader("Content-Type", "application/json");
-                                xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                                xmlVotePUT.setRequestHeader("versioning", false)
-                                xmlVotePUT.send(JSON.stringify(resTextVoteRaw)) 
-                            }
                         })
                         }catch(e){
                             throw e;
@@ -1436,7 +807,7 @@ client.on("raw", packet => {
     xmlReactionAddGET.send();  
     }
 })
-*/
+
 client.on("voiceStateUpdate", () => {
     const guild = client.guilds.get('463736564837777428')
     const channels = guild.channels.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');

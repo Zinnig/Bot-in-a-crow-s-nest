@@ -77,10 +77,10 @@ client.on("message", async message => {
             client.commands.get('timeinguild').execute(message, args);
             break;
         case "reactionroles":
-            client.commands.get('timeinguild').execute(message, args);
+            client.commands.get('reactionroles').execute(message, args);
             break;
         case "vote":
-            client.commands.get('timeinguild').execute(message, args);
+            client.commands.get('vote').execute(message, args);
             break;
         default:
             unknownCommandEmbed = new Discord.RichEmbed()

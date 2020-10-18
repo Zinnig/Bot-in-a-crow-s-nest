@@ -31,7 +31,7 @@ module.exports = {
 	name: 'timeinguild',
 	description: "Lists all players in a guild and how long they've been in it.",
 	execute(message, args) {
-		let input = args.join().replace(/,/, " ");
+        let input = args.join().replace(/,/, " ");
         let now = Date.now()
         xmlTime = new XMLHttpRequest();
         xmlTime.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + input);
@@ -81,15 +81,16 @@ module.exports = {
                             if (rankStrings[property].length > 1024) {
                                 let n = Math.floor(rankStrings[property].length / 1024)
                                 for (i = 0; i <= n; i++) {
+                                    console.log(property)
                                     timeEmbed.addField(chiefString == rankStrings[property] ?
                                         "Chiefs Part " + (i + 1) : captainString == rankStrings[property] ?
                                             "Captains Part " + (i + 1) : recruiterString == rankStrings[property] ?
                                                 "Recruiters Part " + (i + 1) : recruitString == rankStrings[property] ?
                                                     "Recruits Part " + (i + 1) : "Error", chiefString == rankStrings[property] ?
                                         "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : captainString == rankStrings[property] ?
-                                            "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "``` " : recruiterString == rankStrings[property] ?
-                                                "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "``` " : recruitString == rankStrings[property] ?
-                                                    "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "``` " : "Error");
+                                            "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : recruiterString == rankStrings[property] ?
+                                                "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : recruitString == rankStrings[property] ?
+                                                    "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : "Error");
                                 }
                             } else {
                                 timeEmbed.addField(chiefString == rankStrings[property] ? "Chiefs" : captainString == rankStrings[property] ? "Captains" : recruiterString == rankStrings[property] ? "Recruiters" : recruitString == rankStrings[property] ? "Recruits" : "Error", chiefString == rankStrings[property] ? "```" + chiefString + "```" : captainString == rankStrings[property] ? "```" + captainString + "```" : recruiterString == rankStrings[property] ? "```" + recruiterString + "```" : recruitString == rankStrings[property] ? "```" + recruitString + "```" : "Error");

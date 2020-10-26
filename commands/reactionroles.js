@@ -16,12 +16,12 @@ module.exports = {
 	name: 'reactionroles',
 	description: "React with the emoji to get the role.",
 	execute(message, args) {
-        if(args.length < 3) message.channel.send(errorResponse("wrongargs", "MANAGE_GUILD"))
+        if(args.length < 4) message.channel.send(errorResponse("wrongargs", "MANAGE_GUILD"))
         if(message.member.hasPermission("MANAGE_GUILD")){
             let reactionEmbed = new Discord.RichEmbed()
             .setColor("#ABCDEF")
-            .setTitle(args.slice(2).toString().replace(/,/g, " "))
-            .setDescription("React with "+ args[1] + " to get the role.")
+            .setTitle(args.slice(2).toString().search(/-e/) == -1 ? args.slice(2).toString().replace(/,/g, " ") : args.slice(2).toString().substr(0, args.slice(2).toString().search(/-e/)).replace(/,/g, " "))
+            .setDescription(args.slice(2).toString().substr(args.slice(2).toString().search(/-e/) + 1).replace(/%e/g, args[1]).replace(/,/g, " "));
             message.delete();
             message.channel.send(reactionEmbed).then((message) => {
                 message.react(args[1].replace(">", ""))

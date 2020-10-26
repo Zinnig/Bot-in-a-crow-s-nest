@@ -21,7 +21,7 @@ module.exports = {
             let reactionEmbed = new Discord.RichEmbed()
             .setColor("#ABCDEF")
             .setTitle(args.slice(2).toString().search(/-e/) == -1 ? args.slice(2).toString().replace(/,/g, " ") : args.slice(2).toString().substr(0, args.slice(2).toString().search(/-e/)).replace(/,/g, " "))
-            .setDescription(args.slice(2).toString().substr(args.slice(2).toString().search(/-e/) + 1).replace(/%e/g, args[1]).replace(/,/g, " "));
+            .setDescription(args.slice(2).toString().substr(args.slice(2).toString().search(/-e/) + 2).replace(/%e/g, args[1]).replace(/,/g, " "));
             message.delete();
             message.channel.send(reactionEmbed).then((message) => {
                 message.react(args[1].replace(">", ""))

@@ -2,7 +2,7 @@ let sentEnd = false;
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const Discord = require('discord.js');
 function errorResponse(type, extraInfo){
-    let errorEmbed = new Discord.RichEmbed()
+    let errorEmbed = new Discord.MessageEmbed()
     .setColor("#ff0000")
     switch(type){
         case "noperms":
@@ -32,7 +32,7 @@ module.exports = {
                                 let list = args;
                                 let title = list.join().replace(/,/g, " ");
                                 let colourOfVote = Math.floor(Math.random()*16777215).toString(16);
-                                voteEmbed = new Discord.RichEmbed()
+                                voteEmbed = new Discord.MessageEmbed()
                                 .setTitle(title)
                                 .setColor(colourOfVote)
                                 .addField("Options", "👍: yes \n 👎: no")
@@ -76,7 +76,7 @@ module.exports = {
                             let msg = list.join().replace(/,/g, " ");
                             for(property in resTextVote.data){
                                 if(resTextVote.data[property][2].toUpperCase() == msg.toUpperCase()){
-                                    message.channel.fetchMessage(resTextVote.data[property][0]).then(message => {
+                                    message.channel.messages.fetch(resTextVote.data[property][0]).then(message => {
                                         if(message.pinned){
                                             message.unpin();
                                             let xmlVotePUT = new XMLHttpRequest();

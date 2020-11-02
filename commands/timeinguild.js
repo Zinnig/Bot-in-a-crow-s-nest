@@ -10,6 +10,7 @@ let captainString = "";
 let recruiterString = "";
 let recruitString = "";
 let e = 0;
+let n = 0;
 function index(a, arr) {
     for (var i = 0; i < arr.length; i++) {
         for (var j = 0; j < arr[i].length; j++) {
@@ -73,15 +74,15 @@ module.exports = {
                     }
                     if (e >= timeList.length) {
                         let rankStrings = [chiefString, captainString, recruiterString, recruitString];
-                        let timeEmbed = new Discord.RichEmbed()
+                        let timeEmbed = new Discord.MessageEmbed()
                             .setTitle(`Time in the guild "${input}"`)
                             .setColor("#123456")
                             .addField("Owner", "```" + ownerString + "```")
                         for (property in rankStrings) {
                             if (rankStrings[property].length > 1024) {
-                                let n = Math.floor(rankStrings[property].length / 1024)
+                                n = Math.floor(rankStrings[property].length / 1024)
                                 for (i = 0; i <= n; i++) {
-                                    console.log(property)
+                                    console.log(i)
                                     timeEmbed.addField(chiefString == rankStrings[property] ?
                                         "Chiefs Part " + (i + 1) : captainString == rankStrings[property] ?
                                             "Captains Part " + (i + 1) : recruiterString == rankStrings[property] ?

@@ -46,6 +46,9 @@ function index(a, arr) {
     }
     return -1;
 }
+process.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection:', " eeeeee\n"+error.message);
+});
 client.on("message", async message => {
     const prefix = process.env.prefix;
 
@@ -83,7 +86,7 @@ client.on("message", async message => {
             client.commands.get('vote').execute(message, args);
             break;
         default:
-            unknownCommandEmbed = new Discord.RichEmbed()
+            unknownCommandEmbed = new Discord.MessageEmbed()
             .setColor("#ff0000")
             .setTitle("Unknown Command!")
             .setDescription(`Try ${prefix}help for a command list.`)
@@ -275,7 +278,7 @@ client.on("message", async message => {
                                         }
                                         }
                                         if(property == ems.length - 1){
-                                            let statsEmbed = new Discord.RichEmbed()
+                                            let statsEmbed = new Discord.MessageEmbed()
                                             .setTitle("Emeralds (All Time)")
                                             .setColor("#50D343")
                                             .setFooter(`Last Update: ${(new Date(resTextGuildStats.timestamp)).toUTCString()}`)
@@ -333,7 +336,7 @@ client.on("message", async message => {
                                             }
                                         }
                                         if(property == gxp.length - 1){
-                                            let statsEmbed = new Discord.RichEmbed()
+                                            let statsEmbed = new Discord.MessageEmbed()
                                             .setTitle("GXP (All Time)")
                                             .setColor("#7BD19F")
                                             .setFooter(`Last Update: ${(new Date(resTextGuildStats.timestamp)).toUTCString()}`)
@@ -483,7 +486,7 @@ client.on("message", async message => {
                                         }
                                         g++;
                                         if(g == resTextCounts.now.length){
-                                            let sinceLastEmbed = new Discord.RichEmbed()
+                                            let sinceLastEmbed = new Discord.MessageEmbed()
                                             .setColor("#000000")
                                             .setTitle("GXP/Emeralds gained since the last Pillager Counts")
                                             .setFooter(`Last Update: ${(new Date(resTextCounts.timestamp)).toUTCString()}`)
@@ -591,6 +594,7 @@ client.on("message", async message => {
             message.delete()
         }
     }
+    
     if(cmd == "join"){
         if(message.author.id == '282964164358438922'){
             message.delete();
@@ -672,7 +676,7 @@ fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
     console.log("Updated File.")
 });
 
-    let edit = new Discord.RichEmbed()
+    let edit = new Discord.MessageEmbed()
     .setTitle(dataJSONReact[prob].title)
     .setColor(dataJSONReact[prob].colour.toString(16))
     .addField("Options", "👍: yes \n 👎: no")
@@ -698,9 +702,9 @@ client.on("raw", packet => {
                             let voteArray = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)];
                             let yes = voteArray[4];
                             let no = voteArray[5]
-                            client.channels.get(packet.d.channel_id).fetchMessage(packet.d.message_id).then(message => {
-                            if(packet.d.emoji.name == '👍'){
-                                message.reactions.get('👍').remove(packet.d.user_id) //removing a reaction from a user.
+                            client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id).then(message => {
+                                if(packet.d.emoji.name == '👍'){
+                                message.reactions.resolve('👍').users.remove(packet.d.user_id) //removing a reaction from a user.
                                 if(voteArray[6].indexOf(packet.d.user_id) == -1 && voteArray[7].indexOf(packet.d.user_id) == -1){
                                     voteArray[6].push(packet.d.user_id)
                                     yes++;
@@ -708,7 +712,7 @@ client.on("raw", packet => {
                                 }else if(voteArray[7].indexOf(packet.d.user_id) != -1 && voteArray[6].indexOf(packet.d.user_id) == -1){
                                     voteArray[6].push(packet.d.user_id)
                                     voteArray[7].splice(voteArray[7].indexOf(packet.d.user_id), 1)
-                                    yes++;
+                                    yes++; 
                                     no--;
                                     voteArray[4] = yes;
                                     voteArray[5] = no;
@@ -719,14 +723,14 @@ client.on("raw", packet => {
                                     xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
                                     xmlVotePUT.setRequestHeader("versioning", false)
                                     xmlVotePUT.send(JSON.stringify(resTextVoteRaw))
-                                    let edit = new Discord.RichEmbed()
+                                    let edit = new Discord.MessageEmbed()
                                     .setTitle(voteArray[2])
                                     .setColor(voteArray[3])
                                     .addField("Options", "👍: yes \n 👎: no")
                                     .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
                                     message.edit(edit)
                             }else if(packet.d.emoji.name == '👎'){
-                                message.reactions.get('👎').remove(packet.d.user_id) //removing a reaction from a user.
+                                message.reactions.resolve('👎').users.remove(packet.d.user_id) //removing a reaction from a user.
                                 if(voteArray[7].indexOf(packet.d.user_id) == -1 && voteArray[6].indexOf(packet.d.user_id) == -1){
                                     voteArray[7].push(packet.d.user_id)
                                     no++;
@@ -744,7 +748,7 @@ client.on("raw", packet => {
                                     xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
                                     xmlVotePUT.setRequestHeader("versioning", false)
                                     xmlVotePUT.send(JSON.stringify(resTextVoteRaw)) 
-                                    let edit = new Discord.RichEmbed()
+                                    let edit = new Discord.MessageEmbed()
                                     .setTitle(voteArray[2])
                                     .setColor(voteArray[3])
                                     .addField("Options", "👍: yes \n 👎: no")
@@ -760,7 +764,7 @@ client.on("raw", packet => {
             xmlVoteRaw.send()
            
         }else{
-            let guild = client.guilds.get(packet.d.guild_id);
+            let guild = client.guilds.cache.get(packet.d.guild_id);
             let xmlReactionAddGET = new XMLHttpRequest();
             xmlReactionAddGET.open("GET", process.env.reactionURL)
             xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
@@ -770,13 +774,14 @@ client.on("raw", packet => {
             if(this.status == 200 && this.readyState == 4){
                 try{
                     resTextReactionAdd = JSON.parse(this.responseText)
-                        if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
-                            guild.fetchMember(packet.d.user_id).then(member => {
-                                member.addRole(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                            });
-                        }
+                    if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
+                        guild.members.fetch(packet.d.user_id).then(member => {
+                            member.roles.add(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
+                        
+                    })
+                }
                 }catch(e){
-                    //empty
+                   //empty
                 }
             }
         }
@@ -784,7 +789,7 @@ client.on("raw", packet => {
     } 
     }else if(packet.t == 'MESSAGE_REACTION_REMOVE'){
         if(packet.d.user_id == client.id) return;
-        let guild = client.guilds.get(packet.d.guild_id);
+        let guild = client.guilds.cache.get(packet.d.guild_id);
         let xmlReactionAddGET = new XMLHttpRequest();
         xmlReactionAddGET.open("GET", process.env.reactionURL)
         xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
@@ -794,13 +799,13 @@ client.on("raw", packet => {
         if(this.status == 200 && this.readyState == 4){
             try{
                 resTextReactionAdd = JSON.parse(this.responseText)
-                    if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
-                        guild.fetchMember(packet.d.user_id).then(member => {
-                            member.removeRole(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                        });
-                    }
+                if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
+                    guild.members.fetch(packet.d.user_id).then(member => {
+                        member.roles.remove(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
+                    })
+                }
             }catch(e){
-                //empty
+               //empty
             }
         }
     }

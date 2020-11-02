@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Gives you this fancy list of commands.',
 	execute(message, args) {
 		message.channel.send(`*Sliding into your dms...*`)
-        const commandEmbed = new Discord.RichEmbed()
+        const commandEmbed = new Discord.MessageEmbed()
             .setColor('#ffa20d')
             .setTitle('The pirated command list')
             .setDescription('This list has been discovered using a telescope!')

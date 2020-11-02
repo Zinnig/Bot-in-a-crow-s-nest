@@ -220,35 +220,35 @@ let output = [];
             try {
                 if (sent == false && i >= list.length) {
                     if (notOwned == 0) {
-                        terrEmbed = new Discord.RichEmbed()
+                        terrEmbed = new Discord.MessageEmbed()
                             .setColor('#582370')
                             .setTitle("Peace...")
                             .addField("We're not missing any territories.", "Have a box of cookies.");
                         message.channel.send(terrEmbed)
                         sent = true
                     } else if (notOwned > 0 && notOwned <= 5) {
-                        terrEmbed = new Discord.RichEmbed()
+                        terrEmbed = new Discord.MessageEmbed()
                             .setColor('#ffcc00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
                         message.channel.send(terrEmbed)
                         sent = true
                     } else if (notOwned > 5 && notOwned <= 10) {
-                        terrEmbed = new Discord.RichEmbed()
+                        terrEmbed = new Discord.MessageEmbed()
                             .setColor('#ff9d00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
                         message.channel.send(terrEmbed)
                         sent = true
                     } else if (notOwned > 10 && notOwned <= 15) {
-                        terrEmbed = new Discord.RichEmbed()
+                        terrEmbed = new Discord.MessageEmbed()
                             .setColor('#ff6f00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
                         message.channel.send(terrEmbed)
                         sent = true
                     } else if (notOwned > 15) {
-                        terrEmbed = new Discord.RichEmbed()
+                        terrEmbed = new Discord.MessageEmbed()
                             .setColor('#ff000d')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
@@ -258,35 +258,35 @@ let output = [];
                 }
                 if (sent2 == false && i >= list.length) {
                     if (notOwnedAlly == 0) {
-                        terrAllyEmbed = new Discord.RichEmbed()
+                        terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#582370')
                             .setTitle("Peace for the whole alliance")
                             .addField("Our Allies are not missing any territories.", "Have a box of cookies.");
                         message.channel.send(terrAllyEmbed)
                         sent2 = true
                     } else if (notOwnedAlly > 0 && notOwnedAlly <= 5) {
-                        terrAllyEmbed = new Discord.RichEmbed()
+                        terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#ffcc00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         message.channel.send(terrAllyEmbed)
                         sent2 = true
                     } else if (notOwnedAlly > 5 && notOwnedAlly <= 10) {
-                        terrAllyEmbed = new Discord.RichEmbed()
+                        terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#ff9d00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         message.channel.send(terrAllyEmbed)
                         sent2 = true
                     } else if (notOwnedAlly > 10 && notOwnedAlly <= 15) {
-                        terrAllyEmbed = new Discord.RichEmbed()
+                        terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#ff6f00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         message.channel.send(terrAllyEmbed)
                         sent2 = true
                     } else if (notOwnedAlly > 15) {
-                        terrAllyEmbed = new Discord.RichEmbed()
+                        terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#ff000d')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
@@ -296,35 +296,35 @@ let output = [];
                 }
                 if (sent3 == false && i >= list.length) {
                     if (notOwnedFFA == 0) {
-                        ffaEmbed = new Discord.RichEmbed()
+                        ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#582370')
                             .setTitle("Peace ... - and also good xp gain!")
                             .addField("We're not missing any FFAs.", "Have a box of cookies.");
                         message.channel.send(ffaEmbed)
                         sent3 = true
                     } else if (notOwnedFFA > 0 && notOwnedFFA <= 5) {
-                        ffaEmbed = new Discord.RichEmbed()
+                        ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#ffcc00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`We're currently missing the following FFAs (${notOwnedFFA}):`, missingFFAs);
                         message.channel.send(ffaEmbed)
                         sent3 = true
                     } else if (notOwnedFFA > 5 && notOwnedFFA <= 10) {
-                        ffaEmbed = new Discord.RichEmbed()
+                        ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#ff9d00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`We're currently missing the following FFAs (${notOwnedFFA}):`, missingFFAs);
                         message.channel.send(ffaEmbed)
                         sent3 = true
                     } else if (notOwnedFFA > 10 && notOwnedFFA <= 15) {
-                        ffaEmbed = new Discord.RichEmbed()
+                        ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#ff6f00')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`We're currently missing the following FFAs (${notOwnedFFA}):`, missingFFAs);
                         message.channel.send(ffaEmbed)
                         sent3 = true
                     } else if (notOwnedFFA > 15) {
-                        ffaEmbed = new Discord.RichEmbed()
+                        ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#ff000d')
                             .setTitle("Get the man-o'-war ready!")
                             .addField(`We're currently missing the following FFAs (${notOwnedFFA}):`, missingFFAs);

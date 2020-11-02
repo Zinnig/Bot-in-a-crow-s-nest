@@ -3,3 +3,4 @@ ffmpeg
 package-lock.json
 .env
 votes.json
+client_secret.json

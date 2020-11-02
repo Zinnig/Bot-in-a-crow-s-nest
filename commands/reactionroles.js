@@ -1,5 +1,5 @@
 function errorResponse(type, extraInfo){
-    let errorEmbed = new Discord.RichEmbed()
+    let errorEmbed = new Discord.MessageEmbed()
     .setColor("#ff0000")
     switch(type){
         case "noperms":
@@ -18,7 +18,7 @@ module.exports = {
 	execute(message, args) {
         if(args.length < 4) message.channel.send(errorResponse("wrongargs", "MANAGE_GUILD"))
         if(message.member.hasPermission("MANAGE_GUILD")){
-            let reactionEmbed = new Discord.RichEmbed()
+            let reactionEmbed = new Discord.MessageEmbed()
             .setColor("#ABCDEF")
             .setTitle(args.slice(2).toString().search(/-e/) == -1 ? args.slice(2).toString().replace(/,/g, " ") : args.slice(2).toString().substr(0, args.slice(2).toString().search(/-e/)).replace(/,/g, " "))
             .setDescription(args.slice(2).toString().substr(args.slice(2).toString().search(/-e/) + 2).replace(/%e/g, args[1]).replace(/,/g, " "));

@@ -5,6 +5,7 @@ var fs = require('fs');
 //for local testing
 require('custom-env').env()
 const token = process.env.token;
+const prefix = process.env.prefix;
 
 client.login(token);
 client.commands = new Discord.Collection();
@@ -26,8 +27,8 @@ client.on("ready", () => {
             i++;
             client.user.setPresence({
                 status: astatus,
-                game: {
-                    name: "%help",
+                activity: {
+                    name: `${prefix}help`,
                     type: "LISTENING"
                 }
             });
@@ -50,7 +51,6 @@ process.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', " eeeeee\n"+error.message);
 });
 client.on("message", async message => {
-    const prefix = process.env.prefix;
 
     if (message.author.bot) return;
     if (!message.guild) return;
@@ -812,4 +812,18 @@ client.on("raw", packet => {
     xmlReactionAddGET.send();  
     }
 })
+client.on("voiceStateUpdate", () => {
+    const guild = client.guilds.cache.get('463736564837777428')
+    const channels = guild.channels.cache.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');
 
+    for (const [channelID, channel] of channels) {
+        for (const [memberID, member] of channel.members) {
+            if (channel.id === '666379507522863104') {
+                console.log("ChannelID: " + channelID + "\nMemberID: " + memberID);
+                member.voice.setChannel('677961459048775690')
+                    .then(() => console.log(`Moved ${member.user.tag}.`))
+                    .catch(console.error);
+            }
+        }
+    }
+})

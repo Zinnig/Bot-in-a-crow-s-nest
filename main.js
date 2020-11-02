@@ -813,18 +813,3 @@ client.on("raw", packet => {
     }
 })
 
-client.on("voiceStateUpdate", () => {
-    const guild = client.guilds.get('463736564837777428')
-    const channels = guild.channels.filter(c => c.parentID === '468697649592401920' && c.type === 'voice');
-
-    for (const [channelID, channel] of channels) {
-        for (const [memberID, member] of channel.members) {
-            if (channel.id === '666379507522863104') {
-                console.log("ChannelID: " + channelID + "\nMemberID: " + memberID);
-                member.setVoiceChannel('666381898343514133')
-                    .then(() => console.log(`Moved ${member.user.tag}.`))
-                    .catch(console.error);
-            }
-        }
-    }
-});

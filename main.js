@@ -820,7 +820,7 @@ client.on("voiceStateUpdate", () => {
         for (const [memberID, member] of channel.members) {
             if (channel.id === '666379507522863104') {
                 console.log("ChannelID: " + channelID + "\nMemberID: " + memberID);
-                member.voice.setChannel('677961459048775690')
+                member.voice.setChannel('666381898343514133')
                     .then(() => console.log(`Moved ${member.user.tag}.`))
                     .catch(console.error);
             }

@@ -6,13 +6,13 @@
         "Phantom Hearts": "Phi",
         "Lux Nova": "LXA",
         "Titans Valor": "ANO",
-        "Eden": "EDN",
         "IceBlue Team": "IBT",
         "Empire of Sindria": "ESI",
         "The Aquarium": "TAq",
         "Avicia": "AVO",
         "Emorians": "ERN",
-        "HackForums": "Hax"
+        "HackForums": "Hax",
+        "TheNoLifes": "TNL"
     },
     "Cooperating":{
         "House of Sentinels": "Snt",
@@ -22,7 +22,8 @@
         "Vindicator": "VMZ"
     },
     "Other Allies":{
-        "Kangronomicon": "Fuq"
+        "Kangronomicon": "Fuq",
+        "Fantasy": "Fux"
     },
     "Subguilds":{
         "PUN": {
@@ -41,7 +42,8 @@
             "Ex Nihilo": "Nih",
             "Odysseia": "Oys",
             "HaHaUnited": "HHU",
-            "Ram Ranch": "RMR"
+            "Ram Ranch": "RMR",
+            "Kingdom Furries": "KFF"
         },
         "Imp": {
             "Metric": "Met",
@@ -72,11 +74,8 @@
             "Seekers of Arx": "ARX",
             "The Tempest": "Txp",
             "Ice Babies": "IcB",
-            "Exorcism": "xsm"
-        },
-        "EDN": {
-            "Heresy": "Rsy",
-            "Sinful": "Snu"
+            "Exorcism": "xsm",
+            "Avorians": "AVM"
         },
         "BNU": {
             "Fantom Dreams": "FII",
@@ -105,10 +104,10 @@
         },
         "Hax": {
             "vape god": "vpe",
-            "Kingdom Furries": "KFF",
             "HeckForums": "Hux",
             "Bruh Moment": "GJJ",
             "BoatForums": "Btx"
-        }
+        },
+        "TNL":{}
     }
 }

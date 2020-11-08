@@ -36,7 +36,6 @@ module.exports = {
 	execute(message, args) {
 		fs.readFile('Allies.json', (err, data) => {
 			if (err) throw err;
-				allies = data
 				try {
 					allyListJSON = JSON.parse(data);
 				} catch (e) {

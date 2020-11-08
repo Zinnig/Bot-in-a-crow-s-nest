@@ -604,89 +604,11 @@ client.on("message", async message => {
     }
     */
 }); 
-/*
-let yes = 0;
-let no = 0;
-let alreadyreactedYes = [];
-let alreadyreactedNo = [];
-let dataJSONReact;
-let data1;
-client.on('messageReactionAdd', async (reaction, user) => {
-    // When we receive a reaction we check if the reaction is partial or not
-    fs.readFile('votes.json', 'utf8', function(err, data){
-        if(err) throw err;
-        data1 = data;
-    });
-    
-    if (reaction.partial) {
-        // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            console.log('Something went wrong when fetching the message: ', error);
-            // Return as `reaction.message.author` may be undefined/null
-            return;
-        }
-        
-    }
-    let prob;
-    if(reaction.message.pinned){
-        try{
-        dataJSONReact = JSON.parse(data1);
-    }catch(e){}
-        console.log("data1: " + data1)
-        for(property in dataJSONReact){
-            if(dataJSONReact[property].id == reaction.message.id){
-                prob = property;
-            }
 
-        }
-    if(reaction.emoji.name == '👍'){
-        reaction.message.reactions.get('👍').remove(user.id) //removing a reaction from a user.
-        if(alreadyreactedYes.indexOf(user.id) == -1 && alreadyreactedNo.indexOf(user.id) == -1){
-            alreadyreactedYes.push(user.id)
-            yes++;
-            dataJSONReact[prob].yes = yes;
-        }else if(alreadyreactedNo.indexOf(user.id) != -1 && alreadyreactedYes.indexOf(user.id) == -1){
-            alreadyreactedYes.push(user.id)
-            alreadyreactedNo.splice(alreadyreactedNo.indexOf(user.id), 1)
-            yes++;
-            no--;
-            dataJSONReact[prob].yes = yes;
-            dataJSONReact[prob].no = no;
-        }
-}else if(reaction.emoji.name == '👎'){
-    reaction.message.reactions.get('👎').remove(user.id) //removing a reaction from a user.
-    if(alreadyreactedNo.indexOf(user.id) == -1 && alreadyreactedYes.indexOf(user.id) == -1){
-        alreadyreactedNo.push(user.id)
-        no++;
-        dataJSONReact[prob].no = no;
-    }else if(alreadyreactedYes.indexOf(user.id) != -1 && alreadyreactedNo.indexOf(user.id) == -1){
-        alreadyreactedNo.push(user.id)
-        alreadyreactedYes.splice(alreadyreactedYes.indexOf(user.id), 1)
-        no++;
-        yes--;
-        dataJSONReact[prob].no = no;
-        dataJSONReact[prob].yes = yes;
-}
-}
-console.log(`yes: ${dataJSONReact[prob].yes}, no: ${dataJSONReact[prob].no}`)
-fs.writeFile('votes.json', JSON.stringify(dataJSONReact), function(err){
-    if (err) throw err;
-    console.log("Updated File.")
-});
-
-    let edit = new Discord.MessageEmbed()
-    .setTitle(dataJSONReact[prob].title)
-    .setColor(dataJSONReact[prob].colour.toString(16))
-    .addField("Options", "👍: yes \n 👎: no")
-    .setFooter(`Total Votes: ${dataJSONReact[prob].yes + dataJSONReact[prob].no}`);
-    reaction.message.edit(edit)
-} 
-}) 
-*/
-client.on("raw", packet => {
+client.on("raw", async packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
+    let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id)
+    if(!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222')) return; 
     if(packet.t == 'MESSAGE_REACTION_ADD'){
         if(packet.d.user_id == client.user.id) return;
         if(packet.d.emoji.name == '👍' || packet.d.emoji.name == '👎') {
@@ -702,9 +624,8 @@ client.on("raw", packet => {
                             let voteArray = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)];
                             let yes = voteArray[4];
                             let no = voteArray[5]
-                            client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id).then(message => {
                                 if(packet.d.emoji.name == '👍'){
-                                message.reactions.resolve('👍').users.remove(packet.d.user_id) //removing a reaction from a user.
+                                msg.reactions.resolve('👍').users.remove(packet.d.user_id) //removing a reaction from a user.
                                 if(voteArray[6].indexOf(packet.d.user_id) == -1 && voteArray[7].indexOf(packet.d.user_id) == -1){
                                     voteArray[6].push(packet.d.user_id)
                                     yes++;
@@ -728,9 +649,9 @@ client.on("raw", packet => {
                                     .setColor(voteArray[3])
                                     .addField("Options", "👍: yes \n 👎: no")
                                     .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
-                                    message.edit(edit)
+                                    msg.edit(edit)
                             }else if(packet.d.emoji.name == '👎'){
-                                message.reactions.resolve('👎').users.remove(packet.d.user_id) //removing a reaction from a user.
+                                msg.reactions.resolve('👎').users.remove(packet.d.user_id) //removing a reaction from a user.
                                 if(voteArray[7].indexOf(packet.d.user_id) == -1 && voteArray[6].indexOf(packet.d.user_id) == -1){
                                     voteArray[7].push(packet.d.user_id)
                                     no++;
@@ -753,9 +674,8 @@ client.on("raw", packet => {
                                     .setColor(voteArray[3])
                                     .addField("Options", "👍: yes \n 👎: no")
                                     .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
-                                    message.edit(edit)
+                                    msg.edit(edit)
                                 }
-                        })
                         }catch(e){
                             //empty
                         }

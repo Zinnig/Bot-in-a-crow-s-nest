@@ -47,11 +47,11 @@ function index(a, arr) {
     }
     return -1;
 }
-process.on('unhandledRejection', error => {
-	console.error('Unhandled promise rejection:', " eeeeee\n"+error.message);
+process.on('unhandledRejection', async error => {
+    let me = await client.users.fetch('282964164358438922')
+    me.send(`Unhandled promise rejection: \n${error.stack}`)
 });
 client.on("message", async message => {
-
     if (message.author.bot) return;
     if (!message.guild) return;
     if (!message.content.startsWith(prefix)) return;
@@ -168,16 +168,13 @@ client.on("message", async message => {
                                             if(this.status == 200 && this.readyState == 4){
                                                 resTextUpdateStats = JSON.parse(this.responseText);
                                                 for(property in resTextUpdateStats.now){
-                                                    if(resTextUpdateStats.now[property][3] != outputList[index(resTextUpdateStats.now[property][0], outputList)][3]){
-                                                        outputList[index(resTextUpdateStats.now[property][0], outputList)][1] += resTextUpdateStats.now[property][1];
-                                                        outputList[index(resTextUpdateStats.now[property][0], outputList)][2] += resTextUpdateStats.now[property][2];
-                                                    }
+                                                    
                                                 }
                                                 let guildStatsJSON = {
                                                     "now": outputList,
-                                                    "lastCounts": resTextUpdateStats.lastCounts,
                                                     "timestamp": Date.now()
                                                 }
+                                                console.log(guildStatsJSON)
                                                 let xmlUpdateStats = new XMLHttpRequest();
                                                 xmlUpdateStats.open("PUT", process.env.guildStatsURL);
                                                 xmlUpdateStats.setRequestHeader("Content-Type", "application/json");
@@ -212,6 +209,7 @@ client.on("message", async message => {
             message.channel.send(errorResponse("noperms", "MANAGE_GUILD"))
         }
         
+        /*
         }else if(args[0] == "em" || args[0] == "gxp"){
             let xmlGuildStats = new XMLHttpRequest();
             xmlGuildStats.open("GET", process.env.guildStatsURL);
@@ -601,6 +599,9 @@ client.on("message", async message => {
             let vc = message.member.voiceChannel;
             vc.join()
         }
+    }
+    
+}
     }
     */
 }); 

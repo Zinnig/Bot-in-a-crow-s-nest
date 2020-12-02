@@ -62,7 +62,7 @@ client.on("message", async message => {
 
     switch(cmd){
         case "ping":
-            client.commands.get('ping').execute(message, args, client.ping);
+            client.commands.get('ping').execute(message, args, client.ws.ping);
             break;
         case "help":
             client.commands.get('help').execute(message, args);
@@ -84,6 +84,21 @@ client.on("message", async message => {
             break;
         case "vote":
             client.commands.get('vote').execute(message, args);
+            break;
+        case "guildstats":
+            client.commands.get('guildstats').execute(message, args);
+            break;
+        case "userstats":
+            client.commands.get('userstats').execute(message, args);
+            break;
+        case "counts":
+            client.commands.get('counts').execute(message, args);
+            break;
+        case "sincelastcounts":
+            client.commands.get('sincelastcounts').execute(message, args);
+            break;
+        case "sl":
+            client.commands.get('sl').execute(message, args);
             break;
         default:
             unknownCommandEmbed = new Discord.MessageEmbed()

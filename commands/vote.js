@@ -1,4 +1,3 @@
-let sentEnd = false;
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const Discord = require('discord.js');
 function errorResponse(type, extraInfo){
@@ -17,6 +16,7 @@ module.exports = {
 	name: 'vote',
 	description: "Create/End Votes",
 	execute(message, args) {
+        let sentEnd = false;
         if(message.member.hasPermission("MANAGE_GUILD")){
             if(args[0] == "start"){
                     let xmlVoteGET = new XMLHttpRequest();

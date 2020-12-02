@@ -1,0 +1,56 @@
+{
+  "_from": "namemc",
+  "_id": "namemc@0.2.7",
+  "_inBundle": false,
+  "_integrity": "sha512-MwwaBFbn2c8luej6gnM7kk/Y/pfykvvTWLRQQJ3j/NsLGeOVuA4ZrNFCvqAt1F/JS8t/3YZFqt5aPOegW6MGAA==",
+  "_location": "/namemc",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "namemc",
+    "name": "namemc",
+    "escapedName": "namemc",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/namemc/-/namemc-0.2.7.tgz",
+  "_shasum": "3f4b712f1e8e612ee6a70cc732221e9503578c03",
+  "_spec": "namemc",
+  "_where": "C:\\Users\\User\\OneDrive\\Bot in a crow's nest\\Bot-in-a-crow-s-nest\\Bot-in-a-crow-s-nest",
+  "author": {
+    "name": "Josh Merlino"
+  },
+  "bugs": {
+    "url": "https://github.com/JoshMerlino/namemc/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "node-fetch": "^2.6.1"
+  },
+  "deprecated": false,
+  "description": "The Unofficial Name MC API Library",
+  "homepage": "https://github.com/JoshMerlino/namemc#readme",
+  "keywords": [
+    "NameMC",
+    "Minecraft",
+    "Mojang"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "namemc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoshMerlino/namemc.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.2.7"
+}

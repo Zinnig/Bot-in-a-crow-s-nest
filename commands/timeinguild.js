@@ -1,57 +1,45 @@
 const Discord = require('discord.js')
+const utils = require('../utils.js')
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 let sorting = ["OWNER", "CHIEF", "CAPTAIN", "RECRUITER", "RECRUIT"]
-let timeList = [];
-let resTime = "";
-let sentTime = false;
-let ownerString = "";
-let chiefString = "";
-let captainString = "";
-let recruiterString = "";
-let recruitString = "";
-let e = 0;
-let n = 0;
-function index(a, arr) {
-    for (var i = 0; i < arr.length; i++) {
-        for (var j = 0; j < arr[i].length; j++) {
-            if (arr[i][j] == a) { return i; }
-        }
-    }
-    return -1;
-}
-function setupTimeDiff(diff) {
-	years = Math.floor(diff / (365 * 24 * 60 * 60 * 1000))
-	days = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000))
-	hours = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000)) / (60 * 60 * 1000))
-	minutes = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000) - hours * (60 * 60 * 1000)) / (60 * 1000))
-	//seconds = Math.floor(diff  - years*(365*24*60*60*1000) - days*(24*60*60*1000) - hours*(60*60*1000) - minutes*(60*1000))/1000
-
-	return `${years > 0 ? years + "y:" : ""}${days > 0 ? days + "d:" : ""}${hours > 0 ? hours + "h:" : ""}${minutes > 0 ? minutes + "min" : ""}`;
-}
 module.exports = {
 	name: 'timeinguild',
 	description: "Lists all players in a guild and how long they've been in it.",
 	execute(message, args) {
+        let timeList = [];
+        let resTime = "";
+        let sentTime = false;
+        let ownerString = "";
+        let chiefString = "";
+        let captainString = "";
+        let recruiterString = "";
+        let recruitString = "";
+        let e = 0;
         let input = args.join().replace(/,/, " ");
         let now = Date.now()
         xmlTime = new XMLHttpRequest();
         xmlTime.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + input);
         xmlTime.onreadystatechange = function () {
-            if (this.status == 200 && this.readyState == 4) {
+            if (xmlTime.status == 200 && xmlTime.readyState == 4) {
                 try {
                     resTime = JSON.parse(this.responseText);
+                    if(resTime.error == 'Guild not found'){
+                        message.channel.send(utils.errorResponse("guildnotfound", input)) 
+                        return;
+                    }
                 } catch (e) {
                     //empty
                 }
                 for (property in resTime.members) {
-                    if (index(resTime.members[property].name, timeList) == -1) {
-                        timeList.push([resTime.members[property].name, resTime.members[property].rank, setupTimeDiff(now - Date.parse(resTime.members[property].joined))]);
+                    if (utils.index(resTime.members[property].name, timeList) == -1) {
+                        timeList.push([resTime.members[property].name, resTime.members[property].rank, utils.setupTimeDiff(now - Date.parse(resTime.members[property].joined))]);
                         timeList.sort(function (a, b) {
                             return sorting.indexOf(a[1]) - sorting.indexOf(b[1]);
                         });
                     }
                 }
             }
+            //TODO: make it work for more than 2 lists.
             if (sentTime == false) {
                 for (property in timeList) {
                     e++;
@@ -73,33 +61,45 @@ module.exports = {
                             break;
                     }
                     if (e >= timeList.length) {
+                        let f = 1;
+                        let recruits = false;
                         let rankStrings = [chiefString, captainString, recruiterString, recruitString];
+                        let rankStringsV2 = [[], [], [], []]
+                        let chiefStrings = 1, captainStrings = 1, recruiterStrings = 1, recruitStrings = 1;
                         let timeEmbed = new Discord.MessageEmbed()
                             .setTitle(`Time in the guild "${input}"`)
                             .setColor("#123456")
                             .addField("Owner", "```" + ownerString + "```")
                         for (property in rankStrings) {
-                            if (rankStrings[property].length > 1024) {
-                                n = Math.floor(rankStrings[property].length / 1024)
-                                for (i = 0; i <= n; i++) {
-                                    console.log(i)
-                                    timeEmbed.addField(chiefString == rankStrings[property] ?
-                                        "Chiefs Part " + (i + 1) : captainString == rankStrings[property] ?
-                                            "Captains Part " + (i + 1) : recruiterString == rankStrings[property] ?
-                                                "Recruiters Part " + (i + 1) : recruitString == rankStrings[property] ?
-                                                    "Recruits Part " + (i + 1) : "Error", chiefString == rankStrings[property] ?
-                                        "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : captainString == rankStrings[property] ?
-                                            "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : recruiterString == rankStrings[property] ?
-                                                "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : recruitString == rankStrings[property] ?
-                                                    "```" + rankStrings[property].substr(rankStrings[property].indexOf("-", rankStrings[property].lastIndexOf("\n", (i) * 1024)), rankStrings[property].lastIndexOf("\n", (i + 1) * 1024)) + "```" : "Error");
+                            utils.splitString(rankStrings[property]).forEach(elem => {
+                                rankStringsV2[property].push([elem, property])
+                            })
+                            rankStringsV2[property].forEach(elem => {
+                                f++;
+                                switch(elem[1]){
+                                    case "0":
+                                        timeEmbed.addField(rankStringsV2[property].length == 1? "Chiefs" : "Chiefs Part " + chiefStrings, "```"+ elem[0] + "```");
+                                        chiefStrings++;
+                                        break;
+                                    case "1":
+                                        timeEmbed.addField(rankStringsV2[property].length == 1? "Captains" : "Captains Part " + captainStrings, "```"+ elem[0] + "```");
+                                        captainStrings++;
+                                        break;
+                                    case "2":
+                                        timeEmbed.addField(rankStringsV2[property].length == 1? "Recruiters" : "Recruiters Part " + recruiterStrings, "```"+ elem[0] + "```");
+                                        recruiterStrings++;
+                                        break;
+                                    case "3":
+                                        timeEmbed.addField(rankStringsV2[property].length == 1? "Recruits" : "Recruits Part " + recruitStrings, "```"+ elem[0] + "```");
+                                        recruitStrings++;
+                                        recruits = true;
+                                        break;
                                 }
-                            } else {
-                                timeEmbed.addField(chiefString == rankStrings[property] ? "Chiefs" : captainString == rankStrings[property] ? "Captains" : recruiterString == rankStrings[property] ? "Recruiters" : recruitString == rankStrings[property] ? "Recruits" : "Error", chiefString == rankStrings[property] ? "```" + chiefString + "```" : captainString == rankStrings[property] ? "```" + captainString + "```" : recruiterString == rankStrings[property] ? "```" + recruiterString + "```" : recruitString == rankStrings[property] ? "```" + recruitString + "```" : "Error");
+                            })
+                            if(sentTime == false && timeEmbed.fields.length == f && recruits == true){
+                                message.channel.send(timeEmbed);
+                                recruits = false;
                             }
-                        }
-                        if (sentTime == false) {
-                            message.channel.send(timeEmbed)
-                            sentTime = true;
                         }
 
                     }

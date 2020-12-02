@@ -22,6 +22,8 @@
     "highlight.js": "^9.18.3",
     "jquery": "^3.5.1",
     "jsdom": "^15.2.1",
+    "namemc": "^0.2.7",
+    "wrapper-mojang-api": "^1.0.2",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {

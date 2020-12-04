@@ -19,7 +19,7 @@
     "ffmpeg-binaries": "^3.2.2",
     "google-spreadsheet": "^3.0.13",
     "googleapis": "^39.2.0",
-    "highlight.js": "^9.18.3",
+    "highlight.js": "^10.4.1",
     "jquery": "^3.5.1",
     "jsdom": "^15.2.1",
     "namemc": "^0.2.7",

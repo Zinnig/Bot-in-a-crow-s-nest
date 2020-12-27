@@ -6,18 +6,20 @@
         "Phantom Hearts": "Phi",
         "Lux Nova": "LXA",
         "Titans Valor": "ANO",
-        "IceBlue Team": "IBT",
         "Empire of Sindria": "ESI",
         "The Aquarium": "TAq",
-        "Avicia": "AVO",
         "Emorians": "ERN",
         "HackForums": "Hax",
-        "TheNoLifes": "TNL"
+        "Blacklisted": "BLA",
+        "The Simple Ones": "ILQ", 
+        "Astrum Pantheon": "Apa",
+        "Mystic Woods": "MYC",
+        "Nefarious Ravens": "NFR",
+        "Empire of Zanaris": "Zri"
     },
     "Cooperating":{
         "Fantasy": "Fux",
-        "House of Sentinels": "Snt",
-        "The Simple Ones": "ILQ"
+        "House of Sentinels": "Snt"
     },
     "Neutral":{
         "Vindicator": "VMZ"
@@ -29,7 +31,10 @@
         "PUN": {
             "Meow": "Prr",
             "Pirates Divided": "PiD",
-            "Rat Gang": "RGX"
+            "Rat Gang": "RGX",
+            "Baladins United": "LdU",
+            "Paladins Untied": "PtD",
+            "Corkians": "Nck"
         },
         "Fox": {
             "Ombra": "Omb",
@@ -78,26 +83,12 @@
             "Exorcism": "xsm",
             "Avorians": "AVM"
         },
-        "BNU": {
-            "Fantom Dreams": "FII",
-            "Hyacinthum": "HCM",
-            "FortniteKSI": "XDF",
-            "BlueStoneGroup": "GSB",
-            "Byzantium": "TBE",
-            "IceBlue Fantasy": "IBF",
-            "hacsckgoruem": "tej"
-
+        "ESI": {
+            "Sicko Mode": "SME",
+            "Plant Hwyaden": "PLH",
+            "Warglitch": "RGL"
         },
-        "ESI": {},
         "TAq": {},
-        "AVO": {
-            "Invicta": "IVA",
-            "Time for Pizza": "VFN",
-            "Stud Squad": "STQ",
-            "Avocados": "JML",
-            "Afishia": "AVF",
-            "Ivory Tusk": "IVT"
-        },
         "ERN": {
             "Audux": "uxu",
             "Mute Gang": "VCT",
@@ -105,9 +96,28 @@
         },
         "Hax": {
             "vape god": "vpe",
-            "HeckForums": "Hux",
-            "BoatForums": "Btx"
+            "HeckForums": "Hux"
         },
-        "TNL":{}
+        "ILQ": {
+            "Mayonnaise": "YOM",
+            "Lemonade Bar": "LNB",
+            "Hyperia": "Hpa",
+            "Doki Doki Lit Club": "HNG",
+            "LightRise": "Yhs",
+            "NoGameNoLife": "Fhj",
+            "Empire of Nemract": "Nmp",
+            "Mountain Mages": "yxz",
+            "KnightsWhoSayNii": "KwN",
+            "Admiralia": "Aeu",
+            "The Tempest": "Txp",
+            "Maxie": "MUX",
+            "dabspacito": "Vqe",
+            "Freiheit": "Vri"
+        },
+        "Apa": {},
+        "MYC": {},
+        "NFR": {},
+        "wyy": {},
+        "Zri": {}
     }
 }

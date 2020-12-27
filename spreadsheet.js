@@ -17,15 +17,17 @@ function getLastCounts(ign, type, sheet){
                 while(sheet["_cells"][asdf][1].value != ign && asdf < max - 1){
                     asdf++;
                 }
+                console.log(ign, type, sheet["_cells"][asdf][11].value)
                 return sheet["_cells"][asdf][11].value;
             case "EMS":
                 while(sheet["_cells"][asdf][1].value != ign && asdf < max - 1){
                     asdf++;
                 }
+                console.log(ign, type, sheet["_cells"][asdf][5].value)
                 return sheet["_cells"][asdf][5].value;
             } 
 }
-//doesn't work yet.
+
 function getData(uuid, type, resTextGStats){
     return new Promise(resolve => {
     let i = 0;
@@ -50,14 +52,21 @@ function getData(uuid, type, resTextGStats){
         case "lastJoin":
             resolve(resTextGStats.data[i].lastJoin);
             return;
-            } 
-     
+        case "joinDate":
+            resolve(resTextGStats.data[i].dateJoined);
+            return;
+        case "alreadyAddedGXP":
+            resolve(resTextGStats.data[i].alreadyAddedGXP);
+            return;
+        case "alreadyAddedEMS":
+            resolve(resTextGStats.data[i].alreadyAddedEMS);
+            return; 
+    }
 })
 }
 let resTextUUID = "";
 async function getUUID(ign){
     return new Promise(resolve => {
-        console.log("lakjsd")
         let xmlUUID = new XMLHttpRequest();
         xmlUUID.open("GET", "https://mc-heads.net/minecraft/profile/" + ign);
         xmlUUID.onreadystatechange = async () => {
@@ -72,7 +81,6 @@ async function getUUID(ign){
                 }else if(xmlUUID.status == 204 && xmlUUID.readyState == 4){
                     const possibleUsers = await NameMC.lookupName(ign);
                     uuid = possibleUsers[0].uuid.replace(/-/g, "");
-                    console.log(uuid)
                     resolve(uuid)
                     return;
             }
@@ -83,8 +91,8 @@ async function getUUID(ign){
 let data = [];
 let uuidList = [];
 const accessSpreadsheet = async (type, slData) =>{
-    const doc = new GoogleSpreadsheet(process.env.testingSpreadsheet);
-    //const doc = new GoogleSpreadsheet(process.env.spreadsheet)
+    //const doc = new GoogleSpreadsheet(process.env.testingSpreadsheet);
+    const doc = new GoogleSpreadsheet(process.env.spreadsheet)
     await doc.useServiceAccountAuth(creds);
 
     await doc.loadInfo();   
@@ -130,9 +138,10 @@ const accessSpreadsheet = async (type, slData) =>{
                     w++;
                 }
                 for(i=3;i < w; i++){
+                    gUUID = await getUUID(sheet["_cells"][i][2].value.replace("\n", ""));
                     gMember = new Object();
-                    gMember.dateJoined = sheet["_cells"][i][1].value == null ? null : sheet["_cells"][i][1].value.replace(/[a-z]+/, "");
-                    gMember.ign = sheet["_cells"][i][2].value;
+                    gMember.dateJoined = /*await getData(gUUID, "joinDate", resTextGStats) == null ?  sheet["_cells"][i][1].value == null ? null : sheet["_cells"][i][1].value.replace(/[a-z]+/, "") : await getData(gUUID, "joinDate", resTextGStats)*/sheet["_cells"][i][1].value.replace(/[a-z]+/, "");
+                    gMember.ign = sheet["_cells"][i][2].value.replace("\n", "");
                     gMember.uuid = await getUUID(gMember.ign);
                     gMember.region = sheet["_cells"][i][3].value;
                     gMember.sl = sheet["_cells"][i][5].value;
@@ -149,9 +158,10 @@ const accessSpreadsheet = async (type, slData) =>{
                     gMember.inGuild = true;
                     gMember.inGuildSpreadsheet = true;
                     gMember.lastJoin = await getData(gMember.uuid, "lastJoin", resTextGStats);
+                    gMember.alreadyAddedGXP = await getData(gMember.uuid, "alreadyAddedGXP", resTextGStats) == null ? 0 : await getData(gMember.uuid, "alreadyAddedGXP", resTextGStats);
+                    gMember.alreadyAddedEMS = await getData(gMember.uuid, "alreadyAddedEMS", resTextGStats) == null ? 0 : await getData(gMember.uuid, "alreadyAddedEMS", resTextGStats);
                     uuidList.push(gMember.uuid);
                     data.push(gMember);
-                    console.log(gMember)
                     }     
             });
             resTextGStats.data.forEach(obj => {

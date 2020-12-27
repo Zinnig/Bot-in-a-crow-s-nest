@@ -34,20 +34,17 @@ module.exports = {
         let outputList = [];
         let gList = [[]]
         function guildList(str) {
-            for (i = 1; i <= inputStats.match(/#/g).length; i++) {
-                name = str.slice(str.search(/#/) + 3, str.search((/( -)/)))
-                if (name.search(" ") != -1) {
-                    name = name.replace(" ", "")
-                }
-                xp = Number(str.slice(str.search(/(- )/) + 2, str.search(/( XP)/)))
-                ems = Number(str.slice(str.search(/(XP - )/) + 5, str.search(/(Emeralds)/) - 1))
-                joined = str.slice(str.search(/(Joined)/) + 7, str.search(/(\n)/) - 1);
-
-                gList.push([name, xp, ems, joined])
-                str = str.replace(str.slice(str.search(/#/), str.search(/(\n)/) + 1), "")
-            }
-            gList.shift()
-            return gList
+            pattern = /#.* - .* XP - .*/g;
+            ar = str.match(pattern);
+            ar.forEach(elem => {
+                name = elem.slice(3, elem.search(/ -/)).replace(" ", "")
+                xp = elem.slice(elem.search(/- /) + 2, elem.search(/ XP/))
+                emeralds = elem.slice(elem.search(/XP - /) + 5, elem.search(/(²)/))
+                date = elem.slice(elem.search(/Joined/) + 7)
+                gList.push([name, xp, emeralds, date]);
+            })
+            gList.shift();
+            return gList;
         }
         switch(args[0]){
             case "update":
@@ -63,14 +60,8 @@ module.exports = {
                     if (this.readyState == 4 && this.status == 200) {
                         if (this.getResponseHeader('content-type') == "text/plain") {
                             inputStats = this.responseText
-                            inputStats = inputStats.replace(inputStats.slice(0, 58), "")
-                            inputStats = inputStats.replace(/� -/g, " Emeralds");
-                            while (inputStats.search(/CHAT/) != -1) {
-                                if(inputStats.search(/CHAT/) != -1){
-                                    inputStats = inputStats.replace(inputStats.slice(inputStats.search(/:/) - 3, inputStats.search(/CHAT/) + 6), "\n")
-                                }
-                            }
                             guildStatsList = guildList(inputStats);
+                            console.table(guildStatsList)
                             guildStatsList.forEach(function(elem){
                             let xmlUUIDStats = new XMLHttpRequest();
                             xmlUUIDStats.open("GET", "https://mc-heads.net/minecraft/profile/" + elem[0]);
@@ -85,41 +76,69 @@ module.exports = {
                                     resTextUUIDStats = JSON.parse(xmlUUIDStats.responseText);
                                     uuidStats = resTextUUIDStats.id;
                                     outputList.push([uuidStats, elem[0], elem[1], elem[2], elem[3]])
-                                    console.log(outputList.length, guildStatsList.length)
                                     if(outputList.length == guildStatsList.length){
+                                        console.table(outputList)
                                         let xmlGetStats = new XMLHttpRequest();
                                         xmlGetStats.open("GET", process.env.guildStatsURL);
                                         xmlGetStats.setRequestHeader("Content-Type", "application/json");
                                         xmlGetStats.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
                                         xmlGetStats.setRequestHeader("versioning", false)
                                         xmlGetStats.onreadystatechange = function(){
-                                            console.log(xmlGetStats.status, xmlGetStats.readyState)
                                             if(this.status == 200 && this.readyState == 4){
                                                 resTextUpdateStats = JSON.parse(this.responseText);
                                                 let alreadyDone = [];
                                                 outputList.forEach(elem => {
-                                                    let index = getIndex(resTextUpdateStats, elem[0]);
+                                                    let index = getIndex(resTextUpdateStats, elem[0])
+                                                    console.log(index) 
                                                     if(index > -1){
-                                                        if(new Date(elem[4]).getTime() != new Date(resTextUpdateStats.data[index].dateJoined).getTime() && new Date(elem[4]).getTime() != new Date(resTextUpdateStats.data[index].lastJoin).getTime()){
+                                                        resTextUpdateStats.data[index].ign = resTextUpdateStats.data[index].ign.replace("\n", "");
+                                                        if(new Date(elem[4]).getTime() != new Date(resTextUpdateStats.data[index].dateJoined).getTime()){
                                                             console.log(elem[1], elem[4], new Date(elem[4]).getTime(), resTextUpdateStats.data[index].dateJoined, new Date(resTextUpdateStats.data[index].dateJoined).getTime())
-                                                            resTextUpdateStats.data[index].currentGXP += elem[2];
-                                                            resTextUpdateStats.data[index].currentEMS += elem[3];
+                                                            console.log("CurrentGXP: " + resTextUpdateStats.data[index].currentGXP, "other:  " + elem[2])
+                                                            console.log("CurrentEMS: " + resTextUpdateStats.data[index].currentEMS, "other: " + elem[3])
                                                             if(elem[6] != resTextUpdateStats.data[index].ign){
                                                                 resTextUpdateStats.data[index].ign == elem[1];
                                                             }
+                                                            if(resTextUpdateStats.data[index].lastJoin == elem[4]){
+                                                                resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + (Number(elem[2])- resTextUpdateStats.data[index].alreadyAddedGXP); 
+                                                                resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + (Number(elem[3])- resTextUpdateStats.data[index].alreadyAddedEMS);
+                                                            }else{
+                                                                resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + Number(elem[2]);
+                                                                resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + Number(elem[3]);
+                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(elem[2]);
+                                                                resTextUpdateStats.data[index].alreadyAddedEMS = Number(elem[3]);
+                                                                resTextUpdateStats.data[index].lastJoin = elem[4]
+                                                            }
                                                             resTextUpdateStats.data[index].lastJoin = elem[4];
-                                                        }else{
+                                                        }else if(new Date(elem[4]).getTime() < new Date(resTextUpdateStats.data[index].dateJoined).getTime()){
+                                                            console.log("timeerror", resTextUpdateStats.data[index].ign)
+                                                            resTextUpdateStats.data[index].dateJoined = elem[4];
                                                             resTextUpdateStats.data[index].currentGXP = elem[2];
                                                             resTextUpdateStats.data[index].currentEMS = elem[3];
+                                                            if(elem[6] != resTextUpdateStats.data[index].ign){
+                                                                resTextUpdateStats.data[index].ign == elem[1];
+                                                            }
+                                                        }else{
+                                                            if(resTextUpdateStats.data[index].lastCountsGXP > resTextUpdateStats.data[index].currentGXP){
+                                                                resTextUpdateStats.data[index].currentGXP = Number(elem[2]) + Number(resTextUpdateStats.data[index].lastCountsGXP);
+                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(elem[2]);
+                                                            }
+                                                            if(resTextUpdateStats.data[index].lastCountsEMS > resTextUpdateStats.data[index].currentEMS){
+                                                                resTextUpdateStats.data[index].currentEMS = Number(elem[3]) + Number(resTextUpdateStats.data[index].lastCountsEMS);
+                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(elem[3]);
+                                                            }else{
+                                                            resTextUpdateStats.data[index].currentGXP = Number(elem[2]);
+                                                            resTextUpdateStats.data[index].currentEMS = Number(elem[3]);
+                                                        }
                                                             if(elem[6] != resTextUpdateStats.data[index].ign){
                                                                 resTextUpdateStats.data[index].ign == elem[1];
                                                             }
                                                         }
                                                     }else{
                                                         gMember = new Object();
-                                                        gMember.dateJoined = elem[4]
-                                                        gMember.ign = elem[1]
-                                                        gMember.uuid = elem[0]
+                                                        gMember.dateJoined = elem[4];
+                                                        gMember.ign = elem[1].replace("\n", "");
+                                                        gMember.uuid = elem[0];
                                                         gMember.region = undefined;
                                                         gMember.sl = undefined;
                                                         gMember.slData = [];
@@ -132,12 +151,14 @@ module.exports = {
                                                         gMember.currentEMS = elem[3];
                                                         gMember.shoreTrader = undefined;
                                                         gMember.outfitter = undefined;
-                                                        gMember.inGuild = true
+                                                        gMember.inGuild = true;
                                                         gMember.inGuildSpreadsheet = undefined;
                                                         gMember.lastJoin = elem[4];
+                                                        gMember.alreadyAddedGXP = 0;
+                                                        gMember.alreadyAddedEMS = 0;
                                                         resTextUpdateStats.data.push(gMember)
                                                     }
-                                                    alreadyDone.push(elem[0])
+                                                    alreadyDone.push(elem[0]);
                                                 })
                                                 resTextUpdateStats.data.forEach(obj => {
                                                     if(alreadyDone.indexOf(obj.uuid) == -1){
@@ -154,6 +175,7 @@ module.exports = {
                                                 xmlUpdateStats.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
                                                 xmlUpdateStats.setRequestHeader("versioning", false)
                                                 xmlUpdateStats.send(JSON.stringify(guildStatsJSON));
+                                                console.log(guildStatsJSON)
                                                 message.channel.send("GuildStats updated.") 
                                                 } 
                                                 }
@@ -181,106 +203,282 @@ module.exports = {
                 }
                 break;
             case "gxp":
-                //TODO: Code needs updating.
+                let sentStats = false;
+                let mileStone0 = "", mileStone1 = "", mileStone2 = "", mileStone3 = "", mileStone4 = "", mileStone5 = "";
+                let counter0 = 0, counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0, counter5 = 0;
                 let xmlGuildStats = new XMLHttpRequest();
                 xmlGuildStats.open("GET", process.env.guildStatsURL);
                 xmlGuildStats.setRequestHeader("Content-Type", "application/json");
                 xmlGuildStats.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
                 xmlGuildStats.setRequestHeader("versioning", false)
                 xmlGuildStats.onreadystatechange = function(){
-                if(this.status == 200 && this.readyState == 4){
-                    try{
-                    resTextGuildStats = JSON.parse(this.responseText);
-                    timeStamp = resTextGuildStats.timestamp
-                    resTextGuildStats.now.forEach(elem => {
-                        f++;
-                        let xmlUUIDGuildStats = new XMLHttpRequest();
-                        xmlUUIDGuildStats.open("GET", "https://mc-heads.net/minecraft/profile/" + elem[0]);
-                        xmlUUIDGuildStats.onreadystatechange = () => {
-                            if(this.status == 200 && this.readyState == 4){
-                                try{
-                                    resTextUUIDGuildStats = JSON.parse(xmlUUIDGuildStats.responseText);
-                                    if(index(elem[0], currentGuildStats) == -1){
-                                        currentGuildStats.push([resTextUUIDGuildStats.name, elem[0],elem[1], elem[2], elem[3]])
-                                    }
-                                    if(resTextGuildStats.now.length >= currentGuildStats.length){
-                                        let gxp = [...currentGuildStats]
-                                        gxp.sort((a, b) => {
-                                            return b[2] - a[2]
-                                        })
-                                        console.log(currentGuildStats.length, gxp.length)
-                                        if(sentStats == false){
-                                            if(f == gxp.length){
-                                            for(property in gxp){
-                                                let searchReg = new RegExp(gxp[property][0], "g")
-                                                if(gxp[property][2] >= 10000000000){
-                                                    if(mileStone5.search(searchReg) == -1){
-                                                        mileStone5 += `- ${gxp[property][0]}: ${gxp[property][2].toLocaleString("en")} GXP \n`
-                                                        counter5++;
+                    if(xmlGuildStats.status == 200 && xmlGuildStats.readyState == 4){
+                        try{
+                            resTextGuildStats = JSON.parse(xmlGuildStats.responseText);
+                            timeStamp = resTextGuildStats.timestamp;
+                            let gxp = resTextGuildStats.data.map(value => [value.ign, value.currentGXP]);
+                            gxp.sort((a, b) => {
+                                return b[1] - a[1];
+                                })
+                            if(sentStats == false){
+                                    for(property in gxp){
+                                        let searchReg = new RegExp(gxp[property][0], "g");
+                                        if(gxp[property][1] >= 10000000000){
+                                            if(mileStone5.search(searchReg) == -1){
+                                                mileStone5 += `- ${gxp[property][0]}: ${gxp[property][1].toLocaleString("en")} GXP \n`;
+                                                counter5++;
+                                                }
+                                            }else if(gxp[property][1] >= 5000000000){
+                                                if(mileStone4.search(searchReg) == -1){
+                                                    mileStone4 += `- ${gxp[property][0]}: ${gxp[property][1].toLocaleString("en")} GXP \n`;
+                                                    counter4++;
                                                     }
-                                                    }else if(gxp[property][2] >= 5000000000){
-                                                        if(mileStone4.search(searchReg) == -1){
-                                                        mileStone4 += `- ${gxp[property][0]}: ${gxp[property][2].toLocaleString("en")} GXP \n`
-                                                        counter4++;
-                                                        }
-                                                    }else if(gxp[property][2] >= 1000000000){
-                                                        if(mileStone3.search(searchReg) == -1){
-                                                        mileStone3 += `- ${gxp[property][0]}: ${gxp[property][2].toLocaleString("en")} GXP \n`
-                                                        counter3++;
-                                                        }
-                                                    }else if(gxp[property][2] >= 500000000){
-                                                        if(mileStone2.search(searchReg) == -1){
-                                                        mileStone2 += `- ${gxp[property][0]}: ${gxp[property][2].toLocaleString("en")} GXP \n`
-                                                        counter2++;
-                                                        }
-                                                    }else if(gxp[property][2] >= 250000000){
-                                                        if(mileStone1.search(searchReg) == -1){
-                                                        mileStone1 += `- ${gxp[property][0]}: ${gxp[property][2].toLocaleString("en")} GXP \n`
-                                                        counter1++;
+                                            }else if(gxp[property][1] >= 1000000000){
+                                                if(mileStone3.search(searchReg) == -1){
+                                                    mileStone3 += `- ${gxp[property][0]}: ${gxp[property][1].toLocaleString("en")} GXP \n`;
+                                                    counter3++;
                                                     }
-                                                    }else if(gxp[property][2] < 100000000){
-                                                        if(mileStone0.search(searchReg) == -1){
-                                                        mileStone0 += `- ${gxp[property][0]}: ${gxp[property][2].toLocaleString("en")} GXP \n`
-                                                        counter0++;
+                                            }else if(gxp[property][1] >= 500000000){
+                                                if(mileStone2.search(searchReg) == -1){
+                                                    mileStone2 += `- ${gxp[property][0]}: ${gxp[property][1].toLocaleString("en")} GXP \n`;
+                                                    counter2++;
+                                                    }
+                                            }else if(gxp[property][1] >= 100000000){
+                                                if(mileStone1.search(searchReg) == -1){
+                                                    mileStone1 += `- ${gxp[property][0]}: ${gxp[property][1].toLocaleString("en")} GXP \n`;
+                                                    counter1++;
+                                                }
+                                            }else if(gxp[property][1] < 100000000){
+                                                if(mileStone0.search(searchReg) == -1){
+                                                    mileStone0 += `- ${gxp[property][0]}: ${gxp[property][1].toLocaleString("en")} GXP \n`;
+                                                    counter0++;
                                                 }
                                             }
                                         }
-                                        if(property == gxp.length - 1){
-                                            let statsEmbed = new Discord.MessageEmbed()
-                                            .setTitle("GXP (All Time)")
-                                            .setColor("#7BD19F")
-                                            .setFooter(`Last Update: ${(new Date(resTextGuildStats.timestamp)).toUTCString()}`)
-                                            .addField(`GXP V (${counter5}) [10,000,000,000]` , "```yaml\n"+mileStone5+"```")
-                                            .addField(`GXP IV (${counter4}) [5,000,000,000]`, "```yaml\n"+mileStone4+"```")
-                                            .addField(`GXP III (${counter3}) [1,000,000,000]`, "```yaml\n"+mileStone3+"```")
-                                            .addField(`GXP II (${counter2}) [500,000,000]`, "```yaml\n"+mileStone2+"```")
-                                            .addField(`GXP I (${counter1}) [100,000,000]`, "```yaml\n"+mileStone1+"```")
-                                            .addField(`No milestone (${counter0})`, "```yaml\n"+mileStone0+"```")
-                                            console.table(gxp)
-                                            message.channel.send(statsEmbed)
-                                            sentStats = true;
-                                    }
+                                            if(property == gxp.length - 1){
+                                                let parts = [0, 0, 0, 0, 0, 0];
+                                                let partsString = ["", "", "", "", "", ""];
+                                                let mileStones = [mileStone5, mileStone4, mileStone3, mileStone2, mileStone1, mileStone0];
+                                                mileStones.forEach((elem, index) => {
+                                                parts[index] = Math.floor(elem.length/1000);
+                                                if(Math.floor(elem.length/1000) >= 1){
+                                                    partsString[index] = utils.splitString(elem);
+                                                }else{
+                                                    partsString[index] = [elem];
+                                                }
+                                            });
+                                                let statsEmbed = new Discord.MessageEmbed()
+                                                .setTitle("GXP (All Time)")
+                                                .setColor("#7BD19F")
+                                                .setFooter(`Last Update: ${(new Date(resTextGuildStats.timestamp)).toUTCString()}`);
+                                                partsString.forEach((elem, index)=> {
+                                                    switch (index){
+                                                        case 5:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`No milestone (${counter0}) Part ${index + 1}`, "```yaml\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`No milestone (${counter0})`, "```yaml\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 4:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`GXP I (${counter1}) Part ${index + 1}`, "```yaml\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`GXP I (${counter1})`, "```yaml\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 3:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`GXP II (${counter2}) Part ${index + 1}`, "```yaml\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`GXP II (${counter2})`, "```yaml\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 2:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`GXP III (${counter3}) Part ${index + 1}`, "```yaml\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`GXP III (${counter3})`, "```yaml\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 1:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`GXP IV (${counter4}) Part ${index + 1}`, "```yaml\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`GXP IV (${counter4})`, "```yaml\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 0:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`GXP V (${counter5}) Part ${index + 1}`, "```yaml\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`GXP V (${counter5})`, "```yaml\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                    }
+                                                })
+                                                message.channel.send(statsEmbed);
+                                                sentStats = true;
+                                        }                        
                                 }
-                                } 
-                                }
-                                    
 
-                                }catch(e){
-                                    //empty
-                                }
+                        }catch(e){
+                            throw e;
                             }
-                        };
-                        xmlUUIDGuildStats.send()
-                    })
-                    
-                    }catch(e){
-                        //empty
+                        }
                     }
-                }
-            }
-            xmlGuildStats.send();
+                xmlGuildStats.send();
                 break;
             case "em":
+                let sentStatsEM = false;
+                let mileStoneEM0 = "", mileStoneEM1 = "", mileStoneEM2 = "", mileStoneEM3 = "", mileStoneEM4 = "", mileStoneEM5 = "";
+                let counterEM0 = 0, counterEM1 = 0, counterEM2 = 0, counterEM3 = 0, counterEM4 = 0, counterEM5 = 0;
+                let xmlGuildStatsEM = new XMLHttpRequest();
+                xmlGuildStatsEM.open("GET", process.env.guildStatsURL);
+                xmlGuildStatsEM.setRequestHeader("Content-Type", "application/json");
+                xmlGuildStatsEM.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                xmlGuildStatsEM.setRequestHeader("versioning", false);
+                xmlGuildStatsEM.onreadystatechange = function(){
+                    if(xmlGuildStatsEM.status == 200 && xmlGuildStatsEM.readyState == 4){
+                        try{
+                            resTextGuildStats = JSON.parse(xmlGuildStatsEM.responseText);
+                            timeStamp = resTextGuildStats.timestamp;
+                            let em = resTextGuildStats.data.map(value => [value.ign, value.currentEMS]);
+                            em.sort((a, b) => {
+                                return b[1] - a[1];
+                                })
+                            if(sentStatsEM == false){
+                                    for(property in em){
+                                        let searchReg = new RegExp(em[property][0], "g");
+                                        if(em[property][1] >= 5000000){
+                                            if(mileStoneEM5.search(searchReg) == -1){
+                                                mileStoneEM5 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
+                                                counterEM5++;
+                                                }
+                                            }else if(em[property][1] >= 1000000){
+                                                if(mileStoneEM4.search(searchReg) == -1){
+                                                    mileStoneEM4 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
+                                                    counterEM4++;
+                                                    }
+                                            }else if(em[property][1] >= 500000){
+                                                if(mileStoneEM3.search(searchReg) == -1){
+                                                    mileStoneEM3 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
+                                                    counterEM3++;
+                                                    }
+                                            }else if(em[property][1] >= 100000){
+                                                if(mileStoneEM1.search(searchReg) == -1){
+                                                    mileStoneEM1 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
+                                                    counterEM1++;
+                                                    }
+                                            }else if(em[property][1] >= 50000){
+                                                if(mileStoneEM1.search(searchReg) == -1){
+                                                    mileStoneEM1 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
+                                                    counterEM1++;
+                                                }
+                                            }else if(em[property][1] < 50000){
+                                                if(mileStoneEM0.search(searchReg) == -1){
+                                                    mileStoneEM0 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
+                                                    counterEM0++;
+                                                }
+                                            }
+                                        }
+                                            if(property == em.length - 1){
+                                                let parts = [0, 0, 0, 0, 0, 0];
+                                                let partsString = ["", "", "", "", "", ""];
+                                                let mileStones = [mileStoneEM5, mileStoneEM4, mileStoneEM3, mileStoneEM2, mileStoneEM1, mileStoneEM0];
+                                                mileStones.forEach((elem, index) => {
+                                                parts[index] = Math.floor(elem.length/1000);
+                                                if(Math.floor(elem.length/1000) >= 1){
+                                                    partsString[index] = utils.splitString(elem);
+                                                }else{
+                                                    partsString[index] = [elem];
+                                                }
+                                            });
+                                                let statsEmbed = new Discord.MessageEmbed()
+                                                .setTitle("EM (All Time)")
+                                                .setColor("#7BD19F")
+                                                .setFooter(`Last Update: ${(new Date(resTextGuildStats.timestamp)).toUTCString()}`);
+                                                partsString.forEach((elem, index)=> {
+                                                    switch (index){
+                                                        case 5:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`No milestone (${counterEM0}) Part ${index + 1}`, "```css\n"+element+"```")
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`No milestone (${counterEM0})`, "```css\n"+elem+"```")
+                                                            }
+                                                            break;
+                                                        case 4:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`EM I (${counterEM1}) Part ${index + 1}`, "```css\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`EM I (${counterEM1})`, "```css\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 3:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`EM II (${counterEM2}) Part ${index + 1}`, "```css\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`EM II (${counterEM2})`, "```css\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 2:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`EM III (${counterEM3}) Part ${index + 1}`, "```css\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`EM III (${counterEM3})`, "```css\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 1:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`EM IV (${counterEM4}) Part ${index + 1}`, "```css\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`EM IV (${counterEM4})`, "```css\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                        case 0:
+                                                            if(elem.length > 1){
+                                                                elem.forEach((element, index) => {
+                                                                    statsEmbed.addField(`EM V (${counterEM5}) Part ${index + 1}`, "```css\n"+element+"```");
+                                                                });
+                                                            }else{
+                                                                statsEmbed.addField(`EM V (${counterEM5})`, "```css\n"+elem+"```");
+                                                            }
+                                                            break;
+                                                    }
+                                                })
+                                                message.channel.send(statsEmbed);
+                                                sentStatsEM = true;
+                                        }                        
+                                }
+
+                        }catch(e){
+                            throw e;
+                            }
+                        }
+                    }
+                xmlGuildStatsEM.send();
                 break;
             default: 
             if(!message.member.hasPermission("MANAGE_GUILD")){
@@ -291,7 +489,5 @@ module.exports = {
                 break;
             }
         }
-
-        
-    }
+    } 
 };

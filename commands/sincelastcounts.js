@@ -24,7 +24,7 @@ module.exports = {
                     .setTitle("EMS/GXP gained since the last Pillager Counts. (Pillagers only)")
                     .setColor("#1fd0e8")
                     resTextStats.data.forEach(elem => {
-                      if(elem.pillager == true){
+                      if(elem.pillager == true && elem.inGuildSpreadsheet == true){
                         outputStr += `${elem.ign}: ${(elem.currentEMS-elem.lastCountsEMS).toLocaleString("en")} Emeralds, ${(elem.currentGXP-elem.lastCountsGXP).toLocaleString("en")} GXP\n`;
                       }
                     })

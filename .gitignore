@@ -5,3 +5,4 @@ package-lock.json
 votes.json
 client_secret.json
 commands/normalFormat
+guildstatscache.json

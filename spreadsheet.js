@@ -1,6 +1,5 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-const creds = require('./client_secret.json');
 const NameMC = require('./namemc');
 
 const fs = require('fs');
@@ -93,8 +92,7 @@ let uuidList = [];
 const accessSpreadsheet = async (type, slData) =>{
     //const doc = new GoogleSpreadsheet(process.env.testingSpreadsheet);
     const doc = new GoogleSpreadsheet(process.env.spreadsheet)
-    await doc.useServiceAccountAuth(creds);
-
+    await doc.useApiKey(process.env.googleSpreadsheetAPI_KEY);
     await doc.loadInfo();   
     
     const sheet = doc.sheetsByIndex[0];

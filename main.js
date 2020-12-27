@@ -119,7 +119,6 @@ client.on("message", async message => {
             xp = Number(str.slice(str.search(/(- )/) + 2, str.search(/( XP)/)))
             ems = Number(str.slice(str.search(/(XP - )/) + 5, str.search(/(Emeralds)/) - 1))
             joined = str.slice(str.search(/(Joined)/) + 7, str.search(/(\n)/) - 1)
-
             gList.push([name, xp, ems, joined])
             str = str.replace(str.slice(str.search(/#/), str.search(/(\n)/) + 1), "")
         }
@@ -157,7 +156,6 @@ client.on("message", async message => {
                         inputStats = this.responseText
                         inputStats = inputStats.replace(inputStats.slice(0, 58), "")
                         inputStats = inputStats.replace(/� -/g, " Emeralds");
-
                         while (inputStats.search(/CHAT/) != -1) {
                             if(inputStats.search(/CHAT/) != -1){
                                 inputStats = inputStats.replace(inputStats.slice(inputStats.search(/:/) - 3, inputStats.search(/CHAT/) + 6), "\n")
@@ -218,7 +216,6 @@ client.on("message", async message => {
                 }
             }
             xmlStats.send();
-
            
         }else{
             message.channel.send(errorResponse("noperms", "MANAGE_GUILD"))
@@ -368,7 +365,6 @@ client.on("message", async message => {
                                 } 
                                 }
                                     
-
                                 }catch(e){
                                     //empty
                                 }
@@ -398,7 +394,6 @@ client.on("message", async message => {
                         inputStats = this.responseText
                         inputStats = inputStats.replace(inputStats.slice(0, 58), "")
                         inputStats = inputStats.replace(/� -/g, " Emeralds");
-
                         while (inputStats.search(/CHAT/) != -1) {
                             if(inputStats.search(/CHAT/) != -1){
                                 inputStats = inputStats.replace(inputStats.slice(inputStats.search(/:/) - 3, inputStats.search(/CHAT/) + 6), "\n")
@@ -462,7 +457,6 @@ client.on("message", async message => {
                 }
             }
             xmlSetLast.send();
-
            
         }else{
             message.channel.send(errorResponse("noperms", "MANAGE_GUILD"))
@@ -598,7 +592,6 @@ client.on("message", async message => {
                 
             }
             xmlhttp1.send();
-
     }
     
     if(cmd == "say"){

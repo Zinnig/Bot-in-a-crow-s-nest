@@ -102,6 +102,8 @@ module.exports = {
                                                             if(resTextUpdateStats.data[index].lastJoin == elem[4]){
                                                                 resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + (Number(elem[2])- resTextUpdateStats.data[index].alreadyAddedGXP); 
                                                                 resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + (Number(elem[3])- resTextUpdateStats.data[index].alreadyAddedEMS);
+                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(resTextUpdateStats.data[index].currentGXP);
+                                                                resTextUpdateStats.data[index].alreadyAddedEMS = Number(resTextUpdateStats.data[index].currentEMS);
                                                             }else{
                                                                 resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + Number(elem[2]);
                                                                 resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + Number(elem[3]);

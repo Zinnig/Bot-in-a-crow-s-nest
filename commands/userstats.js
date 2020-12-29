@@ -6,6 +6,10 @@ module.exports = {
 	name: 'userstats',
 	description: 'Outputs the personal stats (gxp/wars) of a guild member.',
 	execute(message, args) {
+        if(!message.member.roles.cache.has('472859173730648065') && !message.member.hasPermission("MANAGE_GUILD")){
+            message.channel.send(utils.errorResponse("notaguildmember", ""));
+            return;
+        }
         let sent = false;
         function getMilestoneRank(amount, type){
             let gxp = {

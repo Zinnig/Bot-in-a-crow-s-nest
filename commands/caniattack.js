@@ -34,6 +34,10 @@ module.exports = {
 	name: 'caniattack',
 	description: "Tells you if you should attack a certain guild.",
 	execute(message, args) {
+		if(!message.member.roles.cache.has('472859173730648065') && !message.member.hasPermission("MANAGE_GUILD")){
+            message.channel.send(utils.errorResponse("notaguildmember", ""));
+            return;
+        }
 		fs.readFile('Allies.json', (err, data) => {
 			if (err) throw err;
 				try {

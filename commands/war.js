@@ -199,10 +199,10 @@ let output = [];
                         if(missingTerrsAlly.length > 1024){
                             let terrSplit = utils.splitString(missingTerrsAlly);
                                 terrSplit.forEach((elem, index) => {
-                                    terrAllyEmbed.addField(`We're currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
+                                    terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
                                 });
                         }else{
-                            terrAllyEmbed.addField(`We're currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
+                            terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         }
                         message.channel.send(terrAllyEmbed)
                         sent2 = true
@@ -213,10 +213,10 @@ let output = [];
                         if(missingTerrsAlly.length > 1024){
                             let terrSplit = utils.splitString(missingTerrsAlly);
                                 terrSplit.forEach((elem, index) => {
-                                    terrAllyEmbed.addField(`We're currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
+                                    terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
                                 });
                         }else{
-                            terrAllyEmbed.addField(`We're currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
+                            terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         }
                         message.channel.send(terrAllyEmbed)
                         sent2 = true
@@ -227,10 +227,10 @@ let output = [];
                         if(missingTerrsAlly.length > 1024){
                             let terrSplit = utils.splitString(missingTerrsAlly);
                                 terrSplit.forEach((elem, index) => {
-                                    terrAllyEmbed.addField(`We're currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
+                                    terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
                                 });
                         }else{
-                            terrAllyEmbed.addField(`We're currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
+                            terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         }
                         message.channel.send(terrAllyEmbed)
                         sent2 = true
@@ -241,10 +241,10 @@ let output = [];
                         if(missingTerrsAlly.length > 1024){
                             let terrSplit = utils.splitString(missingTerrsAlly);
                                 terrSplit.forEach((elem, index) => {
-                                    terrAllyEmbed.addField(`We're currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
+                                    terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
                                 });
                         }else{
-                            terrAllyEmbed.addField(`We're currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
+                            terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         }
                         message.channel.send(terrAllyEmbed)
                         sent2 = true

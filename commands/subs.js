@@ -17,6 +17,10 @@ module.exports = {
 	name: 'subs',
 	description: "Lists the sub guilds of the selected guild (which is in Artemis)",
 	execute(message, args) {
+        if(!message.member.roles.cache.has('472859173730648065') && !message.member.hasPermission("MANAGE_GUILD")){
+            message.channel.send(utils.errorResponse("notaguildmember", ""));
+            return;
+        }
         fs.readFile('Allies.json', (err, data) => {
             if (err) throw err;
                 allies = data

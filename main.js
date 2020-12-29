@@ -48,9 +48,13 @@ function index(a, arr) {
     return -1;
 }
 process.on('unhandledRejection', async error => {
-    let me = await client.users.fetch('282964164358438922')
-    me.send(`Unhandled promise rejection: \n${error.stack}`)
+    let me = await client.users.fetch('282964164358438922');
+    me.send(`Unhandled promise rejection: \n${error.stack}`);
 });
+process.on('SIGTERM', async () => {
+    me = await client.users.fetch('282964164358438922');
+    me.send(`SIGTERM Signal recieved.`);
+})
 client.on("message", async message => {
     if (message.author.bot) return;
     if (!message.guild) return;

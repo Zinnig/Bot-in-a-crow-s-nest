@@ -22,10 +22,10 @@ exports.errorResponse = (type, extraInfo) =>{
             errorEmbed.setTitle(`You are not a guild member.`);
             break;
         case "guildmembernotfound":
-            errorEmbed.setTitle(`Couldn't find the guild member "${extraInfo}"`)
+            errorEmbed.setTitle(`Couldn't find the guild member "${extraInfo}"`);
             break;
         case "wrongdate":
-            errorEmbed.setTitle(`You can't set someone on Shore Leave from now to a point in the past.`)
+            errorEmbed.setTitle(`You can't set someone on Shore Leave from now to a point in the past.`);
             break;
     }
     return errorEmbed
@@ -39,10 +39,10 @@ exports.index = (a, arr) => {
     return -1;
 }
 exports.setupTimeDiff = (diff) => {
-	years = Math.floor(diff / (365 * 24 * 60 * 60 * 1000))
-	days = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000))
-	hours = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000)) / (60 * 60 * 1000))
-	minutes = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000) - hours * (60 * 60 * 1000)) / (60 * 1000))
+	years = Math.floor(diff / (365 * 24 * 60 * 60 * 1000));
+	days = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000));
+	hours = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+	minutes = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000) - hours * (60 * 60 * 1000)) / (60 * 1000));
     output = `${years > 0 ? years + "y:" : ""}${days > 0 ? days + "d:" : ""}${hours > 0 ? hours + "h:" : ""}${minutes > 0 ? minutes + "min" : ""}`
     output = output[output.length - 1] == ":" ? output.slice(0, -1) : output;
     return output;

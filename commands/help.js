@@ -22,6 +22,12 @@ module.exports = {
                 Tells you if you should attack a certain guild.
             **- %timeinguild GuildNameHere **
                 Lists all players in a guild and how long they've been in it.
+            **- %userstats GuildMemberNameHere **
+                Returns an embed containing statistics and other information.
+            **- %guildstats em/gxp **
+                Returns leaderboards for XP/Emeralds contributed to the guild.
+            **- %sincelastcounts **
+                Returns an embed containing the amount of gxp/ems the Pillagers have farmed since the last counts.
             ` )
 
         message.author.send(commandEmbed)
@@ -43,12 +49,22 @@ module.exports = {
                 Tells you if you should attack a certain guild.
             **- %timeinguild GuildNameHere **
                 Lists all players in a guild and how long they've been in it.
+            **- %userstats GuildMemberNameHere **
+                Returns an embed containing statistics and other information.
+            **- %guildstats em/gxp **
+                Returns leaderboards for XP/Emeralds contributed to the guild.
+            **- %sincelastcounts **
+                Returns an embed containing the amount of gxp/ems the Pillagers have farmed since the last counts.
             ` )
             .addField('Admin Commands', `
-            ** %reactionroles **
+            **- %reactionroles Role Emoji EmbedTitle (-e Description)**
                 Create an embed which gives you the specified role if you react with the specified emoji.
-            ** %vote start/end TitleHere **
+            **- %vote start/end TitleHere **
                 Create/End Votes
+            **- %guildstats update **
+                Updates the guildstats (You have to attach a txt file containing the gu list.)
+            **- %counts (update) **
+                Does the Pillager counts. (update is for updating the data by getting the data of the PUN Member Roles.)
             `)
 
         message.author.send(commandEmbed)

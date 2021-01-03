@@ -30,6 +30,7 @@ module.exports = {
 	description: 'View stats of the guild.',
 	execute(message, args) {
         if(!message.member.roles.cache.has('472859173730648065') && !message.member.hasPermission("MANAGE_GUILD")){
+            console.log(message.member)
             message.channel.send(utils.errorResponse("notaguildmember", ""));
             return;
         }
@@ -76,7 +77,7 @@ module.exports = {
                                 let uuid = possibleUsers[0].uuid.replace(/-/g, "");
                                 let currentName = possibleUsers[0].currentName;
                                 outputList.push([uuid, elem[0], elem[1], elem[2], elem[3], true, currentName])
-                            }else if(xmlUUIDStats.status == 200 && xmlUUIDStats.readyState == 4){
+                             }else if(xmlUUIDStats.status == 200 && xmlUUIDStats.readyState == 4){
                                 try{
                                     resTextUUIDStats = JSON.parse(xmlUUIDStats.responseText);
                                     uuidStats = resTextUUIDStats.id;
@@ -105,10 +106,10 @@ module.exports = {
                                                                 resTextUpdateStats.data[index].ign == elem[1];
                                                             }
                                                             if(resTextUpdateStats.data[index].lastJoin == elem[4]){
-                                                                resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + (Number(elem[2])- resTextUpdateStats.data[index].alreadyAddedGXP); 
-                                                                resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + (Number(elem[3])- resTextUpdateStats.data[index].alreadyAddedEMS);
-                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(resTextUpdateStats.data[index].currentGXP);
-                                                                resTextUpdateStats.data[index].alreadyAddedEMS = Number(resTextUpdateStats.data[index].currentEMS);
+                                                                resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + (Number(elem[2]) - Number(resTextUpdateStats.data[index].alreadyAddedGXP)); 
+                                                                resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + (Number(elem[3]) - Number(resTextUpdateStats.data[index].alreadyAddedEMS));
+                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(elem[2]) - Number(resTextUpdateStats.data[index].alreadyAddedGXP);
+                                                                resTextUpdateStats.data[index].alreadyAddedEMS = Number(elem[3]) - Number(resTextUpdateStats.data[index].alreadyAddedEMS);
                                                             }else{
                                                                 resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + Number(elem[2]);
                                                                 resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + Number(elem[3]);
@@ -116,7 +117,6 @@ module.exports = {
                                                                 resTextUpdateStats.data[index].alreadyAddedEMS = Number(elem[3]);
                                                                 resTextUpdateStats.data[index].lastJoin = elem[4]
                                                             }
-                                                            resTextUpdateStats.data[index].lastJoin = elem[4];
                                                         }else if(new Date(elem[4]).getTime() < new Date(resTextUpdateStats.data[index].dateJoined).getTime()){
                                                             console.log("timeerror", resTextUpdateStats.data[index].ign)
                                                             resTextUpdateStats.data[index].dateJoined = elem[4];
@@ -198,13 +198,14 @@ module.exports = {
                                     
                                 }
                                     xmlUUIDStats.send();
-                            }) 
-                            
+                            })  
                         }
                         
                         }
+                        
                     }
                     xmlStats.send();
+                    
                 }else{
                     message.channel.send(utils.errorResponse("noperms", "MANAGE_GUILD"))
                 }

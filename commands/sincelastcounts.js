@@ -8,7 +8,7 @@ module.exports = {
 	name: 'sincelastcounts',
 	description: 'The amount of emeralds/gxp earned since the last Pillager Counts.',
 	execute(message, args) {
-    if(!message.member.roles.cache.some(role => role.name == "Guild Member")) {message.channel.send(utils.errorResponse("notaguildmember")); return;}
+    if(!message.member.roles.cache.some(role => role.name == "Guild Member") && !message.member.hasPermission("MANAGE_GUILD")) {message.channel.send(utils.errorResponse("notaguildmember")); return;}
         let outputStr = ""
         let xmlGetStats = new XMLHttpRequest();
         xmlGetStats.open("GET", process.env.guildStatsURL);

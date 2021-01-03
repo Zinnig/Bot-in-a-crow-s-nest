@@ -15,7 +15,8 @@ module.exports = {
             message.channel.send("Counts speedrun has started!")
         })
     }else if(args[0] == "update"){
-        spreadsheet.accessSpreadsheet("update")
+        spreadsheet.accessSpreadsheet("update");
+        message.channel.send("Guildstats have been updated from the spreadsheet.")
     }
     }
 };

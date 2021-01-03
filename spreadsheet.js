@@ -138,7 +138,7 @@ const accessSpreadsheet = async (type, slData) =>{
                 for(i=3;i < w; i++){
                     gUUID = await getUUID(sheet["_cells"][i][2].value.replace("\n", ""));
                     gMember = new Object();
-                    gMember.dateJoined = await getData(gUUID, "joinDate", resTextGStats) == null ?  sheet["_cells"][i][1].value == null ? null : sheet["_cells"][i][1].value.replace(/[a-z]+/, "") : await getData(gUUID, "joinDate", resTextGStats);
+                    gMember.dateJoined = await getData(gUUID, "joinDate", resTextGStats) == null || (await getData(gUUID, "joinDate", resTextGStats)).replace(" ", "") == "(not in the guild yet)"?  sheet["_cells"][i][1].value == null ? null : sheet["_cells"][i][1].value.replace(/[a-z]+/, "") : await getData(gUUID, "joinDate", resTextGStats);
                     gMember.ign = sheet["_cells"][i][2].value.replace("\n", "").replace(" ", "");
                     gMember.uuid = await getUUID(gMember.ign);
                     gMember.region = sheet["_cells"][i][3].value;

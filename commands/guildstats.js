@@ -183,7 +183,7 @@ module.exports = {
                                                 xmlUpdateStats.setRequestHeader("versioning", false)
                                                 xmlUpdateStats.send(JSON.stringify(guildStatsJSON));
                                                 console.log(guildStatsJSON)
-                                                message.channel.send("GuildStats updated.") 
+                                                message.channel.send("GuildStats updated.");
                                                 } 
                                                 }
                                                 xmlGetStats.send();  
@@ -385,10 +385,10 @@ module.exports = {
                                                     mileStoneEM3 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
                                                     counterEM3++;
                                                     }
-                                            }else if(em[property][1] >= 100000){
-                                                if(mileStoneEM1.search(searchReg) == -1){
-                                                    mileStoneEM1 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
-                                                    counterEM1++;
+                                            }else if(em[property][1] >= 250000){
+                                                if(mileStoneEM2.search(searchReg) == -1){
+                                                    mileStoneEM2 += `- ${em[property][0]}: ${em[property][1].toLocaleString("en")} EMS \n`;
+                                                    counterEM2++;
                                                     }
                                             }else if(em[property][1] >= 50000){
                                                 if(mileStoneEM1.search(searchReg) == -1){

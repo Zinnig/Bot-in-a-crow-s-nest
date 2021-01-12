@@ -10,20 +10,10 @@
   "author": "Zinnig",
   "license": "ISC",
   "dependencies": {
-    "bufferutil": "^4.0.2",
-    "canvas": "^2.6.1",
+    "cheerio": "^1.0.0-rc.5",
     "custom-env": "^1.0.2",
-    "discord": "^0.8.2",
     "discord.js": "^12.4.1",
-    "dotenv": "^8.2.0",
-    "ffmpeg-binaries": "^3.2.2",
     "google-spreadsheet": "^3.0.13",
-    "googleapis": "^39.2.0",
-    "highlight.js": "^10.4.1",
-    "jquery": "^3.5.1",
-    "jsdom": "^15.2.1",
-    "namemc": "^0.2.7",
-    "wrapper-mojang-api": "^1.0.2",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {

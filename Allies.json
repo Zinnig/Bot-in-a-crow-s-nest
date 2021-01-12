@@ -15,7 +15,8 @@
         "Astrum Pantheon": "Apa",
         "Mystic Woods": "MYC",
         "Nefarious Ravens": "NFR",
-        "Empire of Zanaris": "Zri"
+        "Empire of Zanaris": "Zri",
+	    "The FishTank": "FTk"
     },
     "Cooperating":{
         "Fantasy": "Fux",
@@ -115,6 +116,7 @@
         "MYC": {},
         "NFR": {},
         "wyy": {},
-        "Zri": {}
-    }
+        "Zri": {},
+	    "FTk": {}
+        }
 }

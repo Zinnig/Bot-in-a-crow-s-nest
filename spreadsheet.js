@@ -1,6 +1,7 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const NameMC = require('./namemc');
+const creds = require('./client_secret.json');
 
 const fs = require('fs');
 
@@ -87,12 +88,18 @@ async function getUUID(ign){
         xmlUUID.send();
     })
 }
+async function sleep(ms) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms);
+    });
+  }
 let data = [];
 let uuidList = [];
 const accessSpreadsheet = async (type, slData) =>{
     //const doc = new GoogleSpreadsheet(process.env.testingSpreadsheet);
     const doc = new GoogleSpreadsheet(process.env.spreadsheet)
-    await doc.useApiKey(process.env.googleSpreadsheetAPI_KEY);
+    //await doc.useApiKey(process.env.googleSpreadsheetAPI_KEY);
+    await doc.useServiceAccountAuth(creds);
     await doc.loadInfo();   
     
     const sheet = doc.sheetsByIndex[0];
@@ -181,7 +188,7 @@ const accessSpreadsheet = async (type, slData) =>{
             xmlStats.send(JSON.stringify(outputJSON))
             break;
         case "counts":
-            let date = new Date()
+            let date = new Date();
             let dateString = `${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear().toString().replace(date.getUTCFullYear().toString().substr(0, 2), "")}`;
             fs.readFile('./guildstatscache.json', async (err, data) => {
                 if(err) return;
@@ -193,7 +200,7 @@ const accessSpreadsheet = async (type, slData) =>{
                         while(pCount["_cells"][w][1].value != null){
                             w++;
                         }
-                        pCount["_cells"][3][1].value = dateString;
+                        pCount["_cells"][4][1].value = dateString;
                         pCount.saveUpdatedCells();
                         const rows = await pCount.getRows();
                         for(i=5;i<=w;i++){
@@ -211,9 +218,9 @@ const accessSpreadsheet = async (type, slData) =>{
                                     resTextGStats.data[elem].lastCountsEMS = resTextGStats.data[elem].currentEMS;
                                     resTextGStats.data[elem].lastCountsGXP = resTextGStats.data[elem].currentGXP;
                                     await rows[i].save();
+                                    await sleep(500);
                                 }
-                            }
-                            
+                            }                            
                         }
                         let outputJSON = {
                             "data": resTextGStats.data,

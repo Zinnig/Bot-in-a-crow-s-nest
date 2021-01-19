@@ -46,7 +46,8 @@
             "Project Ultimatum": "PxU",
             "HaHaUnited": "HHU",
             "Ram Ranch": "RMR",
-            "Kingdom Furries": "KFF"
+            "Kingdom Furries": "KFF",
+            "Femboy Kingdom": "fmb"
         },
         "Imp": {
             "Metric": "Met",
@@ -61,40 +62,47 @@
             "Bruh Moment": "GJJ"
         },
         "Phi":{
-            "Grand Explorers": "GrE",
             "Surprise": "FUU",
             "Luna": "Lox",
-            "Jasmine Dragons": "JsD",
-            "Fraternal Fire": "FFi",
-            "Gaming": "UcU",
             "Phantom Menace": "UUF"
         },
         "LXA": {
             "Join Lux Nova": "JXA",
-            "Luwu Nowo": "Luw"
+            "Luwu Nowo": "Luw",
+            "Scat Club": "LAX",
+            "Galactic": "GXA"
         },
         "ANO": {
             "Tartaros": "JNC",
             "Seekers of Arx": "ARX",
             "The Tempest": "Txp",
             "Ice Babies": "IcB",
-            "Exorcism": "xsm",
-            "Avorians": "AVM"
+            "Superstorm": "XPS",
+            "ppfart": "ffp"
+
         },
         "ESI": {
             "Sicko Mode": "SME",
             "Plant Hwyaden": "PLH",
-            "Warglitch": "RGL"
+            "Warglitch": "RGL",
+            "GaySI": "XRU",
+            "Grims": "UKV"
         },
-        "TAq": {},
+        "TAq": {
+            "Ichthyolite": "ITE",
+            "The FishTank": "FTk",
+            "Kryptopterus": "KKP"
+        },
         "ERN": {
             "Audux": "uxu",
             "Mute Gang": "VCT",
-            "Toemorians": "VHT"
+            "Toemorians": "VHT",
+            "BuffThiccLee": "SJL"
         },
         "Hax": {
             "vape god": "vpe",
-            "HeckForums": "Hux"
+            "HeckForums": "Hux",
+            "HackBoomers": "HXB"
         },
         "ILQ": {
             "Mayonnaise": "YOM",

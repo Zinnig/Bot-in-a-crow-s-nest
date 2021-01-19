@@ -72,7 +72,7 @@ client.on("message", async message => {
             client.commands.get('help').execute(message, args);
             break;
         case "war":
-            client.commands.get('war').execute(message, args)
+            client.commands.get('war').execute(message, args);
             break;
         case "subs":
             client.commands.get('subs').execute(message, args);
@@ -108,7 +108,7 @@ client.on("message", async message => {
             unknownCommandEmbed = new Discord.MessageEmbed()
             .setColor("#ff0000")
             .setTitle("Unknown Command!")
-            .setDescription(`Try ${prefix}help for a command list.`)
+            .setDescription(`Try ${prefix}help for a command list.`);
             message.channel.send(unknownCommandEmbed);
             break;
     }

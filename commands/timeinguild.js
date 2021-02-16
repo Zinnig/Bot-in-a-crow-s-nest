@@ -11,6 +11,7 @@ module.exports = {
         let sentTime = false;
         let ownerString = "";
         let chiefString = "";
+        let strategistString = "";
         let captainString = "";
         let recruiterString = "";
         let recruitString = "";
@@ -45,10 +46,13 @@ module.exports = {
                     e++;
                     switch (timeList[property][1]) {
                         case "OWNER":
-                            ownerString = `- ${timeList[0][0]} has been in the guild for ${timeList[0][2]}`;
+                            ownerString = `- ${timeList[property][0]} has been in the guild for ${timeList[property][2]}`;
                             break;
                         case "CHIEF":
                             chiefString += `- ${timeList[property][0]} has been in the guild for ${timeList[property][2]}\n`;
+                            break;
+                        case "STRATEGIST":
+                            strategistString += `- ${timeList[property][0]} has been in the guild for ${timeList[property][2]}\n`;
                             break;
                         case "CAPTAIN":
                             captainString += `- ${timeList[property][0]} has been in the guild for ${timeList[property][2]}\n`;
@@ -63,9 +67,9 @@ module.exports = {
                     if (e >= timeList.length) {
                         let f = 1;
                         let recruits = false;
-                        let rankStrings = [chiefString, captainString, recruiterString, recruitString];
-                        let rankStringsV2 = [[], [], [], []]
-                        let chiefStrings = 1, captainStrings = 1, recruiterStrings = 1, recruitStrings = 1;
+                        let rankStrings = [chiefString, strategistString, captainString, recruiterString, recruitString];
+                        let rankStringsV2 = [[], [], [], [], []]
+                        let chiefStrings = 1, strategistStrings = 1, captainStrings = 1, recruiterStrings = 1, recruitStrings = 1;
                         let timeEmbed = new Discord.MessageEmbed()
                             .setTitle(`Time in the guild "${input}"`)
                             .setColor("#123456")
@@ -82,14 +86,18 @@ module.exports = {
                                         chiefStrings++;
                                         break;
                                     case "1":
+                                        timeEmbed.addField(rankStringsV2[property].length == 1? "Strategists" : "Strategists Part " + strategistStrings, "```"+ elem[0] + "```");
+                                        strategistStrings++;
+                                        break;
+                                    case "2":
                                         timeEmbed.addField(rankStringsV2[property].length == 1? "Captains" : "Captains Part " + captainStrings, "```"+ elem[0] + "```");
                                         captainStrings++;
                                         break;
-                                    case "2":
+                                    case "3":
                                         timeEmbed.addField(rankStringsV2[property].length == 1? "Recruiters" : "Recruiters Part " + recruiterStrings, "```"+ elem[0] + "```");
                                         recruiterStrings++;
                                         break;
-                                    case "3":
+                                    case "4":
                                         timeEmbed.addField(rankStringsV2[property].length == 1? "Recruits" : "Recruits Part " + recruitStrings, "```"+ elem[0] + "```");
                                         recruitStrings++;
                                         recruits = true;

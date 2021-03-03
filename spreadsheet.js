@@ -2,6 +2,7 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const NameMC = require('./namemc');
 const creds = require('./client_secret.json');
+const utils = require('./utils.js');
 
 const fs = require('fs');
 
@@ -135,6 +136,40 @@ const accessSpreadsheet = async (type, slData) =>{
     xmlGetStats.send();
     
      switch(type){
+        case "updateSL":
+            await sheet.loadCells('A2:M200').then(async () => {
+                let w = 3;
+                while(sheet["_cells"][w][2].value != null){
+                    w++;
+                }
+                utils.getData().then(async response => {
+                    guildStats = response.data
+                    for(i=3;i<w;i++){
+                        let member = guildStats.find(user => user.ign == sheet["_cells"][i][2].value.replace(/(\\n) /g, ""));
+                        if(member == undefined){
+                            uuid = await getUUID(sheet["_cells"][i][2].value.replace(/(\\n) /g, ""));
+                            member = guildStats.find(user => user.uuid == uuid);
+                            console.log(member)
+                            if(member != undefined){
+                                member.sl = sheet["_cells"][i][5].value;
+                            }
+                           
+                        }else{
+                            member.sl = sheet["_cells"][i][5].value;
+                        }
+                    }
+                    let stats = {
+                        "data": guildStats,
+                        "timestamp": Date.now()
+                    };
+                    fs.writeFile("data/guildStats.json", JSON.stringify(stats), (err) => {
+                        if (err) throw err;
+                        console.log("Saved!");
+                        console.log(stats.data.length);
+                    });
+            })
+            }); 
+            break;
         case "update":
             await pCount.loadCells('A5:N200').then(console.log("pCount loaded."))
             await sheet.loadCells('A2:M200').then(async () => {

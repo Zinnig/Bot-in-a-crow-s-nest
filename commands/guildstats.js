@@ -2,6 +2,7 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const Discord = require('discord.js');
 const NameMC = require('../namemc');
 const utils = require('../utils.js');
+const fs = require('fs');
 function errorResponse(type, extraInfo){
     let errorEmbed = new Discord.MessageEmbed()
     .setColor("#ff0000")
@@ -52,160 +53,115 @@ module.exports = {
             gList.shift();
             return gList;
         }
+        function getGuild(){
+            return new Promise(resolve=>{
+            xml = new XMLHttpRequest();
+            xml.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=Paladins%20United");
+            xml.onreadystatechange = () => {
+                if(xml.status == 200 && xml.readyState == 4){
+                    response = JSON.parse(xml.responseText);
+                    resolve(response.members);
+                }
+            }
+            xml.send();
+        })
+        }
+        function getData(){
+            return new Promise(resolve => {
+                fs.readFile("data/guildStats.json", (err, data) => {
+                    if(err) return;
+                    try {
+                        guildStats = JSON.parse(data);
+                        resolve(guildStats);
+                    } catch (error) {
+                        resolve(null);
+                    }
+                })
+            })
+        }
         switch(args[0]){
             case "update":
                 if(message.member.hasPermission("MANAGE_GUILD")){
-                attachmentsArray = message.attachments.array();
-                if(attachmentsArray == 0) {
-                    message.channel.send(errorResponse('noattachement', '')) 
-                    return;
-                }
-                let xmlStats = new XMLHttpRequest();
-                xmlStats.open("GET", attachmentsArray[0].url);
-                xmlStats.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        if (this.getResponseHeader('content-type') == "text/plain") {
-                            inputStats = this.responseText
-                            guildStatsList = guildList(inputStats);
-                            console.table(guildStatsList)
-                            guildStatsList.forEach(function(elem){
-                            let xmlUUIDStats = new XMLHttpRequest();
-                            xmlUUIDStats.open("GET", "https://mc-heads.net/minecraft/profile/" + elem[0]);
-                            xmlUUIDStats.onreadystatechange = async function(){
-                            if(xmlUUIDStats.status == 204 && xmlUUIDStats.readyState == 4){
-                                const possibleUsers = await NameMC.lookupName(elem[0]);
-                                let uuid = possibleUsers[0].uuid.replace(/-/g, "");
-                                let currentName = possibleUsers[0].currentName;
-                                outputList.push([uuid, elem[0], elem[1], elem[2], elem[3], true, currentName])
-                             }else if(xmlUUIDStats.status == 200 && xmlUUIDStats.readyState == 4){
-                                try{
-                                    resTextUUIDStats = JSON.parse(xmlUUIDStats.responseText);
-                                    uuidStats = resTextUUIDStats.id;
-                                    outputList.push([uuidStats, elem[0], elem[1], elem[2], elem[3]])
-                                    if(outputList.length == guildStatsList.length){
-                                        console.table(outputList)
-                                        let xmlGetStats = new XMLHttpRequest();
-                                        xmlGetStats.open("GET", process.env.guildStatsURL);
-                                        xmlGetStats.setRequestHeader("Content-Type", "application/json");
-                                        xmlGetStats.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                                        xmlGetStats.setRequestHeader("versioning", false)
-                                        xmlGetStats.onreadystatechange = function(){
-                                            if(this.status == 200 && this.readyState == 4){
-                                                resTextUpdateStats = JSON.parse(this.responseText);
-                                                let alreadyDone = [];
-                                                outputList.forEach(elem => {
-                                                    let index = getIndex(resTextUpdateStats, elem[0])
-                                                    console.log(index) 
-                                                    if(index > -1){
-                                                        resTextUpdateStats.data[index].ign = resTextUpdateStats.data[index].ign.replace("\n", "");
-                                                        if(new Date(elem[4]).getTime() != new Date(resTextUpdateStats.data[index].dateJoined).getTime()){
-                                                            console.log(elem[1], elem[4], new Date(elem[4]).getTime(), resTextUpdateStats.data[index].dateJoined, new Date(resTextUpdateStats.data[index].dateJoined).getTime())
-                                                            console.log("CurrentGXP: " + resTextUpdateStats.data[index].currentGXP, "other:  " + elem[2])
-                                                            console.log("CurrentEMS: " + resTextUpdateStats.data[index].currentEMS, "other: " + elem[3])
-                                                            if(elem[6] != resTextUpdateStats.data[index].ign){
-                                                                resTextUpdateStats.data[index].ign == elem[1];
-                                                            }
-                                                            if(resTextUpdateStats.data[index].lastJoin == elem[4]){
-                                                                resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + (Number(elem[2]) - Number(resTextUpdateStats.data[index].alreadyAddedGXP)); 
-                                                                resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + (Number(elem[3]) - Number(resTextUpdateStats.data[index].alreadyAddedEMS));
-                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(elem[2]) - Number(resTextUpdateStats.data[index].alreadyAddedGXP);
-                                                                resTextUpdateStats.data[index].alreadyAddedEMS = Number(elem[3]) - Number(resTextUpdateStats.data[index].alreadyAddedEMS);
-                                                            }else{
-                                                                resTextUpdateStats.data[index].currentGXP = Number(resTextUpdateStats.data[index].currentGXP) + Number(elem[2]);
-                                                                resTextUpdateStats.data[index].currentEMS = Number(resTextUpdateStats.data[index].currentEMS) + Number(elem[3]);
-                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(elem[2]);
-                                                                resTextUpdateStats.data[index].alreadyAddedEMS = Number(elem[3]);
-                                                                resTextUpdateStats.data[index].lastJoin = elem[4]
-                                                            }
-                                                        }else if(new Date(elem[4]).getTime() < new Date(resTextUpdateStats.data[index].dateJoined).getTime()){
-                                                            console.log("timeerror", resTextUpdateStats.data[index].ign)
-                                                            resTextUpdateStats.data[index].dateJoined = elem[4];
-                                                            resTextUpdateStats.data[index].currentGXP = elem[2];
-                                                            resTextUpdateStats.data[index].currentEMS = elem[3];
-                                                            if(elem[6] != resTextUpdateStats.data[index].ign){
-                                                                resTextUpdateStats.data[index].ign == elem[1];
-                                                            }
-                                                        }else{
-                                                            if(resTextUpdateStats.data[index].lastCountsGXP > resTextUpdateStats.data[index].currentGXP){
-                                                                resTextUpdateStats.data[index].currentGXP = Number(elem[2]) + Number(resTextUpdateStats.data[index].lastCountsGXP);
-                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(elem[2]);
-                                                            }
-                                                            if(resTextUpdateStats.data[index].lastCountsEMS > resTextUpdateStats.data[index].currentEMS){
-                                                                resTextUpdateStats.data[index].currentEMS = Number(elem[3]) + Number(resTextUpdateStats.data[index].lastCountsEMS);
-                                                                resTextUpdateStats.data[index].alreadyAddedGXP = Number(elem[3]);
-                                                            }else{
-                                                            resTextUpdateStats.data[index].currentGXP = Number(elem[2]);
-                                                            resTextUpdateStats.data[index].currentEMS = Number(elem[3]);
-                                                        }
-                                                            if(elem[6] != resTextUpdateStats.data[index].ign){
-                                                                resTextUpdateStats.data[index].ign == elem[1];
-                                                            }
-                                                        }
-                                                    }else{
-                                                        gMember = new Object();
-                                                        gMember.dateJoined = elem[4];
-                                                        gMember.ign = elem[1].replace("\n", "");
-                                                        gMember.uuid = elem[0];
-                                                        gMember.region = undefined;
-                                                        gMember.sl = undefined;
-                                                        gMember.slData = [];
-                                                        gMember.ahh = undefined;
-                                                        gMember.potsct = undefined;
-                                                        gMember.pillager = undefined;
-                                                        gMember.lastCountsGXP = undefined;
-                                                        gMember.lastCountsEMS = undefined;
-                                                        gMember.currentGXP = elem[2];
-                                                        gMember.currentEMS = elem[3];
-                                                        gMember.shoreTrader = undefined;
-                                                        gMember.outfitter = undefined;
-                                                        gMember.inGuild = true;
-                                                        gMember.inGuildSpreadsheet = undefined;
-                                                        gMember.lastJoin = elem[4];
-                                                        gMember.alreadyAddedGXP = 0;
-                                                        gMember.alreadyAddedEMS = 0;
-                                                        resTextUpdateStats.data.push(gMember)
-                                                    }
-                                                    alreadyDone.push(elem[0]);
-                                                })
-                                                resTextUpdateStats.data.forEach(obj => {
-                                                    if(alreadyDone.indexOf(obj.uuid) == -1){
-                                                        obj.inGuild = false;
-                                                    }
-                                                })
-                                                let guildStatsJSON = {
-                                                    "data": resTextUpdateStats.data,
-                                                    "timestamp": Date.now()
-                                                }
-                                                let xmlUpdateStats = new XMLHttpRequest();
-                                                xmlUpdateStats.open("PUT", process.env.guildStatsURL);
-                                                xmlUpdateStats.setRequestHeader("Content-Type", "application/json");
-                                                xmlUpdateStats.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                                                xmlUpdateStats.setRequestHeader("versioning", false)
-                                                xmlUpdateStats.send(JSON.stringify(guildStatsJSON));
-                                                console.log(guildStatsJSON)
-                                                message.channel.send("GuildStats updated.");
-                                                } 
-                                                }
-                                                xmlGetStats.send();  
+                    let guildMembers, guildStats;
+                    getGuild().then((response) =>  {
+                        guildMembers = response
+                        getData().then((response1) => {
+                            guildStats = response1.data;
+                            guildMembers.forEach(elem => {
+                                let member = guildStats.find(user => user.uuid == elem.uuid.replace(/-/g, ""));
+                                console.log("before: " + guildStats.length);
+                                if(!(member == undefined)){
+                                    if(member.dateJoined.includes("/") || new Date(member.dateJoined).getUTCMilliseconds() == 0){
+                                        console.log("e")
+                                        let date1 = new Date(elem.joined);
+                                        let dateString = `${date1.getUTCMonth() + 1}/${date1.getUTCDate()}/${date1.getUTCFullYear()}`;
+                                        let date = new Date(dateString);
+                                        let dateJoin = new Date(member.dateJoined + " GMT");
+                                        let joinDate = `${dateJoin.getUTCMonth() + 1}/${dateJoin.getUTCDate()}/${dateJoin.getUTCFullYear()}`;
+                                        let joinedDate = new Date(joinDate);
+                                        let dateLastJoin = new Date(member.lastJoin);
+                                        let lastJoinDate = `${dateLastJoin.getUTCMonth() + 1}/${dateLastJoin.getUTCDate()}/${dateLastJoin.getUTCFullYear()}`;
+                                        let lastJoinedDate = new Date(lastJoinDate);
+                                            if(date.getTime() == joinedDate.getTime()){
+                                                member.currentGXP = elem.contributed;
+                                                console.log("date=dateJoined")
+                                            }else if(date.getTime() == lastJoinedDate.getTime() && date.getTime() != joinedDate.getTime()){
+                                                member.currentGXP = member.currentGXP + (elem.contributed - member.alreadyAddedGXP);
+                                                member.alreadyAddedGXP = elem.contributed
+                                            }else{
+                                                member.currentGXP = member.currentGXP + elem.contributed;
+                                                member.alreadyAddedGXP = elem.contributed;
+                                                member.lastJoin = elem.joined;
                                             }
-                                            
-                                        }catch(e){
-                                            throw e;
-                                        } 
-                                        
+                                    }else{
+                                        console.log(member.ign)
+                                        let date = new Date(elem.joined);
+                                        if(date == new Date(member.dateJoined)){
+                                            member.currentGXP = elem.contributed;
+                                        }else if(date == new Date(member.lastJoin) && date != new Date(member.dateJoined)){
+                                            member.currentGXP = member.currentGXP + (elem.contributed - member.alreadyAddedGXP);
+                                            member.alreadyAddedGXP = elem.contributed
+                                        }else{
+                                            member.currentGXP = member.currentGXP + elem.contributed;
+                                            member.alreadyAddedGXP = elem.contributed;
+                                            member.lastJoin = elem.joined;
+                                        }
+
                                     }
-                                
-                                    
+                                }else if(member == undefined){
+                                    console.log("new Member: " + elem.name)
+                                    gMember = new Object();
+                                    gMember.dateJoined = elem.joined;
+                                    gMember.ign = elem.name;
+                                    gMember.uuid = elem.uuid.replace(/-/g, "");
+                                    gMember.region = undefined;
+                                    gMember.sl = undefined;
+                                    gMember.slData = [];
+                                    gMember.ahh = undefined;
+                                    gMember.potsct = undefined;
+                                    gMember.pillager = undefined;
+                                    gMember.lastCountsGXP = undefined;
+                                    gMember.currentGXP = elem.contributed;
+                                    gMember.shoreTrader = undefined;
+                                    gMember.outfitter = undefined;
+                                    gMember.inGuild = true;
+                                    gMember.inGuildSpreadsheet = undefined;
+                                    gMember.lastJoin = elem.joined;
+                                    gMember.alreadyAddedGXP = 0;
+                                    guildStats.push(gMember);
                                 }
-                                    xmlUUIDStats.send();
-                            })  
-                        }
-                        
-                        }
-                        
-                    }
-                    xmlStats.send();
-                    
+                            })
+                            let stats = {
+                                "data": guildStats,
+                                "timestamp": Date.now()
+                            };
+                            fs.writeFile("data/guildStats.json", JSON.stringify(stats), (err) => {
+                                if (err) throw err;
+                                console.log("Saved!");
+                                console.log(stats.data.length);
+                            });
+                        });
+                    });
                 }else{
                     message.channel.send(utils.errorResponse("noperms", "MANAGE_GUILD"))
                 }

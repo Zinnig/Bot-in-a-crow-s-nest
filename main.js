@@ -51,10 +51,6 @@ process.on('unhandledRejection', async error => {
     let me = await client.users.fetch('282964164358438922');
     me.send(`Unhandled promise rejection: \n${error.stack}`);
 });
-process.on('SIGTERM', async () => {
-    me = await client.users.fetch('282964164358438922');
-    me.send(`SIGTERM Signal recieved.`);
-})
 client.on("message", async message => {
     if (message.author.bot) return;
     if (!message.guild) return;
@@ -103,6 +99,9 @@ client.on("message", async message => {
             break;
         case "sl":
             client.commands.get('sl').execute(message, args);
+            break;
+        case "inactivity":
+            client.commands.get('inactivity').execute(message, args);
             break;
         default:
             unknownCommandEmbed = new Discord.MessageEmbed()

@@ -1,6 +1,7 @@
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const Discord = require('discord.js');
-const utils = require('../utils.js')
+const utils = require('../utils.js');
+var fs = require('fs')
 
 module.exports = {
 	name: 'userstats',
@@ -97,7 +98,22 @@ module.exports = {
                 if(xmlUUID.status == 200 && xmlUUID.readyState == 4){
                     try {
                         resTextUUID = JSON.parse(xmlUUID.responseText);
-                        let xmlGetStats = new XMLHttpRequest();
+                        utils.getData().then((response) => {
+                            utils.getGuild().then((members) => {
+                        guildStats = response.data;
+                        member = guildStats.find(member => member.uuid == resTextUUID.id);
+                        guildMember = members.find(member => member.uuid.replace(/-/g, "") == resTextUUID.id);
+                        gxp = getMilestoneRank(member.currentGXP, "GXP");
+                        ems = getMilestoneRank(member.currentEMS, "EMS");
+                        let statsEmbed = new Discord.MessageEmbed()
+                        .setColor('#8000FF')
+                        .setTitle(`${resTextUUID.name}'s stats`)
+                        .addField('Stats', '```ml\n' + `General Information:\n- IGN: ${member.ign}\n- Date joined: ${member.dateJoined}\n- Region: ${member.region}\n- Ingame Rank: ${guildMember.rank}\n- Shore Leave: ${member.sl}\n\nRoles:\n${member.ahh == true? '- AHH \n': ""}${member.pillager == true? '- Pillager \n' : ""}${member.potsct == true? '- PPOTSCT \n': ""}\nMilestones:\n- GXP ${gxp[0] == null? "0":gxp[0]}: ${Number(member.currentGXP).toLocaleString("en")} (${gxp[1].toLocaleString("en") == "Max milestone reached" ?  "Max milestone reached, overflow: " + (Number(member.currentGXP) - 10000000000).toLocaleString("en"):gxp[1].toLocaleString("en") + ' left to reach the next milestone'})\n- EMS ${ems[0] == null?"0":ems[0]}: ${Number(member.currentEMS).toLocaleString("en")} (${ems[1].toLocaleString("en") == "Max milestone reached" ? "Max milestone reached, overflow: " + (Number(member.currentEMS) - 5000000).toLocaleString("en"):ems[1].toLocaleString("en") + ' left to reach the next milestone'})\n` + '```')
+                        .setFooter(`Last updated: ${new Date(response.timestamp).toUTCString()}(${utils.setupTimeDiff(Date.now() - response.timestamp)} ago)`)
+                        message.channel.send(statsEmbed);
+                        })
+                    })
+                        /* let xmlGetStats = new XMLHttpRequest();
                         xmlGetStats.open("GET", process.env.guildStatsURL);
                         xmlGetStats.setRequestHeader("Content-Type", "application/json");
                         xmlGetStats.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
@@ -136,9 +152,10 @@ module.exports = {
                                 }
                             }
                             xmlGetStats.send();
+                            */
                         } catch (e) {
                             throw e;
-                        }
+                        } 
                 }else if(xmlUUID.status == "" && sent == false && xmlUUID.readyState == 4){
                     message.channel.send(utils.errorResponse("namenotfound", args[0]))
                     sent = true;

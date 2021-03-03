@@ -1,4 +1,6 @@
 const Discord = require('discord.js')
+const fs = require('fs');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 exports.errorResponse = (type, extraInfo) =>{
     let errorEmbed = new Discord.MessageEmbed()
     .setColor("#ff0000")
@@ -61,4 +63,30 @@ if (str.length > 1000){
     output.push(str)
 }
 return output;
+}
+exports.getData = () => {
+    return new Promise(resolve => {
+        fs.readFile("data/guildStats.json", (err, data) => {
+            if(err) return;
+            try {
+                guildStats = JSON.parse(data);
+                resolve(guildStats);
+            } catch (error) {
+                resolve(null);
+            }
+        })
+    })
+}
+exports.getGuild = () => {
+    return new Promise(resolve=>{
+    xml = new XMLHttpRequest();
+    xml.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=Paladins%20United");
+    xml.onreadystatechange = () => {
+        if(xml.status == 200 && xml.readyState == 4){
+            response = JSON.parse(xml.responseText);
+            resolve(response.members);
+        }
+    }
+    xml.send();
+})
 }

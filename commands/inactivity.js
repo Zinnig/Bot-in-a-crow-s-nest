@@ -16,6 +16,7 @@ module.exports = {
             guildMembers.forEach(elem => {
                 if(alreadyDone.indexOf(elem.uuid) == -1){
                     let member = guildData.data.find(user => user.uuid == elem.uuid.replace(/-/g, ""));
+                    if(member == undefined)
                         uuid = elem.uuid;
                         let xml = new XMLHttpRequest();
                         xml.open('GET', `https://api.wynncraft.com/v2/player/${uuid}/stats`);

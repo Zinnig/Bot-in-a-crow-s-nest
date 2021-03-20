@@ -21,22 +21,13 @@ let i = 0;
 let astatus;
 client.on("ready", () => {
     console.log("Started...");
-    setInterval(function () {
-        if (i <= 3) {
-            astatus = statuses[i]
-            i++;
-            client.user.setPresence({
-                status: astatus,
-                activity: {
-                    name: `${prefix}help`,
-                    type: "LISTENING"
-                }
-            });
-        } else if (i > 3) {
-            i = 0;
+    client.user.setPresence({
+        status: 'online',
+        activity: {
+            name: `${prefix}help`,
+            type: "LISTENING"
         }
-
-    }, 1000);
+    });
 
 });
 function index(a, arr) {
@@ -102,6 +93,11 @@ client.on("message", async message => {
             break;
         case "inactivity":
             client.commands.get('inactivity').execute(message, args);
+            break;
+        case "sp":
+        case "sps":
+        case "soulpoints":
+            client.commands.get('soulpoints').execute(message, args);
             break;
         default:
             unknownCommandEmbed = new Discord.MessageEmbed()

@@ -19,18 +19,16 @@ module.exports = {
                     return b[1] - a[1];
                 })
                 outputL.reverse();
-                console.log(outputS)
                 outputL.forEach(elem => {
                     outputS += `${elem[0]}: ${elem[2]}, Uptime: ≈${elem[3]}\n`
                 })
                 outputEm = new Discord.MessageEmbed()
                 .setColor('#125232')
-                .setTitle('yes')
+                .setTitle('Time until next Soul Point')
                 utils.splitString(outputS).forEach((elem, index) => {
                     outputEm.addField(index, '```\n'+elem +'```')
                 })
                 message.channel.send(outputEm);
-                console.table(outputL);
                 
             }
         }

@@ -12,11 +12,15 @@ module.exports = {
             if(replace.indexOf("-e") != -1){
                 options.embed = true;
                 if(replace.indexOf("-d") != -1){
-                    descr = replace.substr(replace.search(/-d/)+3, replace.indexOf("-", replace.indexOf("-d")) == -1? replace.length:replace.indexOf("-", replace.indexOf("-d"))).replace(/,/g, " ");
+                    console.log(replace.lastIndexOf("-"), replace.length)
+                    descr = replace.substring(replace.search(/-d/)+3, replace.lastIndexOf("-")).replace(/,/g, " ");
+                    console.log(replace.substring(replace.search(/-d/)+3, replace.lastIndexOf("-") -10))
+                    replace = replace.replace(descr, "")
+                    console.log(replace);
                 }
                 if(replace.indexOf("-t") != -1){
-                    title = replace.substr(replace.search(/-t/)+3, replace.indexOf("-", replace.indexOf("-t")) == -1? replace.length:replace.indexOf("-", replace.indexOf("-t"))).replace(/,/g, " ");
-                }
+                    title = replace.substr(replace.search(/-t/)+3, replace.length).replace(/,/g, " ");
+                } 
                 edit = new Discord.MessageEmbed()
                 .setTitle(title)
                 .setColor(msg.embeds[0].color)
@@ -26,6 +30,7 @@ module.exports = {
                     edit.setFooter(msg.embeds[0].footer.text)
                 }
                 msg.edit(edit);
+                message.react('👍');
             }
 
         })

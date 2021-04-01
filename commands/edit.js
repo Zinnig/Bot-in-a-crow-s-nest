@@ -12,15 +12,18 @@ module.exports = {
             if(replace.indexOf("-e") != -1){
                 options.embed = true;
                 if(replace.indexOf("-d") != -1){
-                    descr = replace.substr(replace.search(/-d/)+3, replace.length).replace(/,/g, " ");
+                    descr = replace.substr(replace.search(/-d/)+3, replace.indexOf("-", replace.indexOf("-d")) == -1? replace.length:replace.indexOf("-", replace.indexOf("-d"))).replace(/,/g, " ");
+                }
+                if(replace.indexOf("-t") != -1){
+                    title = replace.substr(replace.search(/-t/)+3, replace.indexOf("-", replace.indexOf("-t")) == -1? replace.length:replace.indexOf("-", replace.indexOf("-t"))).replace(/,/g, " ");
                 }
                 edit = new Discord.MessageEmbed()
-                .setTitle(msg.embeds[0].title)
+                .setTitle(title)
                 .setColor(msg.embeds[0].color)
                 .setDescription(descr)
                 .addFields(msg.embeds[0].fields)
-                if(message.embeds[0].footer.text != null){
-                    edit.setFooter(message.embeds[0].footer.text)
+                if(msg.embeds[0].footer != null){
+                    edit.setFooter(msg.embeds[0].footer.text)
                 }
                 msg.edit(edit);
             }

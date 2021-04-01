@@ -99,6 +99,9 @@ client.on("message", async message => {
         case "soulpoints":
             client.commands.get('soulpoints').execute(message, args);
             break;
+        case "edit":
+            client.commands.get('edit').execute(message, args, client);
+            break;
         default:
             unknownCommandEmbed = new Discord.MessageEmbed()
             .setColor("#ff0000")

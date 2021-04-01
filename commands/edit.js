@@ -19,7 +19,9 @@ module.exports = {
                 .setColor(msg.embeds[0].color)
                 .setDescription(descr)
                 .addFields(msg.embeds[0].fields)
-                .setFooter(msg.embeds[0].footer.text)
+                if(message.embeds[0].footer.text != null){
+                    edit.setFooter(message.embeds[0].footer.text)
+                }
                 msg.edit(edit);
             }
 

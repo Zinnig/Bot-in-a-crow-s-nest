@@ -16,9 +16,6 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
-let statuses = ["online", "idle", "dnd"];
-let i = 0;
-let astatus;
 client.on("ready", () => {
     console.log("Started...");
     client.user.setPresence({
@@ -45,11 +42,23 @@ process.on('unhandledRejection', async error => {
 client.on("message", async message => {
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.content.startsWith(prefix)) return;
+    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.content.indexOf('<@&472859173730648065>') == -1) return;
 
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
+
+    //check if message is in #welcome
+    if (message.channel.id === "730098051741647023" && message.type === "GUILD_MEMBER_JOIN") {
+        message.react("✔️")
+            .then(() => message.react("✅"))
+            .then(() => message.react("☑️"))
+            .catch(() => console.log(`Failed to assign all emojis to the join message of ${message.author.username}#${message.author.discriminator}`));
+        }
+    if(message.channel.id === '346392052046757888' && message.content.indexOf('<@&472859173730648065>') !== -1){
+        message.react('👍')
+            .then(() => message.react('👎'))
+    }
 
     switch(cmd){
         case "ping":
@@ -102,16 +111,53 @@ client.on("message", async message => {
         case "edit":
             client.commands.get('edit').execute(message, args, client);
             break;
+        case "guildwarleaderboard":
+        case "gwl":
+            client.commands.get('guildwarleaderboard').execute(message, args);
+            break;
         default:
-            unknownCommandEmbed = new Discord.MessageEmbed()
-            .setColor("#ff0000")
-            .setTitle("Unknown Command!")
-            .setDescription(`Try ${prefix}help for a command list.`);
-            message.channel.send(unknownCommandEmbed);
+            if(message.content.startsWith(prefix)){
+                unknownCommandEmbed = new Discord.MessageEmbed()
+                .setColor("#ff0000")
+                .setTitle("Unknown Command!")
+                .setDescription(`Try ${prefix}help for a command list.`);
+                message.channel.send(unknownCommandEmbed);
+            }
             break;
     }
+    
 }); 
-
+client.on("messageReactionAdd", async (reaction, user) => {
+    //check whether reaction is partial, fetch message if so
+    if (reaction.partial) {
+        //fetch message
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            //fetch failed
+            console.log('Something went wrong when fetching the message: ', error);
+            return;
+        }
+    }
+    //if in welcome, add roles
+    if(reaction.message.channel.id === /*"514453846676996097"*/"730098051741647023") {
+        //get user
+        author = reaction.message.author;
+        switch (reaction.emoji.name) {
+            case ":heavy_check_mark:":
+                author.roles.add("513527251674071040"); //Stowaways
+                break;
+            case ":white_check_mark:":
+                author.roles.add("472859173730648065"); //Guild Member
+                break;
+            case ":ballot_box_with_check:":
+                author.roles.add("513527246703820800"); //Brethren of the Coast
+                break;
+            default:
+                break;
+        }
+    }
+});
 client.on("raw", async packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
     let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id)
@@ -191,6 +237,7 @@ client.on("raw", async packet => {
             xmlVoteRaw.send()
            
         }else{
+            console.log("asdf")
             let guild = client.guilds.cache.get(packet.d.guild_id);
             let xmlReactionAddGET = new XMLHttpRequest();
             xmlReactionAddGET.open("GET", process.env.reactionURL)
@@ -203,6 +250,7 @@ client.on("raw", async packet => {
                     resTextReactionAdd = JSON.parse(this.responseText)
                     if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
                         guild.members.fetch(packet.d.user_id).then(member => {
+                            console.log(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
                             member.roles.add(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
                         
                     })

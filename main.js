@@ -49,7 +49,7 @@ client.on("message", async message => {
     const cmd = args.shift().toLowerCase();
 
     //check if message is in #welcome
-    if (message.channel.id === "730098051741647023" && message.type === "GUILD_MEMBER_JOIN") {
+    if (message.channel.id === "514453846676996097" && message.type === "GUILD_MEMBER_JOIN") {
         message.react("✔️")
             .then(() => message.react("✅"))
             .then(() => message.react("☑️"))

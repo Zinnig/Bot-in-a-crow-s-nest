@@ -127,43 +127,32 @@ client.on("message", async message => {
     }
     
 }); 
-client.on("messageReactionAdd", async (reaction, user) => {
-    //check whether reaction is partial, fetch message if so
-    if (reaction.partial) {
-        //fetch message
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            //fetch failed
-            console.log('Something went wrong when fetching the message: ', error);
-            return;
-        }
-    }
-    //if in welcome, add roles
-    if(reaction.message.channel.id === "514453846676996097") {
-        //get user
-        author = reaction.message.author;
-        switch (reaction.emoji.name) {
-            case ":heavy_check_mark:":
-                author.roles.add("513527251674071040"); //Stowaways
-                break;
-            case ":white_check_mark:":
-                author.roles.add("472859173730648065"); //Guild Member
-                break;
-            case ":ballot_box_with_check:":
-                author.roles.add("513527246703820800"); //Brethren of the Coast
-                break;
-            default:
-                break;
-        }
-    }
-});
 client.on("raw", async packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
-    let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id)
-    if(!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222')) return; 
+    let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
+    if(!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true)) return; 
     if(packet.t == 'MESSAGE_REACTION_ADD'){
         if(packet.d.user_id == client.user.id) return;
+        if(packet.d.channel_id == "514453846676996097") {
+            //get user
+            guild = client.guilds.cache.get(packet.d.guild_id);
+            guild.members.fetch(msg.author.id).then(author => {
+                switch (packet.d.emoji.name) {
+                    case "✔️":
+                        author.roles.add("513527251674071040"); //Stowaways
+                        break;
+                    case "✅":
+                        author.roles.add("472859173730648065"); //Guild Member
+                        break;
+                    case "☑️":
+                        author.roles.add("513527246703820800"); //Brethren of the Coast
+                        break;
+                    default:
+                        break;
+                }
+                return;
+        })
+        }
         if(packet.d.emoji.name == '👍' || packet.d.emoji.name == '👎') {
             let xmlVoteRaw = new XMLHttpRequest();
             xmlVoteRaw.open("GET", process.env.voteURL)
@@ -237,7 +226,6 @@ client.on("raw", async packet => {
             xmlVoteRaw.send()
            
         }else{
-            console.log("asdf")
             let guild = client.guilds.cache.get(packet.d.guild_id);
             let xmlReactionAddGET = new XMLHttpRequest();
             xmlReactionAddGET.open("GET", process.env.reactionURL)

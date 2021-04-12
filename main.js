@@ -140,7 +140,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
         }
     }
     //if in welcome, add roles
-    if(reaction.message.channel.id === /*"514453846676996097"*/"730098051741647023") {
+    if(reaction.message.channel.id === "514453846676996097") {
         //get user
         author = reaction.message.author;
         switch (reaction.emoji.name) {

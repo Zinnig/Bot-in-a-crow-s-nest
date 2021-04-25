@@ -236,16 +236,21 @@ client.on("raw", async packet => {
             xmlReactionAddGET.onreadystatechange = function(){
             if(this.status == 200 && this.readyState == 4){
                 try{
-                    resTextReactionAdd = JSON.parse(this.responseText)
+                    resTextReactionAdd = JSON.parse(this.responseText);
                     if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
                         guild.members.fetch(packet.d.user_id).then(member => {
                             console.log(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
                             member.roles.add(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                        
-                    })
+                            
+                        })
+                    }else if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && packet.d.emoji.name == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
+                        guild.members.fetch(packet.d.user_id).then(member => {
+                            member.roles.add(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
+                            
+                        })
                 }
                 }catch(e){
-                   //empty
+                   console.log(e)
                 }
             }
         }
@@ -264,6 +269,10 @@ client.on("raw", async packet => {
             try{
                 resTextReactionAdd = JSON.parse(this.responseText)
                 if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
+                    guild.members.fetch(packet.d.user_id).then(member => {
+                        member.roles.remove(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
+                    })
+                }else if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && packet.d.emoji.name == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
                     guild.members.fetch(packet.d.user_id).then(member => {
                         member.roles.remove(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
                     })

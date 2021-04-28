@@ -39,7 +39,7 @@ process.on('unhandledRejection', async error => {
     let me = await client.users.fetch('282964164358438922');
     me.send(`Unhandled promise rejection: \n${error.stack}`);
 });
-client.on("message", async message => {    
+client.on("message", async message => {   
     if (message.author.bot) return;
     if (!message.guild) return;
     if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.content.indexOf('<@&472859173730648065>') == -1) return;
@@ -59,6 +59,11 @@ client.on("message", async message => {
         message.react('👍')
             .then(() => message.react('753502162079711293'))
             .then(() => message.react('👎'));
+        if(message.content.search(/'/g) !== -1){
+            pos = message.content.search(/'/);
+            ign = message.content.substring(0, pos);
+            //TODO add Info of Player.
+        }
     }
 
     switch(cmd){

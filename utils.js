@@ -50,20 +50,20 @@ exports.setupTimeDiff = (diff) => {
     return output;
 }
 exports.splitString = (str) => {
-let output = []
-if (str.length > 1000){
-  n = Math.floor(str.length/1000)
-    for(i=0;i<=n;i++){
-        a1 = str.substr(0, 1000)
-        endingIndex = a1.lastIndexOf('\n')
-        output.push(str.slice(0, endingIndex))
-        str = str.replace(str.substr(0, endingIndex), "")      
-  }
-}else{
-    output.push(str)
-}
-return output;
-}
+    let output = []
+    if (str.length > 1000){
+      n = Math.floor(str.length/1000)
+        for(i=0;i<=n;i++){
+            a1 = str.substr(0, 1000)
+            endingIndex = a1.lastIndexOf('\n')
+            output.push(str.slice(0, endingIndex))
+            str = str.replace(str.substr(0, endingIndex), "")      
+      }
+    }else{
+        output.push(str)
+    }
+    return output;
+    }   
 exports.getData = () => {
     return new Promise(resolve => {
         fs.readFile("data/guildStats.json", (err, data) => {
@@ -89,4 +89,53 @@ exports.getGuild = () => {
     }
     xml.send();
 })
+}
+exports.getPlayer = (ign) => {
+    return new Promise(resolve => {
+        xml = new XMLHttpRequest();
+        xml.open("GET", `https://api.wynncraft.com/v2/player/${ign}/stats`);
+        xml.onreadystatechange = () => {
+        if(xml.status == 200 && xml.readyState == 4){
+            response = JSON.parse(xml.responseText);
+            resolve(response.members);
+        }
+    }
+    xml.send();
+    })
+}
+
+exports.changePage = (message, reaction, user, color, title, field, currentIndex, footer) => {
+    switch (reaction.emoji.name) {
+        case '▶️':
+            reaction.users.remove(user.id);
+            editEmbed = new Discord.MessageEmbed()
+            .setColor(color)
+            .setTitle(title)
+            .setFooter(footer === null ? "" : footer);
+            if(field.length-1 > currentIndex){
+                editEmbed.addField(`Page ${currentIndex+2}`, "```"+field[currentIndex+1]+"```");
+                currentIndex++;
+            }else{
+                currentIndex = 0;
+                editEmbed.addField(`Page ${currentIndex+1}`, "```"+field[0]+"```");
+            }
+            message.edit(editEmbed);
+            return currentIndex;
+        case '◀️':
+            reaction.users.remove(user.id);
+            editEmbed = new Discord.MessageEmbed()
+            .setColor(color)
+            .setTitle(title)
+            .setFooter(footer === null ? "" : footer);
+            if(currentIndex > 0){
+                editEmbed.addField(`Page ${currentIndex}`, "```"+field[currentIndex-1]+"```");
+                currentIndex--;
+            }else if(currentIndex === 0){
+                break;
+            }
+            message.edit(editEmbed);
+            return currentIndex;
+
+    }
+    
 }

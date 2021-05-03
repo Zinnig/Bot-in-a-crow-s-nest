@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const utils = require('./utils.js');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var fs = require('fs');
@@ -25,8 +26,8 @@ client.on("ready", () => {
             type: "LISTENING"
         }
     });
-
 });
+
 function index(a, arr) {
     for (var i = 0; i < arr.length; i++) {
         for (var j = 0; j < arr[i].length; j++) {
@@ -42,8 +43,7 @@ process.on('unhandledRejection', async error => {
 client.on("message", async message => {   
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.content.indexOf('<@&472859173730648065>') == -1) return;
-
+   // if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' /*&& message.content.indexOf('<@&472859173730648065>') == -1*/) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
@@ -53,16 +53,29 @@ client.on("message", async message => {
         message.react("✔️")
             .then(() => message.react("✅"))
             .then(() => message.react("☑️"))
-            .catch(() => console.log(`Failed to assign all emojis to the join message of ${message.author.username}#${message.author.discriminator}`));
+            .catch(() => console.log(`Failed to assign all emojis to the join message of ${message.author.tag}`));
         }
     if(message.channel.id === '346392052046757888' && message.content.indexOf('<@&472859173730648065>') !== -1){
         message.react('👍')
             .then(() => message.react('753502162079711293'))
             .then(() => message.react('👎'));
         if(message.content.search(/'/g) !== -1){
+            start = message.content.search(/>/);
             pos = message.content.search(/'/);
-            ign = message.content.substring(0, pos);
-            //TODO add Info of Player.
+            ign = message.content.substring(start+2, pos);
+            let player = await utils.getPlayer(ign);
+            if(player == undefined) message.channel.send(`The stats of the player **${ign}** couldn't be found!`);
+            let embed = new Discord.MessageEmbed()
+            .setColor(Math.floor(Math.random()*16777215).toString(16))
+            .setTitle(player.meta.tag.value === null ? player.username :`[${player.meta.tag.value}] ${player.username}`)
+            .setDescription(player.meta.location.online ? `Online on ${player.meta.location.server}`:'Offline')
+            .addFields(
+                {name: 'Total Playtime', value:`${Math.floor(player.meta.playtime/60*4.7)}h`, inline: false},
+                {name: 'Average Daily Playtime', value: `${(((player.meta.playtime/60*4.7)/((Date.now()-Date.parse(player.meta.firstJoin))/86400000))).toFixed(2)}h`, inline: false},
+                {name: 'Highest Combat Level', value: await utils.getHighestClass(player), inline: false}
+                )
+            .setTimestamp();
+            message.channel.send(embed)
         }
     }
 
@@ -233,61 +246,22 @@ client.on("raw", async packet => {
            
         }else{
             let guild = client.guilds.cache.get(packet.d.guild_id);
-            let xmlReactionAddGET = new XMLHttpRequest();
-            xmlReactionAddGET.open("GET", process.env.reactionURL)
-            xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
-            xmlReactionAddGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-            xmlReactionAddGET.setRequestHeader("versioning", false)
-            xmlReactionAddGET.onreadystatechange = function(){
-            if(this.status == 200 && this.readyState == 4){
-                try{
-                    resTextReactionAdd = JSON.parse(this.responseText);
-                    if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
-                        guild.members.fetch(packet.d.user_id).then(member => {
-                            console.log(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                            member.roles.add(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                            
-                        })
-                    }else if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && packet.d.emoji.name == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
-                        guild.members.fetch(packet.d.user_id).then(member => {
-                            member.roles.add(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                            
-                        })
-                }
-                }catch(e){
-                   console.log(e)
-                }
-            }
-        }
-        xmlReactionAddGET.send(); 
+            let rrData = await utils.getRRData();
+            let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
+            let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name ||i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
+                guild.members.fetch(packet.d.user_id).then(member => {
+                    member.roles.add(emoRol.role.replace("<@&", "").replace(">", ""));
+                });
     } 
     }else if(packet.t == 'MESSAGE_REACTION_REMOVE'){
         if(packet.d.user_id == client.id) return;
         let guild = client.guilds.cache.get(packet.d.guild_id);
-        let xmlReactionAddGET = new XMLHttpRequest();
-        xmlReactionAddGET.open("GET", process.env.reactionURL)
-        xmlReactionAddGET.setRequestHeader("Content-Type", "application/json");
-        xmlReactionAddGET.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-        xmlReactionAddGET.setRequestHeader("versioning", false)
-        xmlReactionAddGET.onreadystatechange = function(){
-        if(this.status == 200 && this.readyState == 4){
-            try{
-                resTextReactionAdd = JSON.parse(this.responseText)
-                if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && `<:${packet.d.emoji.name}:${packet.d.emoji.id}>` == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
-                    guild.members.fetch(packet.d.user_id).then(member => {
-                        member.roles.remove(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                    })
-                }else if(index(packet.d.message_id, resTextReactionAdd.data) != -1 && packet.d.emoji.name == resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][1]){
-                    guild.members.fetch(packet.d.user_id).then(member => {
-                        member.roles.remove(resTextReactionAdd.data[index(packet.d.message_id, resTextReactionAdd.data)][2].replace("<@&", "").replace(">", ""))
-                    })
-                }
-            }catch(e){
-               //empty
-            }
-        }
-    }
-    xmlReactionAddGET.send();  
+        let rrData = await utils.getRRData();
+        let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
+            let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name ||i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
+                guild.members.fetch(packet.d.user_id).then(member => {
+                    member.roles.remove(emoRol.role.replace("<@&", "").replace(">", ""));
+                });
     }
 })
 client.on("voiceStateUpdate", () => {

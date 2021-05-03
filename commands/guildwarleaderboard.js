@@ -20,15 +20,19 @@ module.exports = {
                     }
                         return b.warCount - a.warCount;
                 })
-
+                i = 0;
+                outputSplit = ["", "", "", ""];
                 response.data.forEach((elem, index) => {
-                    result += `${index+1}. ${elem.name} [${elem.prefix}]: ${elem.warCount}\n`;
+                    if(index % 25 !== 0 || index == 0){
+                        outputSplit[i] += `${index+1}. ${elem.name} [${elem.prefix}]: ${elem.warCount}\n`;
+                    }else{
+                        i++;
+                        outputSplit[i] += `${index+1}. ${elem.name} [${elem.prefix}]: ${elem.warCount}\n`;
+                    }
                 })
-                
                 let embed = new Discord.MessageEmbed()
                 .setColor('#123122')
                 .setTitle('Guild-War-Leaderboard');
-                outputSplit = utils.splitString(result);
                 embed.addField(`Page 1`, "```\n"+outputSplit[0]+"\n```");
                 message.channel.send(embed).then(async message => {
                     await message.react('◀️');

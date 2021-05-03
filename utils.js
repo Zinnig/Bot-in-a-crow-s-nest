@@ -90,17 +90,49 @@ exports.getGuild = () => {
     xml.send();
 })
 }
+
 exports.getPlayer = (ign) => {
     return new Promise(resolve => {
         xml = new XMLHttpRequest();
         xml.open("GET", `https://api.wynncraft.com/v2/player/${ign}/stats`);
         xml.onreadystatechange = () => {
         if(xml.status == 200 && xml.readyState == 4){
-            response = JSON.parse(xml.responseText);
-            resolve(response.members);
+            try{
+                response = JSON.parse(xml.responseText);
+                resolve(response.data[0]);
+            }catch(error){
+                resolve(null)
+            }
         }
     }
     xml.send();
+    })
+}
+
+exports.getHighestClass = (data) => {
+    return new Promise(resolve => {
+        highest = 0;
+        data.classes.forEach((elem, index) => {
+            if(highest < elem.professions.combat.level){
+                highest = elem.professions.combat.level
+            }
+            if(index === data.classes.length-1){
+                resolve(highest)
+            }
+        })
+    })
+}
+exports.getRRData = () => {
+    return new Promise(resolve => {
+        fs.readFile("data/rrData.json", (err, data) => {
+            if(err) return;
+            try {
+                rrData = JSON.parse(data);
+                resolve(rrData);
+            } catch (error) {
+                resolve(null);
+            }
+        })
     })
 }
 

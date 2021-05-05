@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const utils = require('./utils.js');
+const spreadsheet = require('./spreadsheet.js')
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var fs = require('fs');
@@ -17,7 +18,7 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
-client.on("ready", () => {
+client.on("ready", async () => {
     console.log("Started...");
     client.user.setPresence({
         status: 'online',
@@ -26,6 +27,7 @@ client.on("ready", () => {
             type: "LISTENING"
         }
     });
+    
 });
 
 function index(a, arr) {
@@ -43,7 +45,7 @@ process.on('unhandledRejection', async error => {
 client.on("message", async message => {   
     if (message.author.bot) return;
     if (!message.guild) return;
-   // if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' /*&& message.content.indexOf('<@&472859173730648065>') == -1*/) return;
+    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' /*&& message.content.indexOf('<@&472859173730648065>') == -1*/) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
@@ -70,9 +72,11 @@ client.on("message", async message => {
             .setTitle(player.meta.tag.value === null ? player.username :`[${player.meta.tag.value}] ${player.username}`)
             .setDescription(player.meta.location.online ? `Online on ${player.meta.location.server}`:'Offline')
             .addFields(
-                {name: 'Total Playtime', value:`${Math.floor(player.meta.playtime/60*4.7)}h`, inline: false},
-                {name: 'Average Daily Playtime', value: `${(((player.meta.playtime/60*4.7)/((Date.now()-Date.parse(player.meta.firstJoin))/86400000))).toFixed(2)}h`, inline: false},
-                {name: 'Highest Combat Level', value: await utils.getHighestClass(player), inline: false}
+                {name: 'Total Playtime', value:`${Math.floor(player.meta.playtime/60*4.7)}h`, inline: true},
+                {name: 'Average Daily Playtime', value: `${(((player.meta.playtime/60*4.7)/((Date.now()-Date.parse(player.meta.firstJoin))/86400000))).toFixed(2)}h`, inline: true},
+                {name: 'Highest Combat Level', value: await utils.getHighestClass(player), inline: false},
+                {name: 'First Join', value: new Date(player.meta.firstJoin).toLocaleDateString(), inline:true},
+                {name: 'Last Join', value: new Date(player.meta.lastJoin).toLocaleDateString(), inline:true}
                 )
             .setTimestamp();
             message.channel.send(embed)
@@ -149,6 +153,7 @@ client.on("message", async message => {
 client.on("raw", async packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
     let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
+    if(msg.channel.id !== '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') === -1 || msg.author.id === client.id) return;
     if(!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true)) return; 
     if(packet.t == 'MESSAGE_REACTION_ADD'){
         if(packet.d.user_id == client.user.id) return;
@@ -245,6 +250,7 @@ client.on("raw", async packet => {
             xmlVoteRaw.send()
            
         }else{
+            if(['◀️', '▶️'].includes(packet.d.emoji.name)) return;
             let guild = client.guilds.cache.get(packet.d.guild_id);
             let rrData = await utils.getRRData();
             let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
@@ -254,6 +260,7 @@ client.on("raw", async packet => {
                 });
     } 
     }else if(packet.t == 'MESSAGE_REACTION_REMOVE'){
+        if(msg.channel.id === '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1 || msg.author.id === client.id) return;
         if(packet.d.user_id == client.id) return;
         let guild = client.guilds.cache.get(packet.d.guild_id);
         let rrData = await utils.getRRData();

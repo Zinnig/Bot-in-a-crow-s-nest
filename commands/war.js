@@ -6,6 +6,10 @@ module.exports = {
 	name: 'war',
 	description: "Gives you a list of territories you can attack. They're sorted by priority.",
 	execute(message, args) {
+        if (!message.member.roles.cache.has('472859173730648065')) {
+            message.channel.send(utils.errorResponse("notaguildmember", ""));
+            return;
+        }
 		let list = ["Avos Temple", "Bloody Beach", "Corkus Castle", "Corkus City", "Corkus City Mine",
         "Corkus City South", "Corkus Countryside", "Corkus Docks", "Corkus Forest North",
         "Corkus Forest South", "Corkus Mountain", "Corkus Outskirts", "Corkus Sea Cove", "Corkus Sea Port",
@@ -47,7 +51,6 @@ fs.readFile('Allies.json', (err, data) => {
         } catch (e) {
             //empty
         }
-
 
 
 let output = [];
@@ -117,6 +120,7 @@ let output = [];
                     }
                 }
             }
+            console.log(missingTerrs.length, missingTerrsAlly.length, missingFFAs.length);
             try {
                 if (sent == false && i >= list.length) {
                     if (notOwned == 0) {
@@ -130,7 +134,7 @@ let output = [];
                         terrEmbed = new Discord.MessageEmbed()
                             .setColor('#ffcc00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingTerrs.length > 1024){
+                        if(missingTerrs.length > 1024 && missingTerrs.length < 6000){
                             let terrSplit = utils.splitString(missingTerrs);
                                 terrSplit.forEach((elem, index) => {
                                     terrEmbed.addField(`We're currently missing the following territories (${notOwned}) Part ${index + 1}:`, elem);
@@ -144,7 +148,7 @@ let output = [];
                         terrEmbed = new Discord.MessageEmbed()
                             .setColor('#ff9d00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingTerrs.length > 1024){
+                        if(missingTerrs.length > 1024 && missingTerrs.length < 6000){
                             let terrSplit = utils.splitString(missingTerrs);
                                 terrSplit.forEach((elem, index) => {
                                     terrEmbed.addField(`We're currently missing the following territories (${notOwned}) Part ${index + 1}:`, elem);
@@ -158,7 +162,7 @@ let output = [];
                         terrEmbed = new Discord.MessageEmbed()
                             .setColor('#ff6f00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingTerrs.length > 1024){
+                        if(missingTerrs.length > 1024 && missingTerrs.length < 6000){
                             let terrSplit = utils.splitString(missingTerrs);
                                 terrSplit.forEach((elem, index) => {
                                     terrEmbed.addField(`We're currently missing the following territories (${notOwned}) Part ${index + 1}:`, elem);
@@ -172,7 +176,7 @@ let output = [];
                         terrEmbed = new Discord.MessageEmbed()
                             .setColor('#ff000d')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingTerrs.length > 1024){
+                        if(missingTerrs.length > 1024 && missingTerrs.length < 6000){
                             let terrSplit = utils.splitString(missingTerrs);
                                 terrSplit.forEach((elem, index) => {
                                     terrEmbed.addField(`We're currently missing the following territories (${notOwned}) Part ${index + 1}:`, elem);
@@ -196,7 +200,7 @@ let output = [];
                         terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#ffcc00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingTerrsAlly.length > 1024){
+                        if(missingTerrsAlly.length > 1024 && missingTerrsAlly.length < 6000){
                             let terrSplit = utils.splitString(missingTerrsAlly);
                                 terrSplit.forEach((elem, index) => {
                                     terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
@@ -210,7 +214,7 @@ let output = [];
                         terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#ff6f00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingTerrsAlly.length > 1024){
+                        if(missingTerrsAlly.length > 1024 && missingTerrsAlly.length < 6000){
                             let terrSplit = utils.splitString(missingTerrsAlly);
                                 terrSplit.forEach((elem, index) => {
                                     terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
@@ -224,7 +228,7 @@ let output = [];
                        terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#ff9d00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingTerrsAlly.length > 1024){
+                        if(missingTerrsAlly.length > 1024 && missingTerrsAlly.length < 6000){
                             let terrSplit = utils.splitString(missingTerrsAlly);
                                 terrSplit.forEach((elem, index) => {
                                     terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
@@ -238,11 +242,38 @@ let output = [];
                         terrAllyEmbed = new Discord.MessageEmbed()
                             .setColor('#ff000d')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingTerrsAlly.length > 1024){
+                        if(missingTerrsAlly.length > 1024 && missingTerrsAlly.length < 6000){
                             let terrSplit = utils.splitString(missingTerrsAlly);
                                 terrSplit.forEach((elem, index) => {
                                     terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index + 1}:`, elem);
                                 });
+                            }else if(missingTerrsAlly.length > 6000){
+                                terrSplit = utils.splitString(missingTerrsAlly);
+                                i = 1
+                                embedAmount = Math.ceil(terrSplit.length/6)
+                                    for(i=0;i<embedAmount;i++){
+                                        if(i==0){
+                                            terrSplit.forEach((elem, index) => {
+                                                if(index < 5){
+                                                    terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index+1}:`, elem);
+                                                }
+                                            });
+                                            terrSplit.splice(0, 6);
+                                        }else{
+                                            terrAllyEmbedN = new Discord.MessageEmbed()
+                                            .setColor('#ff000d')
+                                            .setTitle("Get the man-o'-war ready!")
+                                            terrSplit.forEach((elem, index) => {
+                                                if(index < 5){
+                                                    terrAllyEmbedN.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}) Part ${index+1}:`, elem);
+                                                }
+                                            });
+                                            terrSplit.splice(0, 6);
+                                            console.log("embed sent!")
+                                            message.channel.send(terrAllyEmbedN);
+                                        }
+                                    }
+    
                         }else{
                             terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         }
@@ -262,7 +293,7 @@ let output = [];
                         ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#ffcc00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingFFAs.length > 1024){
+                        if(missingFFAs.length > 1024 && missingFFAs.length < 6000){
                             let terrSplit = utils.splitString(missingFFAs);
                                 terrSplit.forEach((elem, index) => {
                                     ffaEmbed.addField(`We're currently missing the following territories (${notOwnedFFA}) Part ${index + 1}:`, elem);
@@ -275,7 +306,7 @@ let output = [];
                         ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#ff9d00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingFFAs.length > 1024){
+                        if(missingFFAs.length > 1024 && missingFFAs.length < 6000){
                             let terrSplit = utils.splitString(missingFFAs);
                                 terrSplit.forEach((elem, index) => {
                                     ffaEmbed.addField(`We're currently missing the following territories (${notOwnedFFA}) Part ${index + 1}:`, elem);
@@ -289,7 +320,7 @@ let output = [];
                         ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#ff6f00')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingFFAs.length > 1024){
+                        if(missingFFAs.length > 1024 && missingFFAs.length < 6000){
                             let terrSplit = utils.splitString(missingFFAs);
                                 terrSplit.forEach((elem, index) => {
                                     ffaEmbed.addField(`We're currently missing the following territories (${notOwnedFFA}) Part ${index + 1}:`, elem);
@@ -303,13 +334,39 @@ let output = [];
                         ffaEmbed = new Discord.MessageEmbed()
                             .setColor('#ff000d')
                             .setTitle("Get the man-o'-war ready!")
-                        if(missingFFAs.length > 1024){
+                        if(missingFFAs.length > 1024 && missingFFAs.length < 6000){
                             let terrSplit = utils.splitString(missingFFAs);
                                 terrSplit.forEach((elem, index) => {
                                     ffaEmbed.addField(`We're currently missing the following territories (${notOwnedFFA}) Part ${index + 1}:`, elem);
                                 });
-                        }else{
-                            ffaEmbed.addField(`We're currently missing the following territories (${notOwnedFFA}):`, missingFFAs);
+                            }else if(missingFFAs.length > 6000){
+                                terrSplit = utils.splitString(missingFFAs);
+                                i = 1
+                                embedAmount = Math.ceil(terrSplit.length/6)
+                                for(i=0;i<embedAmount;i++){
+                                    if(i==0){
+                                        terrSplit.forEach((elem, index) => {
+                                            if(index < 5){
+                                                ffaEmbed.addField(`We're currently missing the following territories (${notOwnedFFA}) Part ${index + 1}:`, elem);
+                                            }
+                                        });
+                                        terrSplit.splice(0, 6);
+                                    }else{
+                                        ffaEmbedN = new Discord.MessageEmbed()
+                                        .setColor('#ff000d')
+                                        .setTitle("Get the man-o'-war ready!")
+                                        terrSplit.forEach((elem, index) => {
+                                            if(index < 5){
+                                                ffaEmbedN.addField(`We're currently missing the following territories (${notOwnedFFA}) Part ${index + 1}:`, elem);
+                                            }
+                                        });
+                                        terrSplit.splice(0, 6);
+                                        message.channel.send(ffaEmbedN);
+                                    }
+                                }
+
+                            }else{
+                                ffaEmbed.addField(`We're currently missing the following territories (${notOwnedFFA}):`, missingFFAs);
                         }
                         message.channel.send(ffaEmbed)
                         sent3 = true

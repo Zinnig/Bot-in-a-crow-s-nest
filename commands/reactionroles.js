@@ -5,7 +5,8 @@ module.exports = {
 	name: 'reactionroles',
 	description: "React with the emoji to get the role.",
 	execute(message, args) {
-        if(message.member.hasPermission("MANAGE_GUILD")){    
+        if(message.member.hasPermission("MANAGE_GUILD")){ 
+            message.delete();
             let arr = args.toString().split('+');
             let reactionEmbed = new Discord.MessageEmbed()
             .setColor('#ABCDEF');

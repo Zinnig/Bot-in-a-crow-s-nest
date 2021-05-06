@@ -153,8 +153,7 @@ client.on("message", async message => {
 client.on("raw", async packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
     let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
-    if(msg.channel.id !== '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') === -1 || msg.author.id === client.id) return;
-    if(!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true)) return; 
+    if(!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true || msg.channel.id !== '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1)) return; 
     if(packet.t == 'MESSAGE_REACTION_ADD'){
         if(packet.d.user_id == client.user.id) return;
         if(packet.d.channel_id == "514453846676996097") {
@@ -176,8 +175,7 @@ client.on("raw", async packet => {
                 }
                 return;
         })
-        }
-        if(packet.d.emoji.name == '👍' || packet.d.emoji.name == '👎') {
+        }else if(packet.d.emoji.name == '👍' || packet.d.emoji.name == '👎') {
             let xmlVoteRaw = new XMLHttpRequest();
             xmlVoteRaw.open("GET", process.env.voteURL)
             xmlVoteRaw.setRequestHeader("Content-Type", "application/json");
@@ -260,7 +258,7 @@ client.on("raw", async packet => {
                 });
     } 
     }else if(packet.t == 'MESSAGE_REACTION_REMOVE'){
-        if(msg.channel.id === '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1 || msg.author.id === client.id) return;
+        if(msg.channel.id === '514453846676996097' && msg.channel.id === '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1 || msg.author.id === client.id) return;
         if(packet.d.user_id == client.id) return;
         let guild = client.guilds.cache.get(packet.d.guild_id);
         let rrData = await utils.getRRData();

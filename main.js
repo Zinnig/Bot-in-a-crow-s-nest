@@ -27,6 +27,8 @@ client.on("ready", async () => {
             type: "LISTENING"
         }
     });
+
+    var interval = setInterval(function(){ client.commands.get('guildstats').execute(null, ["AutoUpdate"]); }, 60000);
     
 });
 
@@ -45,7 +47,7 @@ process.on('unhandledRejection', async error => {
 client.on("message", async message => {   
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' /*&& message.content.indexOf('<@&472859173730648065>') == -1*/) return;
+    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.content.indexOf('<@&472859173730648065>') == -1) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();

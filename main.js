@@ -28,7 +28,7 @@ client.on("ready", async () => {
         }
     });
 
-    var interval = setInterval(function(){ client.commands.get('guildstats').execute(null, ["AutoUpdate"]); }, 60000);
+    
     
 });
 
@@ -47,11 +47,14 @@ process.on('unhandledRejection', async error => {
 client.on("message", async message => {   
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.content.indexOf('<@&472859173730648065>') == -1) return;
+    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.channel.id !== '346392052046757888' && message.content.indexOf('(╯°□°）╯︵ ┻━┻') === -1) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
+    if(message.content.indexOf('(╯°□°）╯︵ ┻━┻') !== -1){
+        message.channel.send('┬─┬ ノ( ゜-゜ノ)');
+    }
     //check if message is in #welcome
     if (message.channel.id === "514453846676996097" && message.type === "GUILD_MEMBER_JOIN") {
         message.react("✔️")

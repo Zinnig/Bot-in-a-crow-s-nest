@@ -16,7 +16,7 @@ module.exports = {
         let recruiterString = "";
         let recruitString = "";
         let e = 0;
-        let input = args.join().replace(/,/, " ");
+        let input = args.join().replace(/,/g, " ");
         let now = Date.now()
         xmlTime = new XMLHttpRequest();
         xmlTime.open("GET", "https://api.wynncraft.com/public_api.php?action=guildStats&command=" + input);

@@ -61,6 +61,8 @@ module.exports = {
                 case "EMS":
                     if(amount < 50000){
                         return [null,  ems["I"] - amount];
+                    }else if(amount == undefined){
+                        return [null, 0]
                     }
                     for(x in ems){
                         if(x != "V" && amount <= 5000000){

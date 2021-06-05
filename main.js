@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const utils = require('./utils.js');
-const spreadsheet = require('./spreadsheet.js')
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var fs = require('fs');
@@ -27,9 +26,6 @@ client.on("ready", async () => {
             type: "LISTENING"
         }
     });
-
-    
-    
 });
 
 function index(a, arr) {
@@ -47,12 +43,12 @@ process.on('unhandledRejection', async error => {
 client.on("message", async message => {   
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.channel.id !== '346392052046757888' && message.content.indexOf('(╯°□°）╯︵ ┻━┻') === -1) return;
+    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.channel.id !== '346392052046757888' && message.content.replace(/ /g, "").indexOf('(╯°□°）╯︵┻━┻') === -1 ) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
-    if(message.content.indexOf('(╯°□°）╯︵ ┻━┻') !== -1){
+    if(message.content.replace(/ /g, "").indexOf('(╯°□°）╯︵┻━┻') !== -1){
         message.channel.send('┬─┬ ノ( ゜-゜ノ)');
     }
     //check if message is in #welcome
@@ -257,6 +253,7 @@ client.on("raw", async packet => {
             let guild = client.guilds.cache.get(packet.d.guild_id);
             let rrData = await utils.getRRData();
             let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
+            if(obj == undefined) return;
             let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name ||i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
                 guild.members.fetch(packet.d.user_id).then(member => {
                     member.roles.add(emoRol.role.replace("<@&", "").replace(">", ""));
@@ -268,6 +265,7 @@ client.on("raw", async packet => {
         let guild = client.guilds.cache.get(packet.d.guild_id);
         let rrData = await utils.getRRData();
         let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
+        if(obj == undefined) return;
             let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name ||i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
                 guild.members.fetch(packet.d.user_id).then(member => {
                     member.roles.remove(emoRol.role.replace("<@&", "").replace(">", ""));

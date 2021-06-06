@@ -48,8 +48,15 @@ client.on("message", async message => {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
 
-    if(message.content.replace(/ /g, "").indexOf('(╯°□°）╯︵┻━┻') !== -1){
-        message.channel.send('┬─┬ ノ( ゜-゜ノ)');
+    //anti-tableflip-unit
+    const leftTableLegIndex = message.content.indexOf("┻");
+    if (leftTableLegIndex >= 0) {
+	const tableIndex = message.content.indexOf("━");
+	if (tableIndex > leftTableLegIndex) {
+	    if (message.content.lastIndexOf("┻") > tableIndex) {
+		message.channel.send('┬─┬ ノ( ゜-゜ノ)');
+	    }
+	}
     }
     //check if message is in #welcome
     if (message.channel.id === "514453846676996097" && message.type === "GUILD_MEMBER_JOIN") {

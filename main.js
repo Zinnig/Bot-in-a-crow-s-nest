@@ -42,7 +42,7 @@ process.on('unhandledRejection', async error => {
     me.send(`Unhandled promise rejection: \n${error.stack}`);
 });
 
-function isTableFlip(message){
+function isTableFlip(message) {
     const leftTableLegIndex = message.content.indexOf("┻");
     if (leftTableLegIndex >= 0) {
         const tableIndex = message.content.indexOf("━");
@@ -65,7 +65,7 @@ client.on("message", async message => {
     const cmd = args.shift().toLowerCase();
 
     //anti-tableflip-unit
-    if(isTableFlip(message)) message.channel.send('┬─┬ ノ( ゜-゜ノ)')
+    if (isTableFlip(message)) message.channel.send('┬─┬ ノ( ゜-゜ノ)')
     //check if message is in #welcome
     if (message.channel.id === "514453846676996097" && message.type === "GUILD_MEMBER_JOIN") {
         message.react("✔️")
@@ -170,7 +170,7 @@ client.on("raw", async packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE', 'MESSAGE_DELETE'].includes(packet.t)) return;
     switch (packet.t) {
         case 'MESSAGE_REACTION_ADD':
-            let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
+            msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
             if (!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true || msg.channel.id !== '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1)) return;
             if (packet.d.user_id == client.user.id) return;
             if (packet.d.channel_id == "514453846676996097") {
@@ -266,40 +266,40 @@ client.on("raw", async packet => {
 
             } else {
                 if (['◀️', '▶️'].includes(packet.d.emoji.name)) return;
-                let guild = client.guilds.cache.get(packet.d.guild_id);
-                let rrData = await utils.getRRData();
-                let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
+                guild = client.guilds.cache.get(packet.d.guild_id);
+                rrData = await utils.getRRData();
+                obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
                 if (obj == undefined) return;
-                let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name || i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
+                emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name || i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
                 guild.members.fetch(packet.d.user_id).then(member => {
                     member.roles.add(emoRol.role.replace("<@&", "").replace(">", ""));
                 });
             }
             break;
         case 'MESSAGE_REACTION_REMOVE':
-            let msg1 = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
-            if (!(msg1.author.id == '639956302788820993' || msg1.author == '761658848217137222' || msg1.system === true || msg1.channel.id !== '346392052046757888' && msg1.content.indexOf('<@&472859173730648065>') !== -1)) return;
-            if (msg1.channel.id === '514453846676996097' && msg1.channel.id === '346392052046757888' && msg1.content.indexOf('<@&472859173730648065>') !== -1 || msg1.author.id === client.id) return;
+            msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
+            if (!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true || msg.channel.id !== '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1)) return;
+            if (msg.channel.id === '514453846676996097' && msg.channel.id === '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1 || msg.author.id === client.id) return;
             if (packet.d.user_id == client.id) return;
-            let guild = client.guilds.cache.get(packet.d.guild_id);
-            let rrData = await utils.getRRData();
-            let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
+            guild = client.guilds.cache.get(packet.d.guild_id);
+            rrData = await utils.getRRData();
+            obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
             if (obj == undefined) return;
-            let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name || i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
+            emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name || i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
             guild.members.fetch(packet.d.user_id).then(member => {
                 member.roles.remove(emoRol.role.replace("<@&", "").replace(">", ""));
             });
             break;
         case 'MESSAGE_DELETE':
-            let msg2 = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.id);
-            if (!(msg2.author.id == '639956302788820993' || msg2.author == '761658848217137222' || msg2.system === true || msg2.channel.id !== '346392052046757888' && msg2.content.indexOf('<@&472859173730648065>') !== -1)) return;
-            msg2.channel.messages.cache.first(5).forEach(elem => {
-                if(isTableFlip(elem)){
+            msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.id);
+            if (!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true || msg.channel.id !== '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1)) return;
+            msg.channel.messages.cache.first(5).forEach(elem => {
+                if (isTableFlip(elem)) {
                     elem.delete();
                 }
             })
             break;
-        }
+    }
 })
 client.on("voiceStateUpdate", () => {
     const guild = client.guilds.cache.get('463736564837777428')

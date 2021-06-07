@@ -90,6 +90,19 @@ exports.getGuild = () => {
     xml.send();
 })
 }
+exports.getGuildLeaderboard = () => {
+    return new Promise(resolve=>{
+    xml = new XMLHttpRequest();
+    xml.open("GET", "https://api.wynncraft.com/public_api.php?action=statsLeaderboard&type=guild&timeframe=alltime");
+    xml.onreadystatechange = () => {
+        if(xml.status == 200 && xml.readyState == 4){
+            response = JSON.parse(xml.responseText);
+            resolve(response);
+        }
+    }
+    xml.send();
+})
+}
 
 exports.getPlayer = (ign) => {
     return new Promise(resolve => {

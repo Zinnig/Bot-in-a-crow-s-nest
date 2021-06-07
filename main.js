@@ -28,6 +28,7 @@ client.on("ready", async () => {
     });
 });
 
+
 function index(a, arr) {
     for (var i = 0; i < arr.length; i++) {
         for (var j = 0; j < arr[i].length; j++) {
@@ -40,6 +41,21 @@ process.on('unhandledRejection', async error => {
     let me = await client.users.fetch('282964164358438922');
     me.send(`Unhandled promise rejection: \n${error.stack}`);
 });
+
+function isTableFlip(message){
+    const leftTableLegIndex = message.content.indexOf("┻");
+    if (leftTableLegIndex >= 0) {
+        const tableIndex = message.content.indexOf("━");
+        if (tableIndex > leftTableLegIndex) {
+            if (message.content.lastIndexOf("┻") > tableIndex) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    return false;
+}
 client.on("message", async message => {
     if (message.author.bot) return;
     if (!message.guild) return;
@@ -49,15 +65,7 @@ client.on("message", async message => {
     const cmd = args.shift().toLowerCase();
 
     //anti-tableflip-unit
-    const leftTableLegIndex = message.content.indexOf("┻");
-    if (leftTableLegIndex >= 0) {
-        const tableIndex = message.content.indexOf("━");
-        if (tableIndex > leftTableLegIndex) {
-            if (message.content.lastIndexOf("┻") > tableIndex) {
-                message.channel.send('┬─┬ ノ( ゜-゜ノ)');
-            }
-        }
-    }
+    if(isTableFlip(message)) message.channel.send('┬─┬ ノ( ゜-゜ノ)')
     //check if message is in #welcome
     if (message.channel.id === "514453846676996097" && message.type === "GUILD_MEMBER_JOIN") {
         message.react("✔️")
@@ -159,125 +167,139 @@ client.on("message", async message => {
 
 });
 client.on("raw", async packet => {
-    if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
-    let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
-    if (!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true || msg.channel.id !== '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1)) return;
-    if (packet.t == 'MESSAGE_REACTION_ADD') {
-        if (packet.d.user_id == client.user.id) return;
-        if (packet.d.channel_id == "514453846676996097") {
-            //get user
-            guild = client.guilds.cache.get(packet.d.guild_id);
-            guild.members.fetch(msg.author.id).then(author => {
-                switch (packet.d.emoji.name) {
-                    case "✔️":
-                        author.roles.add("513527251674071040"); //Stowaways
-                        break;
-                    case "✅":
-                        author.roles.add("472859173730648065"); //Guild Member
-                        break;
-                    case "☑️":
-                        author.roles.add("513527246703820800"); //Brethren of the Coast
-                        break;
-                    default:
-                        break;
-                }
-                return;
-            })
-        } else if (packet.d.emoji.name == '👍' || packet.d.emoji.name == '👎') {
-            let xmlVoteRaw = new XMLHttpRequest();
-            xmlVoteRaw.open("GET", process.env.voteURL)
-            xmlVoteRaw.setRequestHeader("Content-Type", "application/json");
-            xmlVoteRaw.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-            xmlVoteRaw.setRequestHeader("versioning", false)
-            xmlVoteRaw.onreadystatechange = function () {
-                if (this.status == 200 && this.readyState == 4) {
-                    try {
-                        let resTextVoteRaw = JSON.parse(this.responseText)
-                        let voteArray = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)];
-                        let yes = voteArray[4];
-                        let no = voteArray[5]
-                        if (packet.d.emoji.name == '👍') {
-                            msg.reactions.resolve('👍').users.remove(packet.d.user_id) //removing a reaction from a user.
-                            if (voteArray[6].indexOf(packet.d.user_id) == -1 && voteArray[7].indexOf(packet.d.user_id) == -1) {
-                                voteArray[6].push(packet.d.user_id)
-                                yes++;
-                                voteArray[4] = yes;
-                            } else if (voteArray[7].indexOf(packet.d.user_id) != -1 && voteArray[6].indexOf(packet.d.user_id) == -1) {
-                                voteArray[6].push(packet.d.user_id)
-                                voteArray[7].splice(voteArray[7].indexOf(packet.d.user_id), 1)
-                                yes++;
-                                no--;
-                                voteArray[4] = yes;
-                                voteArray[5] = no;
+    if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE', 'MESSAGE_DELETE'].includes(packet.t)) return;
+    switch (packet.t) {
+        case 'MESSAGE_REACTION_ADD':
+            let msg = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
+            if (!(msg.author.id == '639956302788820993' || msg.author == '761658848217137222' || msg.system === true || msg.channel.id !== '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1)) return;
+            if (packet.d.user_id == client.user.id) return;
+            if (packet.d.channel_id == "514453846676996097") {
+                //get user
+                guild = client.guilds.cache.get(packet.d.guild_id);
+                guild.members.fetch(msg.author.id).then(author => {
+                    switch (packet.d.emoji.name) {
+                        case "✔️":
+                            author.roles.add("513527251674071040"); //Stowaways
+                            break;
+                        case "✅":
+                            author.roles.add("472859173730648065"); //Guild Member
+                            break;
+                        case "☑️":
+                            author.roles.add("513527246703820800"); //Brethren of the Coast
+                            break;
+                        default:
+                            break;
+                    }
+                    return;
+                })
+            } else if (packet.d.emoji.name == '👍' || packet.d.emoji.name == '👎') {
+                let xmlVoteRaw = new XMLHttpRequest();
+                xmlVoteRaw.open("GET", process.env.voteURL)
+                xmlVoteRaw.setRequestHeader("Content-Type", "application/json");
+                xmlVoteRaw.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                xmlVoteRaw.setRequestHeader("versioning", false)
+                xmlVoteRaw.onreadystatechange = function () {
+                    if (this.status == 200 && this.readyState == 4) {
+                        try {
+                            let resTextVoteRaw = JSON.parse(this.responseText)
+                            let voteArray = resTextVoteRaw.data[index(packet.d.message_id, resTextVoteRaw.data)];
+                            let yes = voteArray[4];
+                            let no = voteArray[5]
+                            if (packet.d.emoji.name == '👍') {
+                                msg.reactions.resolve('👍').users.remove(packet.d.user_id) //removing a reaction from a user.
+                                if (voteArray[6].indexOf(packet.d.user_id) == -1 && voteArray[7].indexOf(packet.d.user_id) == -1) {
+                                    voteArray[6].push(packet.d.user_id)
+                                    yes++;
+                                    voteArray[4] = yes;
+                                } else if (voteArray[7].indexOf(packet.d.user_id) != -1 && voteArray[6].indexOf(packet.d.user_id) == -1) {
+                                    voteArray[6].push(packet.d.user_id)
+                                    voteArray[7].splice(voteArray[7].indexOf(packet.d.user_id), 1)
+                                    yes++;
+                                    no--;
+                                    voteArray[4] = yes;
+                                    voteArray[5] = no;
+                                }
+                                let xmlVotePUT = new XMLHttpRequest();
+                                xmlVotePUT.open("PUT", process.env.voteURL)
+                                xmlVotePUT.setRequestHeader("Content-Type", "application/json");
+                                xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                                xmlVotePUT.setRequestHeader("versioning", false)
+                                xmlVotePUT.send(JSON.stringify(resTextVoteRaw))
+                                let edit = new Discord.MessageEmbed()
+                                    .setTitle(voteArray[2])
+                                    .setColor(voteArray[3])
+                                    .addField("Options", "👍: yes \n 👎: no")
+                                    .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
+                                msg.edit(edit)
+                            } else if (packet.d.emoji.name == '👎') {
+                                msg.reactions.resolve('👎').users.remove(packet.d.user_id) //removing a reaction from a user.
+                                if (voteArray[7].indexOf(packet.d.user_id) == -1 && voteArray[6].indexOf(packet.d.user_id) == -1) {
+                                    voteArray[7].push(packet.d.user_id)
+                                    no++;
+                                    voteArray[5] = no;
+                                } else if (voteArray[6].indexOf(packet.d.user_id) != -1 && voteArray[6].indexOf(packet.d.user_id) == -1) {
+                                    voteArray[7].push(packet.d.user_id)
+                                    voteArray[6].splice(voteArray[6].indexOf(packet.d.user_id), 1)
+                                    no++;
+                                    yes--;
+                                    voteArray[5] = no;
+                                    voteArray[4] = yes;
+                                }
+                                xmlVotePUT.open("PUT", process.env.voteURL)
+                                xmlVotePUT.setRequestHeader("Content-Type", "application/json");
+                                xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
+                                xmlVotePUT.setRequestHeader("versioning", false)
+                                xmlVotePUT.send(JSON.stringify(resTextVoteRaw))
+                                let edit = new Discord.MessageEmbed()
+                                    .setTitle(voteArray[2])
+                                    .setColor(voteArray[3])
+                                    .addField("Options", "👍: yes \n 👎: no")
+                                    .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
+                                msg.edit(edit)
                             }
-                            let xmlVotePUT = new XMLHttpRequest();
-                            xmlVotePUT.open("PUT", process.env.voteURL)
-                            xmlVotePUT.setRequestHeader("Content-Type", "application/json");
-                            xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                            xmlVotePUT.setRequestHeader("versioning", false)
-                            xmlVotePUT.send(JSON.stringify(resTextVoteRaw))
-                            let edit = new Discord.MessageEmbed()
-                                .setTitle(voteArray[2])
-                                .setColor(voteArray[3])
-                                .addField("Options", "👍: yes \n 👎: no")
-                                .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
-                            msg.edit(edit)
-                        } else if (packet.d.emoji.name == '👎') {
-                            msg.reactions.resolve('👎').users.remove(packet.d.user_id) //removing a reaction from a user.
-                            if (voteArray[7].indexOf(packet.d.user_id) == -1 && voteArray[6].indexOf(packet.d.user_id) == -1) {
-                                voteArray[7].push(packet.d.user_id)
-                                no++;
-                                voteArray[5] = no;
-                            } else if (voteArray[6].indexOf(packet.d.user_id) != -1 && voteArray[6].indexOf(packet.d.user_id) == -1) {
-                                voteArray[7].push(packet.d.user_id)
-                                voteArray[6].splice(voteArray[6].indexOf(packet.d.user_id), 1)
-                                no++;
-                                yes--;
-                                voteArray[5] = no;
-                                voteArray[4] = yes;
-                            }
-                            xmlVotePUT.open("PUT", process.env.voteURL)
-                            xmlVotePUT.setRequestHeader("Content-Type", "application/json");
-                            xmlVotePUT.setRequestHeader("secret-key", "$2b$10$" + process.env.AUTH_KEY);
-                            xmlVotePUT.setRequestHeader("versioning", false)
-                            xmlVotePUT.send(JSON.stringify(resTextVoteRaw))
-                            let edit = new Discord.MessageEmbed()
-                                .setTitle(voteArray[2])
-                                .setColor(voteArray[3])
-                                .addField("Options", "👍: yes \n 👎: no")
-                                .setFooter(`Total Votes: ${voteArray[4] + voteArray[5]}`);
-                            msg.edit(edit)
+                        } catch (e) {
+                            //empty
                         }
-                    } catch (e) {
-                        //empty
                     }
                 }
-            }
-            xmlVoteRaw.send()
+                xmlVoteRaw.send()
 
-        } else {
-            if (['◀️', '▶️'].includes(packet.d.emoji.name)) return;
+            } else {
+                if (['◀️', '▶️'].includes(packet.d.emoji.name)) return;
+                let guild = client.guilds.cache.get(packet.d.guild_id);
+                let rrData = await utils.getRRData();
+                let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
+                if (obj == undefined) return;
+                let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name || i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
+                guild.members.fetch(packet.d.user_id).then(member => {
+                    member.roles.add(emoRol.role.replace("<@&", "").replace(">", ""));
+                });
+            }
+            break;
+        case 'MESSAGE_REACTION_REMOVE':
+            let msg1 = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.message_id);
+            if (!(msg1.author.id == '639956302788820993' || msg1.author == '761658848217137222' || msg1.system === true || msg1.channel.id !== '346392052046757888' && msg1.content.indexOf('<@&472859173730648065>') !== -1)) return;
+            if (msg1.channel.id === '514453846676996097' && msg1.channel.id === '346392052046757888' && msg1.content.indexOf('<@&472859173730648065>') !== -1 || msg1.author.id === client.id) return;
+            if (packet.d.user_id == client.id) return;
             let guild = client.guilds.cache.get(packet.d.guild_id);
             let rrData = await utils.getRRData();
             let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
             if (obj == undefined) return;
             let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name || i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
             guild.members.fetch(packet.d.user_id).then(member => {
-                member.roles.add(emoRol.role.replace("<@&", "").replace(">", ""));
+                member.roles.remove(emoRol.role.replace("<@&", "").replace(">", ""));
             });
+            break;
+        case 'MESSAGE_DELETE':
+            let msg2 = await client.channels.cache.get(packet.d.channel_id).messages.fetch(packet.d.id);
+            if (!(msg2.author.id == '639956302788820993' || msg2.author == '761658848217137222' || msg2.system === true || msg2.channel.id !== '346392052046757888' && msg2.content.indexOf('<@&472859173730648065>') !== -1)) return;
+            msg2.channel.messages.cache.first(5).forEach(elem => {
+                if(isTableFlip(elem)){
+                    elem.delete();
+                }
+            })
+            break;
         }
-    } else if (packet.t == 'MESSAGE_REACTION_REMOVE') {
-        if (msg.channel.id === '514453846676996097' && msg.channel.id === '346392052046757888' && msg.content.indexOf('<@&472859173730648065>') !== -1 || msg.author.id === client.id) return;
-        if (packet.d.user_id == client.id) return;
-        let guild = client.guilds.cache.get(packet.d.guild_id);
-        let rrData = await utils.getRRData();
-        let obj = rrData.data.find(n => Object.keys(n).includes(packet.d.message_id));
-        if (obj == undefined) return;
-        let emoRol = obj[packet.d.message_id].find(i => i.emoji === packet.d.emoji.name || i.emoji === `<:${packet.d.emoji.name}:${packet.d.emoji.id}>`);
-        guild.members.fetch(packet.d.user_id).then(member => {
-            member.roles.remove(emoRol.role.replace("<@&", "").replace(">", ""));
-        });
-    }
 })
 client.on("voiceStateUpdate", () => {
     const guild = client.guilds.cache.get('463736564837777428')

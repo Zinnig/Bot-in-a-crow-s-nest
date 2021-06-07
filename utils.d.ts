@@ -1,6 +1,10 @@
 import * as Discord from "discord.js";
 export module utils {
     /**
+     * Resolves the Promise after the specified amount of milliseconds
+     */
+    export function sleep(ms: number): Promise<any>
+    /**
      * Returns an embed for the type of error provided.
      */
     export function errorResponse(type: string, extraInfo: string): Discord.MessageEmbed

@@ -1,6 +1,10 @@
 const Discord = require('discord.js')
 const fs = require('fs');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+exports.sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 exports.errorResponse = (type, extraInfo) =>{
     let errorEmbed = new Discord.MessageEmbed()
     .setColor("#ff0000")

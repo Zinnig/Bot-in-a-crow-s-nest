@@ -25,6 +25,10 @@ export module utils {
      */
     export function getGuild(): Promise<JSON>
     /**
+     * Returns the guild leaderboard from the API.
+     */
+    export function getGuildLeaderboard(): Promise<JSON>
+    /**
      * Returns the player data from the API.
      */
     export function getPlayer(ign: string): Promise<JSON>

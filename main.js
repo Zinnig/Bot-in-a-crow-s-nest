@@ -45,14 +45,9 @@ process.on('unhandledRejection', async error => {
 function isTableFlip(message) {
     const leftTableLegIndex = message.content.indexOf("┻");
     if (leftTableLegIndex >= 0) {
-        const tableIndex = message.content.indexOf("━");
-        if (tableIndex > leftTableLegIndex) {
-            if (message.content.lastIndexOf("┻") > tableIndex) {
-                return true;
-            }
-            return false;
+        if (message.content.lastIndexOf("┻") > leftTableLegIndex) {
+            return true;
         }
-        return false;
     }
     return false;
 }

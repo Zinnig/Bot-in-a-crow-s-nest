@@ -59,7 +59,7 @@ function isTableFlip(message) {
 client.on("message", async message => {
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.channel.id !== '346392052046757888' && message.content.replace(/ /g, "").indexOf('(╯°□°）╯︵┻━┻') === -1) return;
+    if (!message.content.startsWith(prefix) && message.type !== 'GUILD_MEMBER_JOIN' && message.channel.id !== '346392052046757888' && !isTableFlip(message)) return;
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();

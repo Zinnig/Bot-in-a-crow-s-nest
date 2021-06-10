@@ -416,7 +416,7 @@ const loop = async () => {
                             newRewards.tomesReserved--;
                             qmNotes.send(`📘 A tome has been found! It has been declared as an off-rule reward.`).catch(e => {
                                 console.log(`Failed to notify Quartermasters:\n${e.stack}`);
-                            });;
+                            });
                         } else {
                             let winner = "ERROR";
                             let winnerUUID = "";

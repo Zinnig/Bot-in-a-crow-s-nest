@@ -148,7 +148,7 @@ client.on("message", async message => {
         case "debug":
         case "ver":
         case "version":
-            client.commands.get('version').execute(message, args);
+            client.commands.get('version').execute(message, args, client);
             break;
         case "edit":
             client.commands.get('edit').execute(message, args, client);

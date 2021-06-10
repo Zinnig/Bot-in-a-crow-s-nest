@@ -145,6 +145,11 @@ client.on("message", async message => {
         case "reservetome":
             client.commands.get('reservetome').execute(message, args);
             break;
+        case "debug":
+        case "ver":
+        case "version":
+            client.commands.get('version').execute(message, args);
+            break;
         case "edit":
             client.commands.get('edit').execute(message, args, client);
             break;

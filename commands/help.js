@@ -14,7 +14,8 @@ module.exports = {
             **- %userstats GuildMemberNameHere **: Returns an embed containing statistics and other information.
             **- %guildstats em/gxp **: Returns leaderboards for XP/Emeralds contributed to the guild.
             **- %sincelastcounts **: Returns an embed containing the amount of gxp/ems the Pillagers have farmed since the last counts.
-            **- %soulpoints**:Returns the time until the next Soul Point for each server. (Alias: %sp and %sps)` 
+            **- %soulpoints**: Returns the time until the next Soul Point for each server. (Alias: %sp and %sps)
+	    **- %version**: Shows general info about the bot` 
         if(!message.member.hasPermission("MANAGE_GUILD")){
         const commandEmbed = new Discord.MessageEmbed()
             .setColor('#ffa20d')
@@ -32,9 +33,10 @@ module.exports = {
             .setDescription('This list has been discovered using a telescope!')
             .addField('Admin Commands 1', `
             **- %reactionroles Role Emoji EmbedTitle (-e Description)**: Create an embed which gives you the specified role if you react with the specified emoji.
-            **- %vote start/end TitleHere **: Create/End Votes
-            **- %guildstats update **: Updates the guildstats (You have to attach a txt file containing the gu list.)
-            **- %counts (update) **: Does the Pillager counts. (update is for updating the data by getting the data of the PUN Member Roles.)`)
+            **- %vote start/end TitleHere**: Create/End Votes
+            **- %guildstats update**: Updates the guildstats (You have to attach a txt file containing the gu list.)
+            **- %counts (update)**: Does the Pillager counts. (update is for updating the data by getting the data of the PUN Member Roles.)
+	    **- %reservetome [amount]**: Exludes <amount> tomes from being auto assigned, use this to give out rewards for events`)
             utils.splitString(helpString).forEach((elem, index) => {
                 commandEmbed.addField(`Text Commands ${index+1}`, elem)
             })

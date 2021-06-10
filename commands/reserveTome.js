@@ -20,7 +20,7 @@ module.exports = {
 	execute(message, args) {
         if(message.member.hasPermission("MANAGE_GUILD")){
             let amount = Number(args[0]);
-            if (Number.isNaN(amount) {
+            if (Number.isNaN(amount)) {
                 amount = 1;
             }
             const data = JSON.parse(fs.readFileSync("../data/rewardData.json", "utf-8"));

@@ -7,6 +7,48 @@ var fs = require('fs');
 require('custom-env').env()
 const token = process.env.token;
 const prefix = process.env.prefix;
+const quartermasters = [
+    {
+        id: "139517283637657600",
+        uuid: "85665133-b2b0-44a6-b824-73776394a924",
+        name: "Auxiliary_"
+    },
+    {
+        id: "216664954562936832",
+        uuid: "7e3fa8ab-74e0-4566-8108-3226f7be90b3",
+        name: "cheeseries
+    },
+    {
+        id: "297088316317368320",
+        uuid: "99a88c81-c926-4224-8604-6ebec53022a1",
+        name: "IsabellaSky
+    },
+    {
+        id: "282964164358438922",
+        uuid: "6d4dd862-a9f6-4171-9b62-fe78179b38e5",
+        name: "Zinnig
+    },
+    {
+        id: "467377364762886144",
+        uuid: "cf406197-f8e9-451f-870b-1cc2207d74ff",
+        name: "Blockfox_XV
+    },
+    {
+        id: "251741848698093568",
+        uuid: "8d825350-a518-4825-b32a-879ce0b5ed8b",
+        name: "raviva
+    },
+    {
+        id: "370993200137240576",
+        uuid: "b1b8d770-62a4-44e5-a6e8-68d8c7104ce8",
+        name: "VHoltz_"
+    },
+    {
+        id: "310869684180221952",
+        uuid: "65b6835b-1af0-457e-8b1c-00239d8740e1",
+        name: "Nieke
+    }
+];
 
 client.login(token);
 client.commands = new Discord.Collection();
@@ -388,6 +430,16 @@ const loop = async () => {
                 }
                 const punDiscordObj = client.guilds.cache.get("330433675504123905"); //PUN is "330433675504123905"
                 const qmNotes = punDiscordObj.channels.cache.get("671755757536018453"); //qm notes is "671755757536018453"
+                const onlineMembers = await utils.getOnlinePlayers();
+                const onlineQMs = [];
+                for (const qm of quartermasters) {
+                    if (onlineMembers.includes(qm.name)) {
+                        onlineQMs.push(`<@!${qm.id}`);
+                    }
+                }
+                if (onlineQMs.length === 0) {
+                    onlineQMs.push("@here");
+                }
                 for (const emeralds of pun.rewards.filter(r => r.type === "EMERALDS")) {
                     const foundEMAt = Date.parse(emeralds.acquired);
                     const oldIndex = oldRewards.emeralds.findIndex(r => r.acquired === foundEMAt);
@@ -398,12 +450,12 @@ const loop = async () => {
                         //emerald batch is new
                         if (newRewards.emeralds.length === 7) {
                             //storage critical, notify QMs
-                            qmNotes.send(`💵 The Emerald storage is filling up (14336/20480)! Please empty it soon!`).catch(e => {
+                            qmNotes.send(`💵 The Emerald storage is filling up (14336/20480)! Please empty it soon!\n${onlineQMs.join(" ")}`).catch(e => {
                                 console.log(`Failed to notify Quartermasters:\n${e.stack}`);
                             });
                         } else if (newRewards.length === 10) {
                             //storage full, notify QMs
-                            qmNotes.send(`💵 The Emerald storage has filled up! Please empty it immediately!`).catch(e => {
+                            qmNotes.send(`💵 The Emerald storage has filled up! Please empty it immediately!\n${onlineQMs.join(" ")}`).catch(e => {
                                 console.log(`Failed to notify Quartermasters:\n${e.stack}`);
                             });
                         }

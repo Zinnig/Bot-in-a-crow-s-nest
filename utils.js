@@ -49,7 +49,7 @@ exports.setupTimeDiff = (diff) => {
 	days = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000));
 	hours = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
 	minutes = Math.floor((diff - years * (365 * 24 * 60 * 60 * 1000) - days * (24 * 60 * 60 * 1000) - hours * (60 * 60 * 1000)) / (60 * 1000));
-    output = `${years > 0 ? years + "y:" : ""}${days > 0 ? days + "d:" : ""}${hours > 0 ? hours + "h:" : ""}${minutes > 0 ? minutes + "min" : ""}`
+    output = `${years > 0 ? years + "y:" : ""}${days > 0 ? days + "d:" : ""}${hours > 0 ? hours + "h:" : ""}${minutes > 0 ? minutes + "min" : ""}`;
     output = output[output.length - 1] == ":" ? output.slice(0, -1) : output;
     return output;
 }
@@ -135,13 +135,14 @@ exports.getOnlinePlayers = () => {
                 try {
                     response = JSON.parse(xml.responseText);
                     const onlinePlayers = [];
-                    for (const server in onlinePlayersResp) {
+                    for (const server in response) {
                         if (server !== "request") {
-                            onlinePlayers.push(...onlinePlayersResp[server]);
+                            onlinePlayers.push(...response[server]);
                         }
                     }
                     resolve(onlinePlayers.sort()); //0 > 9 > A > Z > _ > a > z
                 } catch(error) {
+                    console.log(error)
                     resolve(null);
                 }
             }

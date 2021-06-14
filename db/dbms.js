@@ -15,7 +15,7 @@ const mongoOptions = {
     connectTimeoutMS: 10000,
     family: 4
 };
-console.log("helli i eis")
+
 mongoose.connect(process.env.mongotoken, mongoOptions);
 mongoose.set("useFindAndModify", false);
 mongoose.Promise = global.Promise;

@@ -1,10 +1,12 @@
+//for local testing
+require('dotenv').config()
 const Discord = require('discord.js');
 const utils = require('./utils.js');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var fs = require('fs');
-//for local testing
-require('custom-env').env()
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const fs = require('fs');
+const db = require('./db/dbms.js');
+
 const token = process.env.token;
 const prefix = process.env.prefix;
 const quartermasters = [
@@ -69,8 +71,6 @@ client.on("ready", async () => {
         }
     });
 });
-
-
 function index(a, arr) {
     for (var i = 0; i < arr.length; i++) {
         for (var j = 0; j < arr[i].length; j++) {

@@ -385,7 +385,8 @@ const loop = async () => {
                         newRewards.members[idx].previousTomes.shift();
                     }
                 }
-                const qmNotes = client.channels.cache.get("671755757536018453"); //qm notes is "671755757536018453"
+                const punDiscordObj = client.guilds.cache.get("330433675504123905"); //PUN is "330433675504123905"
+                const qmNotes = punDiscordObj.channels.cache.get("671755757536018453"); //qm notes is "671755757536018453"
                 for (const emeralds of pun.rewards.filter(r => r.type === "EMERALDS")) {
                     const foundEMAt = Date.parse(emeralds.acquired);
                     const oldIndex = oldRewards.emeralds.findIndex(r => r.acquired === foundEMAt);

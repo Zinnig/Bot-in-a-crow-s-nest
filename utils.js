@@ -113,17 +113,41 @@ exports.getPlayer = (ign) => {
         xml = new XMLHttpRequest();
         xml.open("GET", `https://api.wynncraft.com/v2/player/${ign}/stats`);
         xml.onreadystatechange = () => {
-        if(xml.status == 200 && xml.readyState == 4){
-            try{
-                response = JSON.parse(xml.responseText);
-                resolve(response.data[0]);
-            }catch(error){
-                resolve(null)
+            if(xml.status == 200 && xml.readyState == 4){
+                try {
+                    response = JSON.parse(xml.responseText);
+                    resolve(response.data[0]);
+                } catch(error) {
+                    resolve(null);
+                }
             }
         }
-    }
-    xml.send();
-    })
+        xml.send();
+    });
+}
+
+exports.getOnlinePlayers = () => {
+    return new Promise(resolve => {
+        xml = new XMLHttpRequest();
+        xml.open("GET", `https://api.wynncraft.com/public_api.php?action=onlinePlayers`);
+        xml.onreadystatechange = () => {
+            if(xml.status == 200 && xml.readyState == 4){
+                try {
+                    response = JSON.parse(xml.responseText);
+                    const onlinePlayers = [];
+                    for (const server in onlinePlayersResp) {
+                        if (server !== "request") {
+                            onlinePlayers.push(...onlinePlayersResp[server]);
+                        }
+                    }
+                    resolve(onlinePlayers.sort()); //0 > 9 > A > Z > _ > a > z
+                } catch(error) {
+                    resolve(null);
+                }
+            }
+        }
+        xml.send();
+    });
 }
 
 exports.getHighestClass = (data) => {

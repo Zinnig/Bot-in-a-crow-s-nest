@@ -37,6 +37,10 @@ export module utils {
      */
     export function getPlayer(ign: string): Promise<JSON>
     /**
+     * Returns an array of all players online Wynn
+     */
+    export function getOnlinePlayers(): Promise<JSON>
+    /**
      * Changes the page of an embed.
      */
     export function changePage(message: Discord.Message, reaction: Discord.MessageReaction, user: Discord.User, color: string, title: string, field: Array<string>, currentIndex: number): void

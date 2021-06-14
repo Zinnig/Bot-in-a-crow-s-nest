@@ -16,27 +16,27 @@ const quartermasters = [
     {
         id: "216664954562936832",
         uuid: "7e3fa8ab-74e0-4566-8108-3226f7be90b3",
-        name: "cheeseries
+        name: "cheeseries"
     },
     {
         id: "297088316317368320",
         uuid: "99a88c81-c926-4224-8604-6ebec53022a1",
-        name: "IsabellaSky
+        name: "IsabellaSky"
     },
     {
         id: "282964164358438922",
         uuid: "6d4dd862-a9f6-4171-9b62-fe78179b38e5",
-        name: "Zinnig
+        name: "Zinnig"
     },
     {
         id: "467377364762886144",
         uuid: "cf406197-f8e9-451f-870b-1cc2207d74ff",
-        name: "Blockfox_XV
+        name: "Blockfox_XV"
     },
     {
         id: "251741848698093568",
         uuid: "8d825350-a518-4825-b32a-879ce0b5ed8b",
-        name: "raviva
+        name: "raviva"
     },
     {
         id: "370993200137240576",
@@ -46,7 +46,7 @@ const quartermasters = [
     {
         id: "310869684180221952",
         uuid: "65b6835b-1af0-457e-8b1c-00239d8740e1",
-        name: "Nieke
+        name: "Nieke"
     }
 ];
 

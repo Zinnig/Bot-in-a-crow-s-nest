@@ -321,6 +321,7 @@ client.on("voiceStateUpdate", () => {
 })
 
 const loop = async () => {
+    await utils.sleep(10000);
     let nextLbUpd = Date.now(); //1 hr, 30 mins ago
     while (true) {
         if (Date.now() > nextLbUpd) {

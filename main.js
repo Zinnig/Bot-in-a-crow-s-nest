@@ -464,12 +464,13 @@ const loop = async () => {
                 for (const tome of pun.rewards.filter(r => r.type === "GUILD_TOMES")) {
                     const foundTomeAt = Date.parse(tome.acquired);
                     const oldIndex = oldRewards.guildTomes.findIndex(r => r.acquired === foundTomeAt);
-                    newRewards.guildTomes.push({
-                        acquired: foundTomeAt
-                    })
                     if (oldIndex < 0) {
                         //tome is new
                         newRewards.lastTome++;
+                        newRewards.guildTomes.push({
+                            acquired: foundTomeAt
+                            id: newRewards.lastTome
+                        });
                         if (newRewards.tomesReserved > 0) {
                             //event tome or similar
                             newRewards.tomesReserved--;
@@ -489,7 +490,6 @@ const loop = async () => {
                                         "65b6835b-1af0-457e-8b1c-00239d8740e1", //Nieke
                                         "5ce339c6-bb60-4142-8a50-4aa5ef0ef256", //Koni75
                                         "05d9fea7-cfcc-4497-b77b-e326d1d2b42b", //MigatteNoGokuii
-                                        "47b48cdd-a4d2-45cf-a8a9-418c8d0be7b8", //Saraldar
                                         "72d140ad-efe3-4bbe-b09c-df5e988f5332", //thyme23
                                         "e67d4a1a-e879-4723-a356-0da0d15fe583", //g17fcH_3D
                                         "1168c5ec-a8bf-45ac-ab9c-808a2b023364", //Mehku
@@ -543,11 +543,17 @@ const loop = async () => {
                             } else {
                                 console.log(`${winnerUUID} does not appear to be in the guild`);
                             }
-                            const msg = `📘 A tome has been found! The person to get it is **${winner}**.\n**Rule:** ${rule}`;
+                            const msg = `📘 A tome has been found! The person to get it is **${winner}**.\n**Rule:** ${rule}\n**ID:** ${newRewards.lastTome}`;
                             qmNotes.send(msg).catch(e => {
                                 console.log(`Failed to send message\n${msg}\nin #qm-notes:\n${e}`);
                             });
                         }
+                    } else {
+                        //tome is not new
+                        newRewards.guildTomes.push({
+                            acquired: oldRewards.guildTomes[oldIndex].acquired,
+                            id: oldRewards.guildTomes[oldIndex].id
+                        });
                     }
                 }
                 //save

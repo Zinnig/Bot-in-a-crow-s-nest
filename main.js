@@ -434,7 +434,7 @@ const loop = async () => {
                 const onlineQMs = [];
                 for (const qm of quartermasters) {
                     if (onlineMembers.includes(qm.name)) {
-                        onlineQMs.push(`<@!${qm.id}`);
+                        onlineQMs.push(`<@!${qm.id}>`);
                     }
                 }
                 if (onlineQMs.length === 0) {

@@ -468,7 +468,7 @@ const loop = async () => {
                         //tome is new
                         newRewards.lastTome++;
                         newRewards.guildTomes.push({
-                            acquired: foundTomeAt
+                            acquired: foundTomeAt,
                             id: newRewards.lastTome
                         });
                         if (newRewards.tomesReserved > 0) {

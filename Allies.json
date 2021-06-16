@@ -1,26 +1,29 @@
 {
-    "Artemis":{
+    "Alliance":{
         "Paladins United": "PUN",
-        "Kingdom Foxes": "Fox",
-        "Imperial": "Imp",
-        "Phantom Hearts": "Phi",
         "Lux Nova": "LXA",
         "Titans Valor": "ANO",
         "Empire of Sindria": "ESI",
         "The Aquarium": "TAq",
         "Emorians": "ERN",
         "HackForums": "Hax",
-        "Blacklisted": "BLA",
         "The Simple Ones": "ILQ", 
         "Astrum Pantheon": "Apa",
         "Mystic Woods": "MYC",
         "Nefarious Ravens": "NFR",
         "Empire of Zanaris": "Zri",
-	    "The FishTank": "FTk"
+        "Shadowfall": "Shy",
+        "TheNoLifes": "TNL",
+        "IceBlue Team": "IBT",
+        "Avicia": "AVO",
+        "Jeus": "Jeus",
+        "The Mage Legacy": "Mag",
+        "Guardian of Wynn": "GsW",
+        "The Dark Phoenix": "TNI"
     },
     "Cooperating":{
-        "Fantasy": "Fux",
-        "House of Sentinels": "Snt"
+        "Profession Heaven": "PROF",
+        "Idiot Co": "ICo"
     },
     "Neutral":{
         "Vindicator": "VMZ"
@@ -35,7 +38,8 @@
             "Rat Gang": "RGX",
             "Baladins United": "LdU",
             "Paladins Untied": "PtD",
-            "Corkians": "Nck"
+            "Corkians": "Nck",
+            "GlowBulbCave": "Bulb"
         },
         "Fox": {
             "Ombra": "Omb",

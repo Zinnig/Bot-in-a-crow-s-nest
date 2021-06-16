@@ -54,7 +54,7 @@ fs.readFile('Allies.json', (err, data) => {
 
 
 let output = [];
-    let includeList = ["Artemis", "Cooperating", "Neutral", "Other Allies"]
+    let includeList = ["Alliance", "Cooperating", "Neutral", "Other Allies"]
     function makeAllyList() {
         includeList.forEach(function (elem) {
             for (property2 in allyListJSON[elem]) {

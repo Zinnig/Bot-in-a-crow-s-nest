@@ -1,19 +1,6 @@
 const Discord = require('discord.js');
 const fs = require("fs");
-function errorResponse(type, extraInfo){
-    let errorEmbed = new Discord.MessageEmbed()
-    .setColor("#ff0000")
-    switch(type){
-        case "noperms":
-            errorEmbed.setTitle(`You don't have the permission "${extraInfo}".`)
-            break;
-        case "wrongargs":
-            errorEmbed.setTitle(`Invalid Arguments! Valid Arguments: ${extraInfo}`)
-        case "invalidinput":
-            errorEmbed.setTitle(`Ivalid Input! ${extrainfo}`);
-    }
-    return errorEmbed
-}
+const utils = require('../utils.js');
 
 module.exports = {
 	name: 'rerolltome',
@@ -26,7 +13,7 @@ module.exports = {
                 //splice ID from guildTomes
                 const tomeIndex = data.guildTomes.findIndex(t => t.id === id);
                 if (tomeIndex < 0) {
-                    return message.channel.send(errorResponse("ivalidinput", `There is no tome with ID ${id}`));
+                    return message.channel.send(utils.errorResponse("ivalidinput", `There is no tome with ID ${id}`));
                 }
                 data.guildTomes.splice(tomeIndex, 1);
                 //remove from members
@@ -45,10 +32,10 @@ module.exports = {
                 fs.writeFileSync("../data/rewardData.json", JSON.stringify(data, null, 2));
                 message.channel.send((new Discord.MessageEmbed()).setTitle("rerolltome").setDescription(`Tome **${id}** has been spliced from data, it will be rerolled soon.`));
             } else {
-                message.channel.send(errorResponse("wrongargs", "``ID``"));
+                message.channel.send(utils.errorResponse("wrongargs", "``ID``"));
             }
         }else{
-            message.channel.send(errorResponse("noperms", "MANAGE_GUILD"))
+            message.channel.send(utils.errorResponse("noperms", "MANAGE_GUILD"))
         }
     } 
 };

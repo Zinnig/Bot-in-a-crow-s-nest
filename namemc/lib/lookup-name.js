@@ -26,7 +26,6 @@ module.exports = name => new Promise(async function(resolve, reject) {
 	// Begin to scrape content;
 	const $ = cheerio.load(await fetch(`https://namemc.com/${name}`).then(r => r.text()));
 	const results = $("body > main > div.row > div.col-lg-7").children(".card.mb-3")
-
 	// Get final listing
 	let final = [];
 

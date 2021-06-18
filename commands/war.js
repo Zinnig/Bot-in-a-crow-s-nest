@@ -6,7 +6,7 @@ module.exports = {
 	name: 'war',
 	description: "Gives you a list of territories you can attack. They're sorted by priority.",
 	execute(message, args) {
-        if (!message.member.roles.cache.has('472859173730648065')) {
+        if (!message.member.roles.cache.has('472859173730648065') && !message.member.hasPermission("MANAGE_SERVER")) {
             message.channel.send(utils.errorResponse("notaguildmember", ""));
             return;
         }
@@ -120,7 +120,6 @@ let output = [];
                     }
                 }
             }
-            console.log(missingTerrs.length, missingTerrsAlly.length, missingFFAs.length);
             try {
                 if (sent == false && i >= list.length) {
                     terrEmbed = new Discord.MessageEmbed()
@@ -139,9 +138,8 @@ let output = [];
                             terrEmbed.addField(`We're currently missing the following territories (${notOwned}):`, missingTerrs);
                         }
                     }
-                    message.channel.send(terrEmbed).then(() => {
-                        sent = true;
-                    })
+                    message.channel.send(terrEmbed);
+                    sent = true;
                 }
                 if (sent2 == false && i >= list.length) {
                     terrAllyEmbed = new Discord.MessageEmbed()
@@ -160,9 +158,8 @@ let output = [];
                             terrAllyEmbed.addField(`Our Allies are currently missing the following territories (${notOwnedAlly}):`, missingTerrsAlly);
                         }
                     }
-                    message.channel.send(terrAllyEmbed).then(() => {
-                        sent2 = true;
-                    })
+                    message.channel.send(terrAllyEmbed);
+                    sent2 = true;
                 }
                 if (sent3 == false && i >= list.length) {
                     ffaEmbed = new Discord.MessageEmbed()
@@ -181,9 +178,8 @@ let output = [];
                             ffaEmbed.addField(`We're currently missing the following territories (${notOwnedFFA}):`, missingFFAs);
                         }
                     }
-                    message.channel.send(ffaEmbed).then(() => {
-                        sent3 = true;
-                    })
+                    message.channel.send(ffaEmbed);
+                    sent3 = true;
                 }
             } catch (e) {
                 console.log(e)

@@ -30,7 +30,7 @@ module.exports = {
                 if (memberIndex >= 0) {
                     data.members[memberIndex].previousTomes.splice(memberTomeIndex, 1);
                 }
-                fs.writeFileSync("../data/rewardData.json", JSON.stringify(data, null, 2));
+                fs.writeFileSync("./data/rewardData.json", JSON.stringify(data, null, 2));
                 message.channel.send((new Discord.MessageEmbed()).setTitle("rerolltome").setDescription(`Tome **${id}** has been spliced from data, it will be rerolled soon.`));
             } else {
                 message.channel.send(utils.errorResponse("wrongargs", "``ID``"));

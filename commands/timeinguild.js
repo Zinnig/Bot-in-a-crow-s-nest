@@ -5,6 +5,7 @@ let sorting = ["OWNER", "CHIEF", "CAPTAIN", "RECRUITER", "RECRUIT"]
 module.exports = {
 	name: 'timeinguild',
 	description: "Lists all players in a guild and how long they've been in it.",
+	aliases: [],
 	execute(message, args) {
         let timeList = [];
         let resTime = "";

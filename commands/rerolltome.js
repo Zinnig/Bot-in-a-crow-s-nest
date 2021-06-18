@@ -10,7 +10,7 @@ module.exports = {
         if(message.member.hasPermission("MANAGE_GUILD")){
             const id = Number(args[0]);
             if (!Number.isNaN(id)) {
-                const data = JSON.parse(fs.readFileSync("./data/rewardData.json", "utf-8"));
+                const data = JSON.parse(fs.readFileSync("../data/rewardData.json", "utf-8"));
                 //splice ID from guildTomes
                 const tomeIndex = data.guildTomes.findIndex(t => t.id === id);
                 if (tomeIndex < 0) {

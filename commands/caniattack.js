@@ -33,6 +33,7 @@ function makeAllyTagList() {
 module.exports = {
 	name: 'caniattack',
 	description: "Tells you if you should attack a certain guild.",
+	aliases: [],
 	execute(message, args) {
 		if(!message.member.roles.cache.has('472859173730648065') && !message.member.hasPermission("MANAGE_GUILD")){
             message.channel.send(utils.errorResponse("notaguildmember", ""));

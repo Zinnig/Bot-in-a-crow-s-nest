@@ -54,10 +54,10 @@ module.exports = {
 			var upperCaseNames = allyListTags.map(function (value) {
 				return value.toUpperCase();
 			});
-			if (upperCaseNames.indexOf(args[0]) == -1) {
+			if (upperCaseNames.indexOf(args[0].toUpperCase()) == -1) {
 				message.channel.send("You can attack this guild, it's not in our current Alliance/is no subguild of a guild in our current Alliance.");
-			} else if (upperCaseNames.indexOf(args[0]) != -1) {
-				message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in Artemis (or they're a subguild), you shouldn't attack it.`)
+			} else if (upperCaseNames.indexOf(args[0].toUpperCase()) != -1) {
+				message.channel.send(`The guild ${allyListTags[upperCaseNames.indexOf(args[0].toUpperCase())]} (${allyList[upperCaseNames.indexOf(args[0].toUpperCase())]}) is in our current Alliance (or they're a subguild), you shouldn't attack it.`)
 			}
 		}else{
 			message.channel.send("As history tells us, it doesn't seem like a good idea tbh. But you do you.")

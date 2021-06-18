@@ -5,6 +5,7 @@ const utils = require('../utils.js');
 module.exports = {
 	name: 'rerolltome',
 	description: "Removes the specific tome ID, causing it to be rerolled.",
+	aliases: [],
 	execute(message, args) {
         if(message.member.hasPermission("MANAGE_GUILD")){
             const id = Number(args[0]);

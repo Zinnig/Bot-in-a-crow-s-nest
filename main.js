@@ -80,8 +80,10 @@ function index(a, arr) {
     return -1;
 }
 process.on('unhandledRejection', async error => {
-    let me = await client.users.fetch('282964164358438922');
+    let me = await client.users.fetch('282964164358438922'); //@Zinnig#2769
     me.send(`Unhandled promise rejection: \n${error.stack}`);
+    const logger = await client.channels.cache.get("855427611479113758"); //#console-log
+    logger.send(`Unhandled promise rejection: \`\`\`${error}\`\`\``);
 });
 
 function isTableFlip(message) {
@@ -136,80 +138,16 @@ client.on("message", async message => {
         }
     }
 
-    switch (cmd) {
-        case "ping":
-            client.commands.get('ping').execute(message, args, client.ws.ping);
-            break;
-        case "help":
-            client.commands.get('help').execute(message, args);
-            break;
-        case "war":
-            client.commands.get('war').execute(message, args);
-            break;
-        case "subs":
-            client.commands.get('subs').execute(message, args);
-            break;
-        case "caniattack":
-            client.commands.get('caniattack').execute(message, args);
-            break;
-        case "timeinguild":
-            client.commands.get('timeinguild').execute(message, args);
-            break;
-        case "reactionroles":
-            client.commands.get('reactionroles').execute(message, args);
-            break;
-        case "vote":
-            client.commands.get('vote').execute(message, args);
-            break;
-        case "guildstats":
-            client.commands.get('guildstats').execute(message, args);
-            break;
-        case "userstats":
-            client.commands.get('userstats').execute(message, args);
-            break;
-        case "counts":
-            client.commands.get('counts').execute(message, args);
-            break;
-        case "sincelastcounts":
-            client.commands.get('sincelastcounts').execute(message, args);
-            break;
-        case "sl":
-            client.commands.get('sl').execute(message, args);
-            break;
-        case "inactivity":
-            client.commands.get('inactivity').execute(message, args);
-            break;
-        case "sp":
-        case "sps":
-        case "soulpoints":
-            client.commands.get('soulpoints').execute(message, args);
-            break;
-        case "reservetome":
-            client.commands.get('reservetome').execute(message, args);
-            break;
-        case "debug":
-        case "ver":
-        case "version":
-            client.commands.get('version').execute(message, args, client);
-            break;
-        case "edit":
-            client.commands.get('edit').execute(message, args, client);
-            break;
-        case "guildwarleaderboard":
-        case "gwl":
-            client.commands.get('guildwarleaderboard').execute(message, args);
-            break;
-        default:
-            if (message.content.startsWith(prefix)) {
-                unknownCommandEmbed = new Discord.MessageEmbed()
-                    .setColor("#ff0000")
-                    .setTitle("Unknown Command!")
-                    .setDescription(`Try ${prefix}help for a command list.`);
-                message.channel.send(unknownCommandEmbed);
-            }
-            break;
+    const cmdModule = client.commands.get(cmd) || client.commands.find(c => c.aliases.includes(cmd));
+    if (cmdModule) {
+        cmdModule.execute(message, args, client);
+    } else if (message.content.startsWith(prefix)) {
+        unknownCommandEmbed = new Discord.MessageEmbed()
+            .setColor("#ff0000")
+            .setTitle("Unknown Command!")
+            .setDescription(`Try ${prefix}help for a command list.`);
+        message.channel.send(unknownCommandEmbed);
     }
-
 });
 client.on("raw", async packet => {
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE', 'MESSAGE_DELETE'].includes(packet.t)) return;

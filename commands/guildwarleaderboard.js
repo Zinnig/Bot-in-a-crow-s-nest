@@ -4,6 +4,7 @@ const utils = require('../utils.js');
 module.exports = {
 	name: 'guildwarleaderboard',
 	description: 'Returns a sorted list with guilds ranked by their war count.',
+	aliases: ["gwl"],
 	execute(message, args) {
         let result = ""
 		let xml = new XMLHttpRequest();

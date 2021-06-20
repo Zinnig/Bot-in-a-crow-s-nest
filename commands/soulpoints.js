@@ -15,9 +15,9 @@ module.exports = {
                 response = JSON.parse(xml.responseText);
                 for (key in response.servers) {
                     //TODO fix offset
-                    outputL.push([key, 1200000 - (Date.now() - response.servers[key].firstSeen - offset*1000)%1200000, 
-                    utils.setupTimeDiff(1200000 - (Date.now() - response.servers[key].firstSeen - offset*1000)%1200000) == '' || 1200000 - (Date.now() - response.servers[key].firstSeen - offset*1000)%1200000 -60000< 1 ? '<1min' :  utils.setupTimeDiff(1200000 - (Date.now() - response.servers[key].firstSeen - offset*1000)%1200000), 
-                    utils.setupTimeDiff(Date.now() - response.servers[key].firstSeen +offset*1000)]);
+                    outputL.push([key, (1200000 - (Date.now() - response.servers[key].firstSeen)%1200000) - offset*1000, 
+                    utils.setupTimeDiff((1200000 - (Date.now() - response.servers[key].firstSeen)%1200000) - offset*1000) == '' || (1200000 - (Date.now() - response.servers[key].firstSeen)%1200000) - offset*1000 -60000< 1 ? '<1min' :  utils.setupTimeDiff((1200000 - (Date.now() - response.servers[key].firstSeen)%1200000) - offset*1000), 
+                    utils.setupTimeDiff((Date.now() - response.servers[key].firstSeen) +offset*1000)]);
                 }
                 outputL = outputL.sort((a,b) =>  {
                     return b[1] - a[1];

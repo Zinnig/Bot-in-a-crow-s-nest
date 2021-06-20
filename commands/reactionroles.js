@@ -4,6 +4,7 @@ const fs = require('fs');
 module.exports = {
 	name: 'reactionroles',
 	description: "React with the emoji to get the role.",
+	aliases: [],
 	execute(message, args) {
         if(message.member.hasPermission("MANAGE_GUILD")){ 
             message.delete();

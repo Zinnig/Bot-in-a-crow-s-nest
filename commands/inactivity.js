@@ -5,6 +5,7 @@ const spreadsheet = require('../spreadsheet.js');
 module.exports = {
 	name: 'inactivity',
 	description: 'Inactivity list exluding ppl on SL.',
+	aliases: [],
 	async execute(message, args) {
 		if(message.member.hasPermission('MANAGE_SERVER')) {
             spreadsheet.accessSpreadsheet('updateSL');

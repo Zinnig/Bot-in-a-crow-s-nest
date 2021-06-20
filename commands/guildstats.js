@@ -29,6 +29,7 @@ function getIndex(resText, uuid) {
 module.exports = {
     name: 'guildstats',
     description: 'View stats of the guild.',
+    aliases: [],
     execute(message, args) {
         if(args[0] !== "AutoUpdate"){
             if (!message.member.roles.cache.has('472859173730648065') && !message.member.hasPermission("MANAGE_GUILD")) {

@@ -8,6 +8,7 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 module.exports = {
 	name: 'sl',
 	description: "Set/Remove a guild member's shore leave",
+	aliases: [],
 	execute(message, args) {
         if(message.member.hasPermission("MANAGE_GUILD")){
             let outputJSON = {};

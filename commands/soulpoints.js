@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'soulpoints',
 	description: 'Lists servers with an uptime close to a mutliple of 20mins.',
+	aliases: ["sp", "sps"],
 	execute(message, args) {
         offset = args.length === 1 ? args[0] : 60
         let xml = new XMLHttpRequest();

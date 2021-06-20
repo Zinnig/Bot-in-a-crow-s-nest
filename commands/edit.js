@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 module.exports = {
 	name: 'edit',
 	description: 'Edits a message sent by the bot',
+	aliases: [],
 	execute(message, args, client) {
         options = {
             "embed": false,

@@ -15,6 +15,7 @@ function errorResponse(type, extraInfo){
 module.exports = {
 	name: 'vote',
 	description: "Create/End Votes",
+	aliases: [],
 	execute(message, args) {
         let sentEnd = false;
         if(message.member.hasPermission("MANAGE_GUILD")){

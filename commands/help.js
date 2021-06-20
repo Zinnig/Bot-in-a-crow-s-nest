@@ -3,6 +3,7 @@ const utils = require('../utils.js');
 module.exports = {
     name: 'help',
     description: 'Gives you this fancy list of commands.',
+    aliases: [],
     execute(message, args) {
         message.channel.send(`*Sliding into your dms...*`)
         helpString = `**- %help **: Gives you this fancy list of commands.

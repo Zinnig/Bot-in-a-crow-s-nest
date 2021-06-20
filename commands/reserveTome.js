@@ -17,6 +17,7 @@ function errorResponse(type, extraInfo){
 module.exports = {
 	name: 'reservetome',
 	description: "Mark the next tomes to be given out on a custom rule.",
+	aliases: [],
 	execute(message, args) {
         if(message.member.hasPermission("MANAGE_GUILD")){
             let amount = Number(args[0]);

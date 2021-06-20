@@ -10,10 +10,10 @@ exports.errorResponse = (type, extraInfo) =>{
     .setColor("#ff0000")
     switch(type){
         case "noperms":
-            errorEmbed.setTitle(`You don't have the permission "${extraInfo}".`);
+            errorEmbed.setTitle(`You don't have the permission neede.`).setDescription(`You need ${extraInfo}`);
             break;
         case "wrongargs":
-            errorEmbed.setTitle(`Invalid Arguments! Valid Arguments: ${extraInfo}`);
+            errorEmbed.setTitle(`Invalid Arguments!`).setDescription(`Valid Arguments: ${extraInfo}`);
             break;
         case "noattachement":
             errorEmbed.setTitle(`Your message has no attachements`);

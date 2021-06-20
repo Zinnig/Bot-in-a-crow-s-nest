@@ -5,6 +5,7 @@ const utils = require('../utils.js')
 module.exports = {
 	name: 'war',
 	description: "Gives you a list of territories you can attack. They're sorted by priority.",
+	aliases: [],
 	execute(message, args) {
         if (!message.member.roles.cache.has('472859173730648065') && !message.member.hasPermission("MANAGE_SERVER")) {
             message.channel.send(utils.errorResponse("notaguildmember", ""));

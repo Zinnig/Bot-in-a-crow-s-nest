@@ -54,7 +54,6 @@ const quartermasters = [
 
 client.login(token);
 client.commands = new Discord.Collection();
-
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -128,17 +127,15 @@ client.on("message", async message => {
                 .setDescription(player.meta.location.online ? `Online on ${player.meta.location.server}` : 'Offline')
                 .addFields(
                     { name: 'Total Playtime', value: `${Math.floor(player.meta.playtime / 60 * 4.7)}h`, inline: true },
-                    { name: 'Average Daily Playtime', value: `${(((player.meta.playtime / 60 * 4.7) / ((Date.now() - Date.parse(player.meta.firstJoin)) / 86400000))).toFixed(2)}h`, inline: true },
                     { name: 'Highest Combat Level', value: await utils.getHighestClass(player), inline: false },
                     { name: 'First Join', value: new Date(player.meta.firstJoin).toLocaleDateString(), inline: true },
                     { name: 'Last Join', value: new Date(player.meta.lastJoin).toLocaleDateString(), inline: true }
                 )
                 .setTimestamp();
-            message.channel.send(embed)
+            message.channel.send(embed);
         }
     }
-
-    const cmdModule = client.commands.get(cmd) || client.commands.find(c => c.aliases.includes(cmd));
+    const cmdModule = client.commands.get(cmd) == undefined ? client.commands.array().filter(c => c.aliases.includes(cmd))[0] : client.commands.get(cmd);
     if (cmdModule) {
         cmdModule.execute(message, args, client);
     } else if (message.content.startsWith(prefix)) {

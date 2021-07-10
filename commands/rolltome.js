@@ -70,7 +70,11 @@ module.exports = {
                                     "72d140ad-efe3-4bbe-b09c-df5e988f5332", //thyme23
                                     "e67d4a1a-e879-4723-a356-0da0d15fe583", //g17fcH_3D
                                     "1168c5ec-a8bf-45ac-ab9c-808a2b023364", //Mehku
-                                    //possible additions: Hrt1, Henry, Needsticc, The_Doggo
+                                    "d028ed64-e525-4d38-a654-63ac26e56831", //fundingrainslife (Needsticc)
+                                    "47b48cdd-a4d2-45cf-a8a9-418c8d0be7b8", //Saraldar
+                                    "30746de1-aaaf-48d3-89c7-efbe14014bc0", //BulkyUnicycle26
+                                    "8f631723-6c06-4ceb-a2d0-21a13ec3acac", //Hrt1
+                                    "8f0ca805-96b9-4d90-88eb-cd639e4181f8", //TheLegendHenry
                                 ];
                                 const eligible = [];
                                 for (const member of newRewards.members) {

@@ -93,7 +93,12 @@ module.exports = {
                     time: Date.now(),
                     id: newRewards.lastTome
                 });
-                msgs += `📘 A tome has been found! The person to get it is **${winner}**.\n**Rule:** ${rule}\n**ID:** ${newRewards.lastTome}\n`;
+                const thisTome = newRewards.members[winnerIndex].previousTomes[newRewards.members[winnerIndex].previousTomes.length - 1].id;
+                let lastTome = newRewards.members[winnerIndex].previousTomes[newRewards.members[winnerIndex].previousTomes.length - 2]?.id | 0;
+                if (lastTome === 0) {
+                    lastTome = thisTome;
+                }
+                msgs += `📘 A tome has been found! The person to get it is **${winner}**.\n**Rule:** ${rule}\n**ID:** ${newRewards.lastTome}\n**Cooldown:** ${newRewards.members[winnerIndex].previousTomes.length * 2}\n**Time Since Last Tome:** ${thisTome - lastTome}\n`;
                 //save
                 fs.writeFileSync("./data/rewardData.json", JSON.stringify(newRewards, null, 2));
             }

@@ -8,7 +8,7 @@ module.exports = {
     async execute(message, args) {
         if (message.member.hasPermission("MANAGE_GUILD")) {
             let n = Number(args[0]);
-            
+            let msgs = "";
             const guild = await utils.getGuild();
             const oldRewards = JSON.parse(fs.readFileSync("./data/rewardData.json", "utf-8"));
             const newRewards = {
@@ -37,9 +37,6 @@ module.exports = {
                 }
             }
             for (i = 0; i < n; i++) {
-                // REMOVEME
-                // Probably unnecessary var
-                const foundTomeAt = Date.now();
                 newRewards.lastTome++;
                 let winner = "ERROR";
                 let winnerUUID = "";
@@ -96,13 +93,15 @@ module.exports = {
                     time: Date.now(),
                     id: newRewards.lastTome
                 });
-                const msg = `📘 A tome has been found! The person to get it is **${winner}**.\n**Rule:** ${rule}\n**ID:** ${newRewards.lastTome}`;
-                message.channel.send(msg).catch(e => {
-                    console.log(`Failed to send message\n${msg}\n${e}`);
-                });
+                msgs += `📘 A tome has been found! The person to get it is **${winner}**.\n**Rule:** ${rule}\n**ID:** ${newRewards.lastTome}\n`;
                 //save
                 fs.writeFileSync("./data/rewardData.json", JSON.stringify(newRewards, null, 2));
             }
+            utils.splitString(msgs).forEach(msg => {
+                message.channel.send(msg).catch(e => {
+                    console.log(`Failed to send message\n${msg}\n${e}`);
+                });
+            })
         } else {
             message.channel.send(utils.errorResponse("noperms", "MANAGE_GUILD"))
         }

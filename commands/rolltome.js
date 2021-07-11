@@ -10,7 +10,7 @@ module.exports = {
             let n = Number(args[0]);
             
             const guild = await utils.getGuild();
-            const oldRewards = JSON.parse(fs.readFileSync("../data/rewardData.json", "utf-8"));
+            const oldRewards = JSON.parse(fs.readFileSync("./data/rewardData.json", "utf-8"));
             const newRewards = {
                 members: [],
                 currentTomeRule: oldRewards.currentTomeRule,
@@ -101,7 +101,7 @@ module.exports = {
                     console.log(`Failed to send message\n${msg}\n${e}`);
                 });
                 //save
-                fs.writeFileSync("../data/rewardData.json", JSON.stringify(newRewards, null, 2));
+                fs.writeFileSync("./data/rewardData.json", JSON.stringify(newRewards, null, 2));
             }
         } else {
             message.channel.send(utils.errorResponse("noperms", "MANAGE_GUILD"))

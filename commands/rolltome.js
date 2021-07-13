@@ -98,7 +98,7 @@ module.exports = {
                 if (lastTome === 0) {
                     lastTome = thisTome;
                 }
-                msgs += `📘 A tome has been rolled! The person to get it is **${winner}**.\n**Rule:** ${rule}\n**ID:** ${newRewards.lastTome}\n**Cooldown:** ${newRewards.members[winnerIndex].previousTomes.length * 2}\n**Time Since Last Tome:** ${thisTome - lastTome}\n`;
+                msgs += `📘 A tome has been rolled! The person to get it is **${winner}**.\n**Rule:** ${rule}\n**ID:** ${newRewards.lastTome}\n**Cooldown:** ${newRewards.members[winnerIndex].previousTomes.length * 2}\n**Number Of Tomes Since Last Tome:** ${thisTome - lastTome}\n`;
                 //save
                 fs.writeFileSync("./data/rewardData.json", JSON.stringify(newRewards, null, 2));
             }
